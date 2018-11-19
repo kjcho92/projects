@@ -50,7 +50,7 @@
         },
         "sparkSshUserName": {
             "type": "string",
-            "defaultValue": "sparkSshuser",
+            "defaultValue": "sshuser",
             "metadata": {
                 "description": "These credentials can be used to remotely access the cluster."
             }
