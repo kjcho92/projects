@@ -1,3153 +1,1384 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "databaseAccounts_novaarmtest_locations": {
-            "defaultValue": "westus2",
-            "type": "string"
-        },
-        "sites_novaarmtest_name": {
-            "defaultValue": "novaarmtest",
-            "type": "String"
-        },
-        "vaults_novasfarmtest_name": {
-            "defaultValue": "novasfarmtest",
-            "type": "String"
-        },
-        "Redis_novaarmtest_name": {
-            "defaultValue": "novaarmtest",
-            "type": "String"
-        },
-        "vaults_novasfclientarmtest_name": {
-            "defaultValue": "novasfclientarmtest",
-            "type": "String"
-        },
-        "clusters_nova_sf_armtest_name": {
-            "defaultValue": "nova-sfarmtest",
-            "type": "String"
-        },
-        "components_novaarmtest_name": {
-            "defaultValue": "novaarmtest",
-            "type": "String"
-        },
-        "config_web_name": {
-            "defaultValue": "web",
-            "type": "String"
-        },
-		"storageAccounts_novasparkarmtest_name": {
-            "defaultValue": "web",
-            "type": "String"
-        },
-        "vaults_NovaSparkKeyVaultarmtest_name": {
-            "defaultValue": "NovaSparkKeyVaultarmtest",
-            "type": "String"
-        },
-        "virtualMachineScaleSets_D3armtest_name": {
-            "defaultValue": "D3armtest",
-            "type": "String"
-        },
-        "components_novawebarmtest_name": {
-            "defaultValue": "novawebarmtest",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_name": {
-            "defaultValue": "LB-nova-sf-D3armtest",
-            "type": "String"
-        },
-        "vaults_NovaServicesKeyVault_armtest_name": {
-            "defaultValue": "NovaServicesKeyVault_armtest",
-            "type": "String"
-        },
-        "vaults_NovaSparkRDPKeyVault_armtest_name": {
-            "defaultValue": "NovaSparkRDPKeyVault_armtest",
-            "type": "String"
-        },
-        "virtualNetworks_VNet_nova_sf_armtest_name": {
-            "defaultValue": "VNet-nova-sfarmtest",
-            "type": "String"
-        },
-        "vaults_NovaFabricRDPKeyVault_armtest_name": {
-            "defaultValue": "NovaFabricRDPKeyVault_armtest",
-            "type": "String"
-        },
-        "serverfarms_nova_app_service_plan_name": {
-            "defaultValue": "nova-app-service-planarmtest",
-            "type": "String"
-        },
-        "storageAccounts_sfdgnovasfarmtest1518_name": {
-            "defaultValue": "sfdgnovasfarmtest1518",
-            "type": "String"
-        },
-        "databaseAccounts_novaarmtest_name": {
-            "defaultValue": "novaarmtest",
-            "type": "String"
-        },
-        "publicIPAddresses_LBIP_nova_sf_armtest_0_name": {
-            "defaultValue": "LBIP-nova-sf-0armtest",
-            "type": "String"
-        },
-        "storageAccounts_nova-sparkarmtest_name": {
-            "defaultValue": "nova-sparkarmtest",
-            "type": "String"
-        },
-        "storageAccounts_sflogsnovasfarmtest8317_name": {
-            "defaultValue": "sflogsnovasfarmtest8317",
-            "type": "String"
-        },
-        "storageAccounts_novaconfigsarmtest_name": {
-            "defaultValue": "novaconfigsarmtest",
-            "type": "String"
-        },
-        "namespaces_novametricseventhubarmtest_name": {
-            "defaultValue": "novametricseventhubarmtest",
-            "type": "String"
-        },
-        "alertrules_Failure_Anomalies___novasfarmtest_name": {
-            "defaultValue": "Failure Anomalies - novasfarmtest",
-            "type": "String"
-        },
-        "virtualMachines_0_name": {
-            "defaultValue": "0",
-            "type": "String"
-        },
-        "virtualMachines_1_name": {
-            "defaultValue": "1",
-            "type": "String"
-        },
-        "virtualMachines_2_name": {
-            "defaultValue": "2",
-            "type": "String"
-        },
-        "virtualMachines_3_name": {
-            "defaultValue": "3",
-            "type": "String"
-        },
-        "virtualMachines_4_name": {
-            "defaultValue": "4",
-            "type": "String"
-        },
-        "subnets_Subnet_0_name": {
-            "defaultValue": "Subnet-0",
-            "type": "String"
-        },
-        "alertrules_Failure_Anomalies___novawebarmtest_name": {
-            "defaultValue": "Failure Anomalies - novawebarmtest",
-            "type": "String"
-        },
-        "deployments_5d43d93468b246d78825536511637a44_name": {
-            "defaultValue": "5d43d93468b246d78825536511637a44",
-            "type": "String"
-        },
-        "deployments_62459847d17c4a60a300847be6f00ddf_name": {
-            "defaultValue": "62459847d17c4a60a300847be6f00ddf",
-            "type": "String"
-        },
-        "deployments_9e5b69107f22467795a1a3ecd414a95f_name": {
-            "defaultValue": "9e5b69107f22467795a1a3ecd414a95f",
-            "type": "String"
-        },
-        "deployments_f74d82dfe68d45c08ac4b92601acdaf6_name": {
-            "defaultValue": "f74d82dfe68d45c08ac4b92601acdaf6",
-            "type": "String"
-        },
-        "hostNameBindings_novaarmtest.azurewebsites.net_name": {
-            "defaultValue": "novaarmtest.azurewebsites.net",
-            "type": "String"
-        },
-        "inboundNatRules_LoadBalancerBEAddressNatPool.0_name": {
-            "defaultValue": "LoadBalancerBEAddressNatPool.0",
-            "type": "String"
-        },
-        "inboundNatRules_LoadBalancerBEAddressNatPool.1_name": {
-            "defaultValue": "LoadBalancerBEAddressNatPool.1",
-            "type": "String"
-        },
-        "inboundNatRules_LoadBalancerBEAddressNatPool.2_name": {
-            "defaultValue": "LoadBalancerBEAddressNatPool.2",
-            "type": "String"
-        },
-        "inboundNatRules_LoadBalancerBEAddressNatPool.3_name": {
-            "defaultValue": "LoadBalancerBEAddressNatPool.3",
-            "type": "String"
-        },
-        "inboundNatRules_LoadBalancerBEAddressNatPool.4_name": {
-            "defaultValue": "LoadBalancerBEAddressNatPool.4",
-            "type": "String"
-        },
-        "eventhubs_novametricseventhub_name": {
-            "defaultValue": "novametricseventhub",
-            "type": "String"
-        },
-        "AuthorizationRules_RootManageSharedAccessKey_name": {
-            "defaultValue": "RootManageSharedAccessKey",
-            "type": "String"
-        },
-        "consumergroups_$Default_name": {
-            "defaultValue": "$Default",
-            "type": "String"
-        },
-        "authorizationRules_manage_name": {
-            "defaultValue": "manage",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_1": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/backendAddressPools/LoadBalancerBEAddressPool",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_2": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/probes/FabricGatewayProbe",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_3": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_4": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/backendAddressPools/LoadBalancerBEAddressPool",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_5": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/probes/FabricHttpGatewayProbe",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_6": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_7": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/backendAddressPools/LoadBalancerBEAddressPool",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_8": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/probes/AppPortProbe6",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_9": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_10": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_11": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_12": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_13": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "loadBalancers_LB_nova_sf_D3armtest_id_14": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/frontendIPConfigurations/LoadBalancerIPConfig",
-            "type": "String"
-        },
-        "virtualNetworks_VNet_nova_sf_armtest_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/cleanupservice/providers/Microsoft.Network/networkSecurityGroups/rg-cleanupservice-nsg",
-            "type": "String"
-        },
-        "virtualMachines_0_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/disks/D3armtest_D3armtest_0_OsDisk_1_e394ab2c07c94cb8a855cc0499e7ef1e",
-            "type": "String"
-        },
-        "virtualMachines_1_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/disks/D3armtest_D3armtest_1_OsDisk_1_566aa10a75b743b7a47da91bc0a92313",
-            "type": "String"
-        },
-        "virtualMachines_2_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/disks/D3armtest_D3armtest_2_OsDisk_1_D3armtest6a96ba65784bb3825ae16557e08191",
-            "type": "String"
-        },
-        "virtualMachines_3_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/disks/D3armtest_D3armtest_3_OsDisk_1_f62986c6b2594eb4801c5340a681f105",
-            "type": "String"
-        },
-        "virtualMachines_4_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/disks/D3armtest_D3armtest_4_OsDisk_1_cbf5b278e147437cb4a12d5733f0a298",
-            "type": "String"
-        },
-        "subnets_Subnet_0_id": {
-            "defaultValue": "/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/cleanupservice/providers/Microsoft.Network/networkSecurityGroups/rg-cleanupservice-nsg",
-            "type": "String"
-        }
-    },
-    "variables": {},
-    "resources": [
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Cache/Redis/novaarmtest'.",
-            "type": "Microsoft.Cache/Redis",
-            "name": "[parameters('Redis_novaarmtest_name')]",
-            "apiVersion": "2017-10-01",
-            "location": "West US 2",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "sku": {
-                    "name": "Premium",
-                    "family": "P",
-                    "capacity": 3
-                },
-                "enableNonSslPort": false,
-                "redisConfiguration": {
-                    "maxclients": "30000",
-                    "maxmemory-reserved": "1000",
-                    "maxfragmentationmemory-reserved": "1300",
-                    "maxmemory-delta": "1000"
-                }
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/virtualMachineScaleSets/D3armtest'.",
-            "type": "Microsoft.Compute/virtualMachineScaleSets",
-            "sku": {
-                "name": "Standard_D3armtest_v2",
-                "tier": "Standard",
-                "capacity": 5
-            },
-            "name": "[parameters('virtualMachineScaleSets_D3armtest_name')]",
-            "apiVersion": "2018-06-01",
-            "location": "westus2",
-            "identity": {
-                "principalId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "type": "SystemAssigned"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "singlePlacementGroup": true,
-                "upgradePolicy": {
-                    "mode": "Automatic",
-                    "automaticOSUpgrade": false
-                },
-                "virtualMachineProfile": {
-                    "osProfile": {
-                        "computerNamePrefix": "[parameters('virtualMachineScaleSets_D3armtest_name')]",
-                        "adminUsername": "novapd",
-                        "windowsConfiguration": {
-                            "provisionVMAgent": true,
-                            "enableAutomaticUpdates": true
-                        },
-                        "secrets": [
-                            {
-                                "sourceVault": {
-                                    "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-                                },
-                                "vaultCertificates": [
-                                    {
-                                        "certificateUrl": "https://novasfarmtest.vault.azure.net/secrets/novasfarmtest/0cd9b8fbc10440f288b2ab651689a2fb",
-                                        "certificateStore": "My"
-                                    },
-                                    {
-                                        "certificateUrl": "https://novasfarmtest.vault.azure.net/secrets/novasfarmtestsecondary/0ffe289fdf5b4503972371a0fceb54a3",
-                                        "certificateStore": "My"
-                                    },
-                                    {
-                                        "certificateUrl": "https://novasfarmtest.vault.azure.net/secrets/novasfarmtestreverseproxy/ffe497cb1adc497784fee6f8df4f007a",
-                                        "certificateStore": "My"
-                                    },
-                                    {
-                                        "certificateUrl": "https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/84c122352b8946c2814d4763858ab2c3",
-                                        "certificateStore": "my"
-                                    },
-                                    {
-                                        "certificateUrl": "https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/ee872f44b60840a997b6e9b29b7a5f05",
-                                        "certificateStore": "my"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    "storageProfile": {
-                        "osDisk": {
-                            "createOption": "FromImage",
-                            "caching": "ReadOnly",
-                            "managedDisk": {
-                                "storageAccountType": "Standard_LRS"
-                            }
-                        },
-                        "imageReference": {
-                            "publisher": "MicrosoftWindowsServer",
-                            "offer": "WindowsServer",
-                            "sku": "2016-Datacenter-with-Containers",
-                            "version": "latest"
-                        }
-                    },
-                    "networkProfile": {
-                        "networkInterfaceConfigurations": [
-                            {
-                                "name": "NIC-nova-sfarmtest-0",
-                                "properties": {
-                                    "primary": true,
-                                    "enableAcceleratedNetworking": false,
-                                    "dnsSettings": {
-                                        "dnsServers": []
-                                    },
-                                    "enableIPForwarding": false,
-                                    "ipConfigurations": [
-                                        {
-                                            "name": "NIC-nova-sfarmtest-0",
-                                            "properties": {
-                                                "subnet": {
-                                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_VNet_nova_sf_armtest_name'), parameters('subnets_Subnet_0_name'))]"
-                                                },
-                                                "privateIPAddressVersion": "IPv4",
-                                                "loadBalancerBackendAddressPools": [
-                                                    {
-                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name')), '/backendAddressPools/LoadBalancerBEAddressPool')]"
-                                                    }
-                                                ],
-                                                "loadBalancerInboundNatPools": [
-                                                    {
-                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name')), '/inboundNatPools/LoadBalancerBEAddressNatPool')]"
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
-                    },
-                    "extensionProfile": {
-                        "extensions": [
-                            {
-                                "properties": {
-                                    "autoUpgradeMinorVersion": true,
-                                    "settings": {
-                                        "clusterEndpoint": "https://westus2.servicefabric.azure.com/runtime/clusters/6dd89eee-e177-477b-b527-daa7a636a09e",
-                                        "nodeTypeRef": "[parameters('virtualMachineScaleSets_D3armtest_name')]",
-                                        "dataPath": "D:\\\\SvcFab",
-                                        "durabilityLevel": "Bronze",
-                                        "enableParallelJobs": true,
-                                        "nicPrefixOverride": "10.0.0.0/24",
-                                        "reverseProxyCertificate": {
-                                            "thumbprint": "578A50E972915D586E9407078101CF5D63F35D83",
-                                            "x509StoreName": "My"
-                                        },
-                                        "certificate": {
-                                            "thumbprint": "4A7675DEB6CC42BF3670215CB9D71280C2C05D51",
-                                            "thumbprintSecondary": "1AF1B1C2F58A552DF69C1C9F2E75046F2EDDFB88",
-                                            "x509StoreName": "My"
-                                        }
-                                    },
-                                    "publisher": "Microsoft.Azure.ServiceFabric",
-                                    "type": "ServiceFabricNode",
-                                    "typeHandlerVersion": "1.0"
-                                },
-                                "name": "[concat(parameters('virtualMachineScaleSets_D3armtest_name'),'_ServiceFabricNode')]"
-                            },
-                            {
-                                "properties": {
-                                    "autoUpgradeMinorVersion": true,
-                                    "settings": {
-                                        "WadCfg": {
-                                            "DiagnosticMonitorConfiguration": {
-                                                "overallQuotaInMB": "50000",
-                                                "EtwProviders": {
-                                                    "EtwEventSourceProviderConfiguration": [
-                                                        {
-                                                            "provider": "Microsoft-ServiceFabric-Actors",
-                                                            "scheduledTransferKeywordFilter": "1",
-                                                            "scheduledTransferPeriod": "PT5M",
-                                                            "DefaultEvents": {
-                                                                "eventDestination": "ServiceFabricReliableActorEventTable"
-                                                            }
-                                                        },
-                                                        {
-                                                            "provider": "Microsoft-ServiceFabric-Services",
-                                                            "scheduledTransferPeriod": "PT5M",
-                                                            "DefaultEvents": {
-                                                                "eventDestination": "ServiceFabricReliableServiceEventTable"
-                                                            }
-                                                        }
-                                                    ],
-                                                    "EtwManifestProviderConfiguration": [
-                                                        {
-                                                            "provider": "cbd93bc2-71e5-4566-b3a7-595d8eeca6e8",
-                                                            "scheduledTransferLogLevelFilter": "Information",
-                                                            "scheduledTransferKeywordFilter": "4611686018427387904",
-                                                            "scheduledTransferPeriod": "PT5M",
-                                                            "DefaultEvents": {
-                                                                "eventDestination": "ServiceFabricSystemEventTable"
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            }
-                                        },
-                                        "StorageAccount": "sfdgnovasfarmtest1518"
-                                    },
-                                    "publisher": "Microsoft.Azure.Diagnostics",
-                                    "type": "IaaSDiagnostics",
-                                    "typeHandlerVersion": "1.5"
-                                },
-                                "name": "VMDiagnosticsVmExt_vmNodeType0Name"
-                            }
-                        ]
-                    }
-                },
-                "overprovision": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_VNet_nova_sf_armtest_name'), parameters('subnets_Subnet_0_name'))]",
-                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.DocumentDB/databaseAccounts/novaarmtest'.",
-            "type": "Microsoft.DocumentDB/databaseAccounts",
-            "kind": "MongoDB",
-            "name": "[parameters('databaseAccounts_novaarmtest_name')]",
-            "apiVersion": "2015-04-08",
-            "location": "West US 2",
-            "tags": {
-                "defaultExperience": "MongoDB"
-            },
-            "scale": null,
-            "properties": {
-                "ipRangeFilter": "",
-                "enableAutomaticFailover": false,
-                "enableMultipleWriteLocations": true,
-                "isVirtualNetworkFilterEnabled": false,
-                "virtualNetworkRules": [],
-                "databaseAccountOfferType": "Standard",
-                "consistencyPolicy": {
-                    "defaultConsistencyLevel": "Session",
-                    "maxIntervalInSeconds": 5,
-                    "maxStalenessPrefix": 100
-                },
-                "capabilities": [],
-                "locations": "[parameters('databaseAccounts_novaarmtest_locations')]"
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.EventHub/namespaces/novametricseventhub'.",
-            "type": "Microsoft.EventHub/namespaces",
-            "sku": {
-                "name": "Standard",
-                "tier": "Standard",
-                "capacity": 1
-            },
-            "name": "[parameters('namespaces_novametricseventhubarmtest_name')]",
-            "apiVersion": "2017-04-01",
-            "location": "West US 2",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "isAutoInflateEnabled": true,
-                "maximumThroughputUnits": 1
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/microsoft.insights/alertrules/Failure Anomalies - novasfarmtest'.",
-            "type": "microsoft.insights/alertrules",
-            "name": "[parameters('alertrules_Failure_Anomalies___novasfarmtest_name')]",
-            "apiVersion": "2014-04-01",
-            "location": "West US 2",
-            "tags": {
-                "hidden-link:/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/microsoft.insights/components/novaarmtest": "Resource"
-            },
-            "scale": null,
-            "properties": {
-                "name": "[parameters('alertrules_Failure_Anomalies___novasfarmtest_name')]",
-                "description": "",
-                "isEnabled": true,
-                "condition": {
-                    "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
-                    "dataSource": {
-                        "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-                        "resourceUri": "[resourceId('microsoft.insights/components', parameters('components_novaarmtest_name'))]",
-                        "metricNamespace": null,
-                        "metricName": "advanced::A3108E3D-5E26-44CF-B232-783F5E20EF10::ewAiAEgAeQBwAGUAcgBpAG8AbgBBAHAAcABsAGkAYwBhAHQAaQBvAG4AUwBpAGQAIgA6AG4AdQBsAGwALAAiAEgAeQBwAGUAcgBpAG8AbgBTAHUAYgBqAGUAYwB0AFMAaQBkACIAOgBuAHUAbABsACwAIgBIAHkAcABlAHIAaQBvAG4ATwBiAHMAZQByAHYAZQByAFMAaQBkACIAOgBuAHUAbABsACwAIgBDAHUAcwB0AG8AbQBlAHIAQQBjAGMAbwB1AG4AdABJAGQAIgA6ACIAMAAwADAAMAAwADAAMAAwAC0AMAAwADAAMAAtADAAMAAwADAALQAwADAAMAAwAC0AMAAwADAAMAAwADAAMAAwADAAMAAwADAAIgAsACIAQQBwAHAAbABpAGMAYQB0AGkAbwBuAE4AYQBtAGUAIgA6AG4AdQBsAGwALAAiAEEAcABwAGwAaQBjAGEAdABpAG8AbgBJAGQAIgA6AG4AdQBsAGwALAAiAFAAcgBvAGYAaQBsAGUASQBkACIAOgAwACwAIgBXAGkAbgBkAG8AdwBTAGkAegBlAEkAbgBNAGkAbgB1AHQAZQBzACIAOgA2ADAALAAiAE0AZQB0AHIAaQBjAE4AYQBtAGUAIgA6ACIAIgAsACIAVABoAHIAZQBzAGgAbwBsAGQAIgA6ADIALgAwACwAIgBBAGwAZQByAHQAVABlAG0AcABsAGEAdABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAE4AYQBtAGUAIgA6ACIAIgAsACIAUgB1AGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AIgA6ACIAIgAsACIAUgBlAHMAbwB1AHIAYwBlAEkAZAAiADoAbgB1AGwAbAAsACIAUwB1AGIAcwBjAHIAaQBwAHQAaQBvAG4ASQBkACIAOgBuAHUAbABsACwAIgBBAGcAZwByAGUAZwBhAHQAZQBGAHUAbgBjAHQAaQBvAG4AIgA6ACIAIgAsACIAQwBvAG0AcABhAHIAaQBzAG8AbgBPAHAAZQByAGEAdABvAHIAIgA6ACIAewBcACIAQgBhAHMAZQBsAGkAbgBlAFQAaQBtAGUAcwBwAGEAbgBcACIAOgBcACIAMAAwADoANAAwADoAMAAwAFwAIgAsAFwAIgBJAG4AcwBpAGcAaAB0AHMAUwBlAHIAdgBpAGMAZQBMAGEAZwBcACIAOgBcACIAMAAwADoAMAAwADoAMAAwAFwAIgAsAFwAIgBCAHUAZgBmAGUAcgBUAGkAbQBlAFwAIgA6AFwAIgAwADAAOgAwADEAOgAwADAAXAAiACwAXAAiAEIAbABvAGIAUwB0AG8AcgBhAGcAZQBMAG8AZwBnAGkAbgBnAEUAbgBhAGIAbABlAGQAXAAiADoAZgBhAGwAcwBlACwAXAAiAFUAcwBlAHIAUwB1AHAAcAByAGUAcwBzAGkAbwBuAHMAXAAiADoAbgB1AGwAbAAsAFwAIgBQAHIAbwBmAGkAbABlAEkAZABcACIAOgAwACwAXAAiAEUAbQBhAGkAbABUAHkAcABlAFwAIgA6ADAALABcACIAUgBkAGQARgBhAGkAbAB1AHIAZQBzAFMAcABpAGsAZQBUAGgAcgBlAHMAaABvAGwAZABcACIAOgAzAC4AMAAsAFwAIgBSAGEAdwBQAHIAbwBhAGMAdABpAHYAZQBSAHUAbABlAEMAbwBuAGYAaQBnAFwAIgA6AG4AdQBsAGwAfQAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8AQwB1AHMAdABvAG0AIgA6AGYAYQBsAHMAZQAsACIAQwB1AHMAdABvAG0ARQBtAGEAaQBsAHMARQBuAGMAbwBkAGUAZAAiADoAIgAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8ATwB3AG4AZQByAHMAIgA6AGYAYQBsAHMAZQB9AA=="
-                    },
-                    "operator": "GreaterThan",
-                    "threshold": 2,
-                    "windowSize": "PT1H"
-                },
-                "action": {
-                    "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
-                    "sendToServiceOwners": true,
-                    "customEmails": []
-                }
-            },
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_novaarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/microsoft.insights/alertrules/Failure Anomalies - novawebarmtest'.",
-            "type": "microsoft.insights/alertrules",
-            "name": "[parameters('alertrules_Failure_Anomalies___novawebarmtest_name')]",
-            "apiVersion": "2014-04-01",
-            "location": "West US 2",
-            "tags": {
-                "hidden-link:/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/microsoft.insights/components/novawebarmtest": "Resource"
-            },
-            "scale": null,
-            "properties": {
-                "name": "[parameters('alertrules_Failure_Anomalies___novawebarmtest_name')]",
-                "description": "",
-                "isEnabled": true,
-                "condition": {
-                    "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
-                    "dataSource": {
-                        "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-                        "resourceUri": "[resourceId('microsoft.insights/components', parameters('components_novawebarmtest_name'))]",
-                        "metricNamespace": null,
-                        "metricName": "advanced::A3108E3D-5E26-44CF-B232-783F5E20EF10::ewAiAEgAeQBwAGUAcgBpAG8AbgBBAHAAcABsAGkAYwBhAHQAaQBvAG4AUwBpAGQAIgA6AG4AdQBsAGwALAAiAEgAeQBwAGUAcgBpAG8AbgBTAHUAYgBqAGUAYwB0AFMAaQBkACIAOgBuAHUAbABsACwAIgBIAHkAcABlAHIAaQBvAG4ATwBiAHMAZQByAHYAZQByAFMAaQBkACIAOgBuAHUAbABsACwAIgBDAHUAcwB0AG8AbQBlAHIAQQBjAGMAbwB1AG4AdABJAGQAIgA6ACIAMAAwADAAMAAwADAAMAAwAC0AMAAwADAAMAAtADAAMAAwADAALQAwADAAMAAwAC0AMAAwADAAMAAwADAAMAAwADAAMAAwADAAIgAsACIAQQBwAHAAbABpAGMAYQB0AGkAbwBuAE4AYQBtAGUAIgA6AG4AdQBsAGwALAAiAEEAcABwAGwAaQBjAGEAdABpAG8AbgBJAGQAIgA6AG4AdQBsAGwALAAiAFAAcgBvAGYAaQBsAGUASQBkACIAOgAwACwAIgBXAGkAbgBkAG8AdwBTAGkAegBlAEkAbgBNAGkAbgB1AHQAZQBzACIAOgA2ADAALAAiAE0AZQB0AHIAaQBjAE4AYQBtAGUAIgA6ACIAIgAsACIAVABoAHIAZQBzAGgAbwBsAGQAIgA6ADIALgAwACwAIgBBAGwAZQByAHQAVABlAG0AcABsAGEAdABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAE4AYQBtAGUAIgA6ACIAIgAsACIAUgB1AGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AIgA6ACIAIgAsACIAUgBlAHMAbwB1AHIAYwBlAEkAZAAiADoAbgB1AGwAbAAsACIAUwB1AGIAcwBjAHIAaQBwAHQAaQBvAG4ASQBkACIAOgBuAHUAbABsACwAIgBBAGcAZwByAGUAZwBhAHQAZQBGAHUAbgBjAHQAaQBvAG4AIgA6ACIAIgAsACIAQwBvAG0AcABhAHIAaQBzAG8AbgBPAHAAZQByAGEAdABvAHIAIgA6ACIAewBcACIAQgBhAHMAZQBsAGkAbgBlAFQAaQBtAGUAcwBwAGEAbgBcACIAOgBcACIAMAAwADoANAAwADoAMAAwAFwAIgAsAFwAIgBJAG4AcwBpAGcAaAB0AHMAUwBlAHIAdgBpAGMAZQBMAGEAZwBcACIAOgBcACIAMAAwADoAMAAwADoAMAAwAFwAIgAsAFwAIgBCAHUAZgBmAGUAcgBUAGkAbQBlAFwAIgA6AFwAIgAwADAAOgAwADEAOgAwADAAXAAiACwAXAAiAEIAbABvAGIAUwB0AG8AcgBhAGcAZQBMAG8AZwBnAGkAbgBnAEUAbgBhAGIAbABlAGQAXAAiADoAZgBhAGwAcwBlACwAXAAiAFUAcwBlAHIAUwB1AHAAcAByAGUAcwBzAGkAbwBuAHMAXAAiADoAbgB1AGwAbAAsAFwAIgBQAHIAbwBmAGkAbABlAEkAZABcACIAOgAwACwAXAAiAEUAbQBhAGkAbABUAHkAcABlAFwAIgA6ADAALABcACIAUgBkAGQARgBhAGkAbAB1AHIAZQBzAFMAcABpAGsAZQBUAGgAcgBlAHMAaABvAGwAZABcACIAOgAzAC4AMAAsAFwAIgBSAGEAdwBQAHIAbwBhAGMAdABpAHYAZQBSAHUAbABlAEMAbwBuAGYAaQBnAFwAIgA6AG4AdQBsAGwAfQAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8AQwB1AHMAdABvAG0AIgA6AGYAYQBsAHMAZQAsACIAQwB1AHMAdABvAG0ARQBtAGEAaQBsAHMARQBuAGMAbwBkAGUAZAAiADoAIgAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8ATwB3AG4AZQByAHMAIgA6AGYAYQBsAHMAZQB9AA=="
-                    },
-                    "operator": "GreaterThan",
-                    "threshold": 2,
-                    "windowSize": "PT1H"
-                },
-                "action": {
-                    "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
-                    "sendToServiceOwners": true,
-                    "customEmails": []
-                }
-            },
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_novawebarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/microsoft.insights/components/novawebarmtest'.",
-            "type": "microsoft.insights/components",
-            "kind": "web",
-            "name": "[parameters('components_novawebarmtest_name')]",
-            "apiVersion": "2015-05-01",
-            "location": "westus2",
-            "tags": {
-                "applicationType": "web",
-                "hidden-link:/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest": "Resource"
-            },
-            "scale": null,
-            "properties": {
-                "Application_Type": "web",
-                "Flow_Type": "Redfield",
-                "Request_Source": "AppServiceEnablementCreate",
-                "HockeyAppId": null,
-                "SamplingPercentage": null
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/microsoft.insights/components/novaarmtest'.",
-            "type": "microsoft.insights/components",
-            "kind": "other",
-            "name": "[parameters('components_novaarmtest_name')]",
-            "apiVersion": "2015-05-01",
-            "location": "westus2",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "Application_Type": "other",
-                "Flow_Type": "Redfield",
-                "Request_Source": "IbizaAIExtension",
-                "HockeyAppId": null,
-                "SamplingPercentage": null
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.KeyVault/vaults/NovaFabricRDPKeyVault_armtest'.",
-            "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('vaults_NovaFabricRDPKeyVault_armtest_name')]",
-            "apiVersion": "2016-10-01",
-            "location": "centralus",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "sku": {
-                    "family": "A",
-                    "name": "Standard"
-                },
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "accessPolicies": [
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    }
-                ],
-                "enabledForDeployment": false,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": false
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.KeyVault/vaults/NovaServicesKeyVault_armtest'.",
-            "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('vaults_NovaServicesKeyVault_armtest_name')]",
-            "apiVersion": "2016-10-01",
-            "location": "centralus",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "sku": {
-                    "family": "A",
-                    "name": "Standard"
-                },
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "accessPolicies": [
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "Create"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "84b32d75-9a6f-4a08-aaeb-c67a40c633fe",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "Create"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "3828bd7e-1043-44b9-a81c-c312a87dc216",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Create"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "Update",
-                                "Create"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "83d13d99-D3armtestb5-4028-aa18-eb4c63801e70",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "1ba361b9-1744-458a-a32c-067c787d9fbf",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "8fed58db-36a9-4d02-987d-419477D3armtested6a",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Delete",
-                                "Import"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete"
-                            ],
-                            "certificates": []
-                        }
-                    }
-                ],
-                "enabledForDeployment": false,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": false
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.KeyVault/vaults/NovaSparkKeyVaultarmtest'.",
-            "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('vaults_NovaSparkKeyVaultarmtest_name')]",
-            "apiVersion": "2016-10-01",
-            "location": "centralus",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "sku": {
-                    "family": "A",
-                    "name": "Standard"
-                },
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "accessPolicies": [
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "d0871592-98ef-419c-8c97-6c91c9dd7875",
-                        "permissions": {
-                            "keys": [],
-                            "secrets": [
-                                "Get"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "2e4b2bb7-bc88-44f5-9066-79bab8eb13a9",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "Update",
-                                "Create",
-                                "List"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": []
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Delete"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete"
-                            ],
-                            "certificates": []
-                        }
-                    }
-                ],
-                "enabledForDeployment": false,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": false
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.KeyVault/vaults/NovaSparkRDPKeyVault_armtest'.",
-            "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('vaults_NovaSparkRDPKeyVault_armtest_name')]",
-            "apiVersion": "2016-10-01",
-            "location": "centralus",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "sku": {
-                    "family": "A",
-                    "name": "Standard"
-                },
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "accessPolicies": [
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Decrypt",
-                                "Encrypt",
-                                "UnwrapKey",
-                                "WrapKey",
-                                "Verify",
-                                "Sign",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "Purge"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers",
-                                "Purge"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List"
-                            ],
-                            "certificates": []
-                        }
-                    }
-                ],
-                "enabledForDeployment": false,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": false
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.KeyVault/vaults/novasfarmtest'.",
-            "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('vaults_novasfarmtest_name')]",
-            "apiVersion": "2016-10-01",
-            "location": "westus2",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "sku": {
-                    "family": "A",
-                    "name": "Standard"
-                },
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "accessPolicies": [
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "8fed58db-36a9-4d02-987d-419477D3armtested6a",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "e5df3d54-81bd-4db5-a6c1-7870b03b2233",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List"
-                            ]
-                        }
-                    }
-                ],
-                "enabledForDeployment": true,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": true
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.KeyVault/vaults/novasfclientarmtest'.",
-            "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('vaults_novasfclientarmtest_name')]",
-            "apiVersion": "2016-10-01",
-            "location": "westus2",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "sku": {
-                    "family": "A",
-                    "name": "Standard"
-                },
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "accessPolicies": [
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers"
-                            ]
-                        }
-                    },
-                    {
-                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers"
-                            ]
-                        }
-                    }
-                ],
-                "enabledForDeployment": false,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": false
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest'.",
-            "type": "Microsoft.Network/loadBalancers",
-            "sku": {
-                "name": "Basic",
-                "tier": "Regional"
-            },
-            "name": "[parameters('loadBalancers_LB_nova_sf_D3armtest_name')]",
-            "apiVersion": "2018-08-01",
-            "location": "westus2",
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "resourceGuid": "eedc2cb9-a3b1-4d49-9ad7-36cf82c201ad",
-                "frontendIPConfigurations": [
-                    {
-                        "name": "LoadBalancerIPConfig",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_LBIP_nova_sf_armtest_0_name'))]"
-                            }
-                        }
-                    }
-                ],
-                "backendAddressPools": [
-                    {
-                        "name": "LoadBalancerBEAddressPool",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded"
-                        }
-                    }
-                ],
-                "loadBalancingRules": [
-                    {
-                        "name": "LBRule",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id')]"
-                            },
-                            "frontendPort": 19000,
-                            "backendPort": 19000,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 5,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false,
-                            "loadDistribution": "Default",
-                            "backendAddressPool": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_1')]"
-                            },
-                            "probe": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_2')]"
-                            }
-                        }
-                    },
-                    {
-                        "name": "LBHttpRule",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_3')]"
-                            },
-                            "frontendPort": 19080,
-                            "backendPort": 19080,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 5,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false,
-                            "loadDistribution": "Default",
-                            "backendAddressPool": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_4')]"
-                            },
-                            "probe": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_5')]"
-                            }
-                        }
-                    },
-                    {
-                        "name": "AppPortLBRule6",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_6')]"
-                            },
-                            "frontendPort": 443,
-                            "backendPort": 443,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 4,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false,
-                            "loadDistribution": "Default",
-                            "backendAddressPool": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_7')]"
-                            },
-                            "probe": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_8')]"
-                            }
-                        }
-                    }
-                ],
-                "probes": [
-                    {
-                        "name": "FabricGatewayProbe",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "protocol": "Tcp",
-                            "port": 19000,
-                            "intervalInSeconds": 5,
-                            "numberOfProbes": 2
-                        }
-                    },
-                    {
-                        "name": "FabricHttpGatewayProbe",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "protocol": "Tcp",
-                            "port": 19080,
-                            "intervalInSeconds": 5,
-                            "numberOfProbes": 2
-                        }
-                    },
-                    {
-                        "name": "AppPortProbe6",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "protocol": "Tcp",
-                            "port": 443,
-                            "intervalInSeconds": 15,
-                            "numberOfProbes": 2
-                        }
-                    }
-                ],
-                "inboundNatRules": [
-                    {
-                        "name": "LoadBalancerBEAddressNatPool.0",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_9')]"
-                            },
-                            "frontendPort": 3389,
-                            "backendPort": 3389,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 4,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false
-                        }
-                    },
-                    {
-                        "name": "LoadBalancerBEAddressNatPool.1",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_10')]"
-                            },
-                            "frontendPort": 3390,
-                            "backendPort": 3389,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 4,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false
-                        }
-                    },
-                    {
-                        "name": "LoadBalancerBEAddressNatPool.2",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_11')]"
-                            },
-                            "frontendPort": 3391,
-                            "backendPort": 3389,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 4,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false
-                        }
-                    },
-                    {
-                        "name": "LoadBalancerBEAddressNatPool.3",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_12')]"
-                            },
-                            "frontendPort": 3392,
-                            "backendPort": 3389,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 4,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false
-                        }
-                    },
-                    {
-                        "name": "LoadBalancerBEAddressNatPool.4",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_13')]"
-                            },
-                            "frontendPort": 3393,
-                            "backendPort": 3389,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 4,
-                            "protocol": "Tcp",
-                            "enableTcpReset": false
-                        }
-                    }
-                ],
-                "outboundRules": [],
-                "inboundNatPools": [
-                    {
-                        "name": "LoadBalancerBEAddressNatPool",
-                        "etag": "W/\"cd6f094a-1b6e-4247-9df9-7ddf89a9a32f\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "frontendPortRangeStart": 3389,
-                            "frontendPortRangeEnd": 4500,
-                            "backendPort": 3389,
-                            "protocol": "Tcp",
-                            "idleTimeoutInMinutes": 4,
-                            "enableFloatingIP": false,
-                            "enableTcpReset": false,
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_LB_nova_sf_D3armtest_id_14')]"
-                            }
-                        }
-                    }
-                ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_LBIP_nova_sf_armtest_0_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/publicIPAddresses/LBIP-nova-sfarmtest-0'.",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "sku": {
-                "name": "Basic",
-                "tier": "Regional"
-            },
-            "name": "[parameters('publicIPAddresses_LBIP_nova_sf_armtest_0_name')]",
-            "apiVersion": "2018-08-01",
-            "location": "westus2",
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "resourceGuid": "12a7de36-67d0-4bc3-bdbf-aae41a4046ad",
-                "ipAddress": "52.247.214.44",
-                "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Dynamic",
-                "idleTimeoutInMinutes": 4,
-                "dnsSettings": {
-                    "domainNameLabel": "nova-sfarmtest",
-                    "fqdn": "nova-sfarmtest.westus2.cloudapp.azure.com"
-                },
-                "ipTags": []
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/virtualNetworks/VNet-nova-sfarmtest'.",
-            "type": "Microsoft.Network/virtualNetworks",
-            "name": "[parameters('virtualNetworks_VNet_nova_sf_armtest_name')]",
-            "apiVersion": "2018-08-01",
-            "location": "westus2",
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "resourceGuid": "87147070-5556-4c0e-a189-302924cf7b1a",
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "10.0.0.0/16"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "Subnet-0",
-                        "etag": "W/\"fa5165a0-3b10-4d13-9d17-f9d973e54462\"",
-                        "properties": {
-                            "provisioningState": "Succeeded",
-                            "addressPrefix": "10.0.0.0/24",
-                            "networkSecurityGroup": {
-                                "id": "[parameters('virtualNetworks_VNet_nova_sf_armtest_id')]"
-                            },
-                            "delegations": []
-                        }
-                    }
-                ],
-                "virtualNetworkPeerings": [],
-                "enableDdosProtection": false,
-                "enableVmProtection": false
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Storage/storageAccounts/novaconfigsarmtest'.",
-            "type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "kind": "BlobStorage",
-            "name": "[parameters('storageAccounts_novaconfigsarmtest_name')]",
-            "apiVersion": "2018-07-01",
-            "location": "westus2",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Storage/storageAccounts/novaarmtestspark'.",
-            "type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "kind": "Storage",
-            "name": "[parameters('storageAccounts_novasparkarmtest_name')]",
-            "apiVersion": "2018-07-01",
-            "location": "westus2",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": false,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                }
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Storage/storageAccounts/sflogsnovasfarmtest8317'.",
-            "type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "kind": "Storage",
-            "name": "[parameters('storageAccounts_sflogsnovasfarmtest8317_name')]",
-            "apiVersion": "2018-07-01",
-            "location": "westus2",
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": false,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                }
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Storage/storageAccounts/sfdgnovasfarmtest1518'.",
-            "type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "kind": "Storage",
-            "name": "[parameters('storageAccounts_sfdgnovasfarmtest1518_name')]",
-            "apiVersion": "2018-07-01",
-            "location": "westus2",
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": false,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                }
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/serverfarms/nova-app-service-planarmtest'.",
-            "type": "Microsoft.Web/serverfarms",
-            "sku": {
-                "name": "S1",
-                "tier": "Standard",
-                "size": "S1",
-                "family": "S",
-                "capacity": 1
-            },
-            "kind": "app",
-            "name": "[parameters('serverfarms_nova_app_service_plan_name')]",
-            "apiVersion": "2016-09-01",
-            "location": "Central US",
-            "scale": null,
-            "properties": {
-                "name": "[parameters('serverfarms_nova_app_service_plan_name')]",
-                "workerTierName": null,
-                "adminSiteName": null,
-                "hostingEnvironmentProfile": null,
-                "perSiteScaling": false,
-                "reserved": false,
-                "targetWorkerCount": 0,
-                "targetWorkerSizeId": 0
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest'.",
-            "type": "Microsoft.Web/sites",
-            "kind": "app",
-            "name": "[parameters('sites_novaarmtest_name')]",
-            "apiVersion": "2016-08-01",
-            "location": "Central US",
-            "identity": {
-                "principalId": "84b32d75-9a6f-4a08-aaeb-c67a40c633fe",
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "type": "SystemAssigned"
-            },
-            "scale": null,
-            "properties": {
-                "enabled": true,
-                "hostNameSslStates": [
-                    {
-                        "name": "[concat(parameters('sites_novaarmtest_name'),'.azurewebsites.net')]",
-                        "sslState": "Disabled",
-                        "virtualIP": null,
-                        "thumbprint": null,
-                        "toUpdate": null,
-                        "hostType": "Standard"
-                    },
-                    {
-                        "name": "[concat(parameters('sites_novaarmtest_name'),'.scm.azurewebsites.net')]",
-                        "sslState": "Disabled",
-                        "virtualIP": null,
-                        "thumbprint": null,
-                        "toUpdate": null,
-                        "hostType": "Repository"
-                    }
-                ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_nova_app_service_plan_name'))]",
-                "reserved": false,
-                "siteConfig": null,
-                "scmSiteAlsoStopped": false,
-                "hostingEnvironmentProfile": null,
-                "clientAffinityEnabled": true,
-                "clientCertEnabled": false,
-                "hostNamesDisabled": false,
-                "containerSize": 0,
-                "dailyMemoryTimeQuota": 0,
-                "cloningInfo": null,
-                "httpsOnly": true
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_nova_app_service_plan_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/virtualMachineScaleSets/D3armtest/virtualMachines/0'.",
-            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
-            "sku": {
-                "name": "Standard_D3armtest_v2",
-                "tier": "Standard"
-            },
-            "name": "[concat(parameters('virtualMachineScaleSets_D3armtest_name'), '/', parameters('virtualMachines_0_name'))]",
-            "apiVersion": "2018-06-01",
-            "location": "westus2",
-            "identity": {
-                "principalId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "type": "SystemAssigned"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "hardwareProfile": {},
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "[concat('2', parameters('virtualMachines_0_name'),'16-Datacenter-with-Containers')]",
-                        "version": "[concat('2', parameters('virtualMachines_0_name'),'16.127.2', parameters('virtualMachines_0_name'),'181', parameters('virtualMachines_0_name'),'1', parameters('virtualMachines_0_name'))]"
-                    },
-                    "osDisk": {
-                        "osType": "Windows",
-                        "name": "[concat('D3armtest_D3armtest_', parameters('virtualMachines_0_name'),'_OsDisk_1_e394ab2c', parameters('virtualMachines_0_name'),'7c94cb8a855cc', parameters('virtualMachines_0_name'),'499e7ef1e')]",
-                        "createOption": "FromImage",
-                        "caching": "ReadOnly",
-                        "managedDisk": {
-                            "storageAccountType": "Standard_LRS",
-                            "id": "[parameters('virtualMachines_0_id')]"
-                        },
-                        "diskSizeGB": 127
-                    },
-                    "dataDisks": []
-                },
-                "osProfile": {
-                    "computerName": "[concat('D3armtest', parameters('virtualMachines_0_name'))]",
-                    "adminUsername": "novapd",
-                    "windowsConfiguration": {
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "secrets": [
-                        {
-                            "sourceVault": {
-                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-                            },
-                            "vaultCertificates": [
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtest/', parameters('virtualMachines_0_name'),'cd9b8fbc1', parameters('virtualMachines_0_name'),'44', parameters('virtualMachines_0_name'),'f288b2ab651689a2fb')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestsecondary/', parameters('virtualMachines_0_name'),'ffe289fdf5b45', parameters('virtualMachines_0_name'),'3972371a', parameters('virtualMachines_0_name'),'fceb54a3')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestreverseproxy/ffe497cb1adc497784fee6f8df4f', parameters('virtualMachines_0_name'),'7a')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/84c122352b8946c2814d4763858ab2c3",
-                                    "certificateStore": "my"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/ee872f44b6', parameters('virtualMachines_0_name'),'84', parameters('virtualMachines_0_name'),'a997b6e9b29b7a5f', parameters('virtualMachines_0_name'),'5')]",
-                                    "certificateStore": "my"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name')), concat('/virtualMachines/', parameters('virtualMachines_0_name'),'/networkInterfaces/NIC-nova-sfarmtest-', parameters('virtualMachines_0_name')))]"
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/virtualMachineScaleSets/D3armtest/virtualMachines/1'.",
-            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
-            "sku": {
-                "name": "Standard_D3armtest_v2",
-                "tier": "Standard"
-            },
-            "name": "[concat(parameters('virtualMachineScaleSets_D3armtest_name'), '/', parameters('virtualMachines_1_name'))]",
-            "apiVersion": "2018-06-01",
-            "location": "westus2",
-            "identity": {
-                "principalId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "type": "SystemAssigned"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "hardwareProfile": {},
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "[concat('20', parameters('virtualMachines_1_name'),'6-Datacenter-with-Containers')]",
-                        "version": "[concat('20', parameters('virtualMachines_1_name'),'6.', parameters('virtualMachines_1_name'),'27.20', parameters('virtualMachines_1_name'),'8', parameters('virtualMachines_1_name'),'0', parameters('virtualMachines_1_name'),'0')]"
-                    },
-                    "osDisk": {
-                        "osType": "Windows",
-                        "name": "[concat('D3armtest_D3armtest_', parameters('virtualMachines_1_name'),'_OsDisk_', parameters('virtualMachines_1_name'),'_566aa', parameters('virtualMachines_1_name'),'0a75b743b7a47da9', parameters('virtualMachines_1_name'),'bc0a923', parameters('virtualMachines_1_name'),'3')]",
-                        "createOption": "FromImage",
-                        "caching": "ReadOnly",
-                        "managedDisk": {
-                            "storageAccountType": "Standard_LRS",
-                            "id": "[parameters('virtualMachines_1_id')]"
-                        },
-                        "diskSizeGB": 127
-                    },
-                    "dataDisks": []
-                },
-                "osProfile": {
-                    "computerName": "[concat('D3armtest00000', parameters('virtualMachines_1_name'))]",
-                    "adminUsername": "novapd",
-                    "windowsConfiguration": {
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "secrets": [
-                        {
-                            "sourceVault": {
-                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-                            },
-                            "vaultCertificates": [
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtest/0cd9b8fbc', parameters('virtualMachines_1_name'),'0440f288b2ab65', parameters('virtualMachines_1_name'),'689a2fb')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestsecondary/0ffe289fdf5b450397237', parameters('virtualMachines_1_name'),'a0fceb54a3')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestreverseproxy/ffe497cb', parameters('virtualMachines_1_name'),'adc497784fee6f8df4f007a')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/84c', parameters('virtualMachines_1_name'),'22352b8946c28', parameters('virtualMachines_1_name'),'4d4763858ab2c3')]",
-                                    "certificateStore": "my"
-                                },
-                                {
-                                    "certificateUrl": "https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/ee872f44b60840a997b6e9b29b7a5f05",
-                                    "certificateStore": "my"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name')), concat('/virtualMachines/', parameters('virtualMachines_1_name'),'/networkInterfaces/NIC-nova-sfarmtest-0'))]"
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/virtualMachineScaleSets/D3armtest/virtualMachines/2'.",
-            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
-            "sku": {
-                "name": "Standard_D3armtest_v2",
-                "tier": "Standard"
-            },
-            "name": "[concat(parameters('virtualMachineScaleSets_D3armtest_name'), '/', parameters('virtualMachines_2_name'))]",
-            "apiVersion": "2018-06-01",
-            "location": "westus2",
-            "identity": {
-                "principalId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "type": "SystemAssigned"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "hardwareProfile": {},
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "[concat(parameters('virtualMachines_2_name'),'016-Datacenter-with-Containers')]",
-                        "version": "[concat(parameters('virtualMachines_2_name'),'016.1', parameters('virtualMachines_2_name'),'7.', parameters('virtualMachines_2_name'),'0181010')]"
-                    },
-                    "osDisk": {
-                        "osType": "Windows",
-                        "name": "[concat('D3armtest_D3armtest_', parameters('virtualMachines_2_name'),'_OsDisk_1_D3armtest6a96ba65784bb38', parameters('virtualMachines_2_name'),'5ae16557e08191')]",
-                        "createOption": "FromImage",
-                        "caching": "ReadOnly",
-                        "managedDisk": {
-                            "storageAccountType": "Standard_LRS",
-                            "id": "[parameters('virtualMachines_2_id')]"
-                        },
-                        "diskSizeGB": 127
-                    },
-                    "dataDisks": []
-                },
-                "osProfile": {
-                    "computerName": "[concat('D3armtest00000', parameters('virtualMachines_2_name'))]",
-                    "adminUsername": "novapd",
-                    "windowsConfiguration": {
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "secrets": [
-                        {
-                            "sourceVault": {
-                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-                            },
-                            "vaultCertificates": [
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtest/0cd9b8fbc10440f', parameters('virtualMachines_2_name'),'88b', parameters('virtualMachines_2_name'),'ab651689a', parameters('virtualMachines_2_name'),'fb')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestsecondary/0ffe', parameters('virtualMachines_2_name'),'89fdf5b450397', parameters('virtualMachines_2_name'),'371a0fceb54a3')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "https://novasfarmtest.vault.azure.net/secrets/novasfarmtestreverseproxy/ffe497cb1adc497784fee6f8df4f007a",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/84c1', parameters('virtualMachines_2_name'),'35', parameters('virtualMachines_2_name'),'b8946c', parameters('virtualMachines_2_name'),'814d4763858ab', parameters('virtualMachines_2_name'),'c3')]",
-                                    "certificateStore": "my"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:443/secrets/novasfarmtestssl/ee87', parameters('virtualMachines_2_name'),'f44b60840a997b6e9b', parameters('virtualMachines_2_name'),'9b7a5f05')]",
-                                    "certificateStore": "my"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name')), concat('/virtualMachines/', parameters('virtualMachines_2_name'),'/networkInterfaces/NIC-nova-sfarmtest-0'))]"
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/virtualMachineScaleSets/D3armtest/virtualMachines/3'.",
-            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
-            "sku": {
-                "name": "Standard_D3armtest_v2",
-                "tier": "Standard"
-            },
-            "name": "[concat(parameters('virtualMachineScaleSets_D3armtest_name'), '/', parameters('virtualMachines_3_name'))]",
-            "apiVersion": "2018-06-01",
-            "location": "westus2",
-            "identity": {
-                "principalId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "type": "SystemAssigned"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "hardwareProfile": {},
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "2016-Datacenter-with-Containers",
-                        "version": "2016.127.20181010"
-                    },
-                    "osDisk": {
-                        "osType": "Windows",
-                        "name": "[concat('D', parameters('virtualMachines_3_name'),'_D', parameters('virtualMachines_3_name'),'_', parameters('virtualMachines_3_name'),'_OsDisk_1_f62986c6b2594eb4801c5', parameters('virtualMachines_3_name'),'40a681f105')]",
-                        "createOption": "FromImage",
-                        "caching": "ReadOnly",
-                        "managedDisk": {
-                            "storageAccountType": "Standard_LRS",
-                            "id": "[parameters('virtualMachines_3_id')]"
-                        },
-                        "diskSizeGB": 127
-                    },
-                    "dataDisks": []
-                },
-                "osProfile": {
-                    "computerName": "[concat('D', parameters('virtualMachines_3_name'),'00000', parameters('virtualMachines_3_name'))]",
-                    "adminUsername": "novapd",
-                    "windowsConfiguration": {
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "secrets": [
-                        {
-                            "sourceVault": {
-                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-                            },
-                            "vaultCertificates": [
-                                {
-                                    "certificateUrl": "https://novasfarmtest.vault.azure.net/secrets/novasfarmtest/0cd9b8fbc10440f288b2ab651689a2fb",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestsecondary/0ffe289fdf5b450', parameters('virtualMachines_3_name'),'972', parameters('virtualMachines_3_name'),'71a0fceb54a', parameters('virtualMachines_3_name'))]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "https://novasfarmtest.vault.azure.net/secrets/novasfarmtestreverseproxy/ffe497cb1adc497784fee6f8df4f007a",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:44', parameters('virtualMachines_3_name'),'/secrets/novasfarmtestssl/84c122', parameters('virtualMachines_3_name'),'52b8946c2814d476', parameters('virtualMachines_3_name'),'858ab2c', parameters('virtualMachines_3_name'))]",
-                                    "certificateStore": "my"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:44', parameters('virtualMachines_3_name'),'/secrets/novasfarmtestssl/ee872f44b60840a997b6e9b29b7a5f05')]",
-                                    "certificateStore": "my"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name')), concat('/virtualMachines/', parameters('virtualMachines_3_name'),'/networkInterfaces/NIC-nova-sfarmtest-0'))]"
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Compute/virtualMachineScaleSets/D3armtest/virtualMachines/4'.",
-            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
-            "sku": {
-                "name": "Standard_D3armtest_v2",
-                "tier": "Standard"
-            },
-            "name": "[concat(parameters('virtualMachineScaleSets_D3armtest_name'), '/', parameters('virtualMachines_4_name'))]",
-            "apiVersion": "2018-06-01",
-            "location": "westus2",
-            "identity": {
-                "principalId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-                "type": "SystemAssigned"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "nova-sfarmtest"
-            },
-            "scale": null,
-            "properties": {
-                "hardwareProfile": {},
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "2016-Datacenter-with-Containers",
-                        "version": "2016.127.20181010"
-                    },
-                    "osDisk": {
-                        "osType": "Windows",
-                        "name": "[concat('D3armtest_D3armtest_', parameters('virtualMachines_4_name'),'_OsDisk_1_cbf5b278e1', parameters('virtualMachines_4_name'),'7', parameters('virtualMachines_4_name'),'37cb', parameters('virtualMachines_4_name'),'a12d5733f0a298')]",
-                        "createOption": "FromImage",
-                        "caching": "ReadOnly",
-                        "managedDisk": {
-                            "storageAccountType": "Standard_LRS",
-                            "id": "[parameters('virtualMachines_4_id')]"
-                        },
-                        "diskSizeGB": 127
-                    },
-                    "dataDisks": []
-                },
-                "osProfile": {
-                    "computerName": "[concat('D3armtest00000', parameters('virtualMachines_4_name'))]",
-                    "adminUsername": "novapd",
-                    "windowsConfiguration": {
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "secrets": [
-                        {
-                            "sourceVault": {
-                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-                            },
-                            "vaultCertificates": [
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtest/0cd9b8fbc10', parameters('virtualMachines_4_name'),'0f288b2ab651689a2fb')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestsecondary/0ffe289fdf5b', parameters('virtualMachines_4_name'),'503972371a0fceb5', parameters('virtualMachines_4_name'),'a3')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net/secrets/novasfarmtestreverseproxy/ffe', parameters('virtualMachines_4_name'),'97cb1adc', parameters('virtualMachines_4_name'),'9778', parameters('virtualMachines_4_name'),'fee6f8df', parameters('virtualMachines_4_name'),'f007a')]",
-                                    "certificateStore": "My"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:', parameters('virtualMachines_4_name'),'3/secrets/novasfarmtestssl/8', parameters('virtualMachines_4_name'),'c122352b89', parameters('virtualMachines_4_name'),'6c281', parameters('virtualMachines_4_name'),'d', parameters('virtualMachines_4_name'),'763858ab2c3')]",
-                                    "certificateStore": "my"
-                                },
-                                {
-                                    "certificateUrl": "[concat('https://novasfarmtest.vault.azure.net:', parameters('virtualMachines_4_name'),'3/secrets/novasfarmtestssl/ee872f', parameters('virtualMachines_4_name'),'b608', parameters('virtualMachines_4_name'),'0a997b6e9b29b7a5f05')]",
-                                    "certificateStore": "my"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name')), concat('/virtualMachines/', parameters('virtualMachines_4_name'),'/networkInterfaces/NIC-nova-sfarmtest-0'))]"
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3armtest_name'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_novasfarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.EventHub/namespaces/novametricseventhub/AuthorizationRules/RootManageSharedAccessKey'.",
-            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "name": "[concat(parameters('namespaces_novametricseventhubarmtest_name'), '/', parameters('AuthorizationRules_RootManageSharedAccessKey_name'))]",
-            "apiVersion": "2017-04-01",
-            "location": "West US 2",
-            "scale": null,
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Manage",
-                    "Send"
-                ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhubarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub'.",
-            "type": "Microsoft.EventHub/namespaces/eventhubs",
-            "name": "[concat(parameters('namespaces_novametricseventhubarmtest_name'), '/', parameters('eventhubs_novametricseventhub_name'))]",
-            "apiVersion": "2017-04-01",
-            "location": "West US 2",
-            "scale": null,
-            "properties": {
-                "messageRetentionInDays": 1,
-                "partitionCount": 2,
-                "status": "Active"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhubarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub/authorizationRules/manage'.",
-            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
-            "name": "[concat(parameters('namespaces_novametricseventhubarmtest_name'), '/', parameters('eventhubs_novametricseventhub_name'), '/', parameters('authorizationRules_manage_name'))]",
-            "apiVersion": "2017-04-01",
-            "location": "West US 2",
-            "scale": null,
-            "properties": {
-                "rights": [
-                    "Manage",
-                    "Listen",
-                    "Send"
-                ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhubarmtest_name'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhubarmtest_name'), parameters('eventhubs_novametricseventhub_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub/consumergroups/$Default'.",
-            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "name": "[concat(parameters('namespaces_novametricseventhubarmtest_name'), '/', parameters('eventhubs_novametricseventhub_name'), '/', parameters('consumergroups_$Default_name'))]",
-            "apiVersion": "2017-04-01",
-            "location": "West US 2",
-            "scale": null,
-            "properties": {},
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhubarmtest_name'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhubarmtest_name'), parameters('eventhubs_novametricseventhub_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/inboundNatRules/LoadBalancerBEAddressNatPool.0'.",
-            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-            "name": "[concat(parameters('loadBalancers_LB_nova_sf_D3armtest_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.0_name'))]",
-            "apiVersion": "2018-08-01",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "frontendIPConfiguration": {
-                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
-                },
-                "frontendPort": 3389,
-                "backendPort": 3389,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 4,
-                "protocol": "Tcp",
-                "enableTcpReset": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/inboundNatRules/LoadBalancerBEAddressNatPool.1'.",
-            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-            "name": "[concat(parameters('loadBalancers_LB_nova_sf_D3armtest_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.1_name'))]",
-            "apiVersion": "2018-08-01",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "frontendIPConfiguration": {
-                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
-                },
-                "frontendPort": 3390,
-                "backendPort": 3389,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 4,
-                "protocol": "Tcp",
-                "enableTcpReset": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/inboundNatRules/LoadBalancerBEAddressNatPool.2'.",
-            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-            "name": "[concat(parameters('loadBalancers_LB_nova_sf_D3armtest_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.2_name'))]",
-            "apiVersion": "2018-08-01",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "frontendIPConfiguration": {
-                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
-                },
-                "frontendPort": 3391,
-                "backendPort": 3389,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 4,
-                "protocol": "Tcp",
-                "enableTcpReset": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/inboundNatRules/LoadBalancerBEAddressNatPool.3'.",
-            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-            "name": "[concat(parameters('loadBalancers_LB_nova_sf_D3armtest_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.3_name'))]",
-            "apiVersion": "2018-08-01",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "frontendIPConfiguration": {
-                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
-                },
-                "frontendPort": 3392,
-                "backendPort": 3389,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 4,
-                "protocol": "Tcp",
-                "enableTcpReset": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/loadBalancers/LB-nova-sf-D3armtest/inboundNatRules/LoadBalancerBEAddressNatPool.4'.",
-            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-            "name": "[concat(parameters('loadBalancers_LB_nova_sf_D3armtest_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.4_name'))]",
-            "apiVersion": "2018-08-01",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "frontendIPConfiguration": {
-                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
-                },
-                "frontendPort": 3393,
-                "backendPort": 3389,
-                "enableFloatingIP": false,
-                "idleTimeoutInMinutes": 4,
-                "protocol": "Tcp",
-                "enableTcpReset": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_sf_D3armtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Network/virtualNetworks/VNet-nova-sfarmtest/subnets/Subnet-0'.",
-            "type": "Microsoft.Network/virtualNetworks/subnets",
-            "name": "[concat(parameters('virtualNetworks_VNet_nova_sf_armtest_name'), '/', parameters('subnets_Subnet_0_name'))]",
-            "apiVersion": "2018-08-01",
-            "scale": null,
-            "properties": {
-                "provisioningState": "Succeeded",
-                "addressPrefix": "10.0.0.0/24",
-                "networkSecurityGroup": {
-                    "id": "[parameters('subnets_Subnet_0_id')]"
-                },
-                "delegations": []
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_VNet_nova_sf_armtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest/config/web'.",
-            "type": "Microsoft.Web/sites/config",
-            "name": "[concat(parameters('sites_novaarmtest_name'), '/', parameters('config_web_name'))]",
-            "apiVersion": "2016-08-01",
-            "location": "Central US",
-            "scale": null,
-            "properties": {
-                "numberOfWorkers": 1,
-                "defaultDocuments": [
-                    "Default.htm",
-                    "Default.html",
-                    "Default.asp",
-                    "index.htm",
-                    "index.html",
-                    "iisstart.htm",
-                    "default.aspx",
-                    "index.php",
-                    "hostingstart.html"
-                ],
-                "netFrameworkVersion": "v4.0",
-                "phpVersion": "5.6",
-                "pythonVersion": "",
-                "nodeVersion": "",
-                "linuxFxVersion": "",
-                "windowsFxVersion": null,
-                "requestTracingEnabled": false,
-                "remoteDebuggingEnabled": false,
-                "remoteDebuggingVersion": null,
-                "httpLoggingEnabled": false,
-                "logsDirectorySizeLimit": 35,
-                "detailedErrorLoggingEnabled": false,
-                "publishingUsername": "$novaarmtest",
-                "publishingPassword": null,
-                "appSettings": null,
-                "azureStorageAccounts": {},
-                "metadata": null,
-                "connectionStrings": null,
-                "machineKey": null,
-                "handlerMappings": null,
-                "documentRoot": null,
-                "scmType": "None",
-                "use32BitWorkerProcess": true,
-                "webSocketsEnabled": false,
-                "alwaysOn": false,
-                "javaVersion": null,
-                "javaContainer": null,
-                "javaContainerVersion": null,
-                "appCommandLine": "",
-                "managedPipelineMode": "Integrated",
-                "virtualApplications": [
-                    {
-                        "virtualPath": "/",
-                        "physicalPath": "site\\wwwroot",
-                        "preloadEnabled": false,
-                        "virtualDirectories": null
-                    }
-                ],
-                "winAuthAdminState": 0,
-                "winAuthTenantState": 0,
-                "customAppPoolIdentityAdminState": false,
-                "customAppPoolIdentityTenantState": false,
-                "runtimeADUser": null,
-                "runtimeADUserPassword": null,
-                "loadBalancing": "LeastRequests",
-                "routingRules": [],
-                "experiments": {
-                    "rampUpRules": []
-                },
-                "limits": null,
-                "autoHealEnabled": false,
-                "autoHealRules": null,
-                "tracingOptions": null,
-                "vnetName": "",
-                "siteAuthEnabled": false,
-                "siteAuthSettings": {
-                    "enabled": null,
-                    "unauthenticatedClientAction": null,
-                    "tokenStoreEnabled": null,
-                    "allowedExternalRedirectUrls": null,
-                    "defaultProvider": null,
-                    "clientId": null,
-                    "clientSecret": null,
-                    "issuer": null,
-                    "allowedAudiences": null,
-                    "additionalLoginParams": null,
-                    "isAadAutoProvisioned": false,
-                    "googleClientId": null,
-                    "googleClientSecret": null,
-                    "googleOAuthScopes": null,
-                    "facebookAppId": null,
-                    "facebookAppSecret": null,
-                    "facebookOAuthScopes": null,
-                    "twitterConsumerKey": null,
-                    "twitterConsumerSecret": null,
-                    "microsoftAccountClientId": null,
-                    "microsoftAccountClientSecret": null,
-                    "microsoftAccountOAuthScopes": null
-                },
-                "cors": null,
-                "push": null,
-                "apiDefinition": null,
-                "autoSwapSlotName": null,
-                "localMySqlEnabled": false,
-                "managedServiceIdentityId": 162,
-                "xManagedServiceIdentityId": null,
-                "ipSecurityRestrictions": null,
-                "http20Enabled": false,
-                "minTlsVersion": "1.2",
-                "ftpsState": "AllAllowed",
-                "reservedInstanceCount": 0
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_novaarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest/deployments/5d43d93468b246d78825536511637a44'.",
-            "type": "Microsoft.Web/sites/deployments",
-            "name": "[concat(parameters('sites_novaarmtest_name'), '/', parameters('deployments_5d43d93468b246d78825536511637a44_name'))]",
-            "apiVersion": "2016-08-01",
-            "location": "Central US",
-            "scale": null,
-            "properties": {
-                "id": "[parameters('deployments_5d43d93468b246d78825536511637a44_name')]",
-                "status": 4,
-                "author_email": "N/A",
-                "author": "N/A",
-                "deployer": "Push-Deployer",
-                "message": "Created via a push deployment",
-                "start_time": "2018-11-02T22:24:45.5945399Z",
-                "end_time": "2018-11-02T22:26:46.9302782Z",
-                "active": true
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_novaarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest/deployments/62459847d17c4a60a300847be6f00ddf'.",
-            "type": "Microsoft.Web/sites/deployments",
-            "name": "[concat(parameters('sites_novaarmtest_name'), '/', parameters('deployments_62459847d17c4a60a300847be6f00ddf_name'))]",
-            "apiVersion": "2016-08-01",
-            "location": "Central US",
-            "scale": null,
-            "properties": {
-                "id": "[parameters('deployments_62459847d17c4a60a300847be6f00ddf_name')]",
-                "status": 4,
-                "author_email": "N/A",
-                "author": "N/A",
-                "deployer": "Push-Deployer",
-                "message": "Created via a push deployment",
-                "start_time": "2018-10-31T00:40:24.5881456Z",
-                "end_time": "2018-10-31T00:41:57.7898207Z",
-                "active": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_novaarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest/deployments/9e5b69107f22467795a1a3ecd414a95f'.",
-            "type": "Microsoft.Web/sites/deployments",
-            "name": "[concat(parameters('sites_novaarmtest_name'), '/', parameters('deployments_9e5b69107f22467795a1a3ecd414a95f_name'))]",
-            "apiVersion": "2016-08-01",
-            "location": "Central US",
-            "scale": null,
-            "properties": {
-                "id": "[parameters('deployments_9e5b69107f22467795a1a3ecd414a95f_name')]",
-                "status": 4,
-                "author_email": "N/A",
-                "author": "N/A",
-                "deployer": "Push-Deployer",
-                "message": "Created via a push deployment",
-                "start_time": "2018-10-31T00:19:40.5211911Z",
-                "end_time": "2018-10-31T00:21:10.3394044Z",
-                "active": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_novaarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest/deployments/f74d82dfe68d45c08ac4b92601acdaf6'.",
-            "type": "Microsoft.Web/sites/deployments",
-            "name": "[concat(parameters('sites_novaarmtest_name'), '/', parameters('deployments_f74d82dfe68d45c08ac4b92601acdaf6_name'))]",
-            "apiVersion": "2016-08-01",
-            "location": "Central US",
-            "scale": null,
-            "properties": {
-                "id": "[parameters('deployments_f74d82dfe68d45c08ac4b92601acdaf6_name')]",
-                "status": 4,
-                "author_email": "N/A",
-                "author": "N/A",
-                "deployer": "Push-Deployer",
-                "message": "Created via a push deployment",
-                "start_time": "2018-10-30T23:42:06.2625889Z",
-                "end_time": "2018-10-30T23:45:04.9134118Z",
-                "active": false
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_novaarmtest_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/b4beedd6-9009-4be6-88f6-be36ce88cba9/resourceGroups/armtest/providers/Microsoft.Web/sites/novaarmtest/hostNameBindings/novaarmtest.azurewebsites.net'.",
-            "type": "Microsoft.Web/sites/hostNameBindings",
-            "name": "[concat(parameters('sites_novaarmtest_name'), '/', parameters('hostNameBindings_novaarmtest.azurewebsites.net_name'))]",
-            "apiVersion": "2016-08-01",
-            "location": "Central US",
-            "scale": null,
-            "properties": {
-                "siteName": "novaarmtest",
-                "domainId": null,
-                "hostNameType": "Verified"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_novaarmtest_name'))]"
-            ]
-        }
-    ]
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"default_resource_location": {
+			"defaultValue": "westus2",
+			"type": "string"
+		},
+		"sites_nova$name_name": {
+			"defaultValue": "nova$name",
+			"type": "String"
+		},
+		"vaults_NovaSparkKV$name_name": {
+			"defaultValue": "NovaSparkKV$name",
+			"type": "String"
+		},
+		"vaults_NovaServicesKV$name_name": {
+			"defaultValue": "NovaServicesKV$name",
+			"type": "String"
+		},
+		"vaults_NovaSparkRDPKV$name_name": {
+			"defaultValue": "NovaSparkRDPKV$name",
+			"type": "String"
+		},
+		"vaults_NovaFabricRDPKV$name_name": {
+			"defaultValue": "NovaFabricRDPKV$name",
+			"type": "String"
+		},
+		"Redis_nova$name_name": {
+			"defaultValue": "nova$name",
+			"type": "String"
+		},
+		"components_nova$name_name": {
+			"defaultValue": "nova$name",
+			"type": "String"
+		},
+		"config_web_name": {
+			"defaultValue": "web",
+			"type": "String"
+		},
+		"virtualMachineScaleSets_D3$name_name": {
+			"defaultValue": "D3$name",
+			"type": "String"
+		},
+		"components_novaweb$name_name": {
+			"defaultValue": "novaweb$name",
+			"type": "String"
+		},
+		"serverfarms_nova_app_service_plan_name": {
+			"defaultValue": "nova-app-service-plan$name",
+			"type": "String"
+		},
+		"databaseAccounts_nova$name_name": {
+			"defaultValue": "nova$name",
+			"type": "String"
+		},
+		"storageAccounts_novaconfigs$name_name": {
+			"defaultValue": "novaconfigs$name",
+			"type": "String"
+		},
+		"namespaces_novametricseventhub$name_name": {
+			"defaultValue": "novametricseventhub$name",
+			"type": "String"
+		},
+		"hostNameBindings_nova$name.azurewebsites.net_name": {
+			"defaultValue": "nova$name.azurewebsites.net",
+			"type": "String"
+		},
+		"eventhubs_novametricseventhub_name": {
+			"defaultValue": "novametricseventhub",
+			"type": "String"
+		},
+		"AuthorizationRules_RootManageSharedAccessKey_name": {
+			"defaultValue": "RootManageSharedAccessKey",
+			"type": "String"
+		},
+		"consumergroups_$Default_name": {
+			"defaultValue": "$Default",
+			"type": "String"
+		},
+		"authorizationRules_manage_name": {
+			"defaultValue": "manage",
+			"type": "String"
+		},
+		"sparkClusterName": {
+			"defaultValue": "nova$name",
+			"type": "string",
+			"metadata": {
+				"description": "The name of the HDInsight cluster to create."
+			}
+		},
+		"sparkClusterLoginUserName": {
+			"type": "string",
+			"defaultValue": "admin",
+			"metadata": {
+				"description": "These credentials can be used to submit jobs to the cluster and to log into cluster dashboards."
+			}
+		},
+		"sparkClusterLoginPassword": {
+			"type": "securestring",
+			"defaultValue": "$novaSparkPassword",
+			"metadata": {
+				"description": "The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+			}
+		},
+		"sparkClusterVersion": {
+			"type": "string",
+			"defaultValue": "3.6",
+			"metadata": {
+				"description": "HDInsight cluster version."
+			}
+		},
+		"sparkClusterWorkerNodeCount": {
+			"type": "int",
+			"defaultValue": 3,
+			"metadata": {
+				"description": "The number of nodes in the HDInsight cluster."
+			}
+		},
+		"sparkClusterKind": {
+			"type": "string",
+			"defaultValue": "SPARK",
+			"metadata": {
+				"description": "The type of the HDInsight cluster to create."
+			}
+		},
+		"sparkSshUserName": {
+			"type": "string",
+			"defaultValue": "sshuser",
+			"metadata": {
+				"description": "These credentials can be used to remotely access the cluster."
+			}
+		},
+		"sparkSshPassword": {
+			"type": "securestring",
+			"defaultValue": "$novaSparkPassword",
+			"metadata": {
+				"description": "The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+			}
+		}
+	},
+	"variables": {
+		"storageAccounts_novaops_containerName_novaflow": "novaflow",
+		"storageAccounts_novaops_containerName_centralprocessing": "centralprocessing",
+		"storageAccounts_novaops_containerName_rules": "rules",
+		"storageAccounts_novaops_containerName_referencedata": "referencedata",
+		"storageAccounts_novaops_containerName_specialprocessing": "specialprocessing",
+		"storageAccounts_novaops_containerName_checkpoints": "checkpoints",
+		"storageAccounts_novaops_containerName_diagnostics": "diagnostics",
+		"storageAccounts_novaops_containerName_samples": "samples",
+		"tenantId": "$tenantId"
+	},
+	"resources": [
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Cache/Redis/nova$name'.",
+			"type": "Microsoft.Cache/Redis",
+			"name": "[parameters('Redis_nova$name_name')]",
+			"apiVersion": "2017-10-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"sku": {
+					"name": "Premium",
+					"family": "P",
+					"capacity": 3
+				},
+				"enableNonSslPort": false,
+				"redisConfiguration": {
+					"maxclients": "30000",
+					"maxmemory-reserved": "1000",
+					"maxfragmentationmemory-reserved": "1300",
+					"maxmemory-delta": "1000"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/nova$name'.",
+			"type": "Microsoft.DocumentDB/databaseAccounts",
+			"kind": "MongoDB",
+			"name": "[parameters('databaseAccounts_nova$name_name')]",
+			"apiVersion": "2015-04-08",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {
+				"defaultExperience": "MongoDB"
+			},
+			"scale": null,
+			"properties": {
+				"ipRangeFilter": "",
+				"enableAutomaticFailover": false,
+				"enableMultipleWriteLocations": true,
+				"isVirtualNetworkFilterEnabled": false,
+				"virtualNetworkRules": [],
+				"databaseAccountOfferType": "Standard",
+				"consistencyPolicy": {
+					"defaultConsistencyLevel": "Session",
+					"maxIntervalInSeconds": 5,
+					"maxStalenessPrefix": 100
+				},
+				"capabilities": [],
+				"locations": [
+					{
+						"locationName": "[parameters('default_resource_location')]",
+						"failoverPriority": 0
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub'.",
+			"type": "Microsoft.EventHub/namespaces",
+			"sku": {
+				"name": "Standard",
+				"tier": "Standard",
+				"capacity": 1
+			},
+			"name": "[parameters('namespaces_novametricseventhub$name_name')]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"isAutoInflateEnabled": true,
+				"maximumThroughputUnits": 1
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/microsoft.insights/components/novaweb$name'.",
+			"type": "microsoft.insights/components",
+			"kind": "web",
+			"name": "[parameters('components_novaweb$name_name')]",
+			"apiVersion": "2015-05-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {
+				"applicationType": "web",
+				"hidden-link:/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name": "Resource"
+			},
+			"scale": null,
+			"properties": {
+				"Application_Type": "web",
+				"Flow_Type": "Redfield",
+				"Request_Source": "AppServiceEnablementCreate",
+				"HockeyAppId": null,
+				"SamplingPercentage": null
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/microsoft.insights/components/nova$name'.",
+			"type": "microsoft.insights/components",
+			"kind": "other",
+			"name": "[parameters('components_nova$name_name')]",
+			"apiVersion": "2015-05-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"Application_Type": "other",
+				"Flow_Type": "Redfield",
+				"Request_Source": "IbizaAIExtension",
+				"HockeyAppId": null,
+				"SamplingPercentage": null
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.KeyVault/vaults/NovaFabricRDPKV$name'.",
+			"type": "Microsoft.KeyVault/vaults",
+			"name": "[parameters('vaults_NovaFabricRDPKV$name_name')]",
+			"apiVersion": "2016-10-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"sku": {
+					"family": "A",
+					"name": "Standard"
+				},
+				"tenantId": "[variables('tenantId')]",
+				"accessPolicies": [
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					}
+				],
+				"enabledForDeployment": false,
+				"enabledForDiskEncryption": false,
+				"enabledForTemplateDeployment": false
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.KeyVault/vaults/NovaServicesKV$name'.",
+			"type": "Microsoft.KeyVault/vaults",
+			"name": "[parameters('vaults_NovaServicesKV$name_name')]",
+			"apiVersion": "2016-10-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"sku": {
+					"family": "A",
+					"name": "Standard"
+				},
+				"tenantId": "[variables('tenantId')]",
+				"accessPolicies": [
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set"
+							],
+							"certificates": []
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "84b32d75-9a6f-4a08-aaeb-c67a40c633fe",
+						"permissions": {
+							"keys": [
+								"Get",
+								"Create"
+							],
+							"secrets": [
+								"Get",
+								"Set"
+							],
+							"certificates": []
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "3828bd7e-1043-44b9-a81c-c312a87dc216",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Create"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set"
+							],
+							"certificates": []
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
+						"permissions": {
+							"keys": [
+								"Get",
+								"Update",
+								"Create"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set"
+							],
+							"certificates": []
+						}
+					}
+				],
+				"enabledForDeployment": false,
+				"enabledForDiskEncryption": false,
+				"enabledForTemplateDeployment": false
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.KeyVault/vaults/NovaSparkKV$name'.",
+			"type": "Microsoft.KeyVault/vaults",
+			"name": "[parameters('vaults_NovaSparkKV$name_name')]",
+			"apiVersion": "2016-10-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"sku": {
+					"family": "A",
+					"name": "Standard"
+				},
+				"tenantId": "[variables('tenantId')]",
+				"accessPolicies": [
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "d0871592-98ef-419c-8c97-6c91c9dd7875",
+						"permissions": {
+							"keys": [],
+							"secrets": [
+								"Get"
+							],
+							"certificates": []
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set"
+							],
+							"certificates": []
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "2e4b2bb7-bc88-44f5-9066-79bab8eb13a9",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set"
+							],
+							"certificates": []
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
+						"permissions": {
+							"keys": [
+								"Get",
+								"Update",
+								"Create",
+								"List"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set"
+							],
+							"certificates": []
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Delete"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete"
+							],
+							"certificates": []
+						}
+					}
+				],
+				"enabledForDeployment": false,
+				"enabledForDiskEncryption": false,
+				"enabledForTemplateDeployment": false
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.KeyVault/vaults/NovaSparkRDPKV$name'.",
+			"type": "Microsoft.KeyVault/vaults",
+			"name": "[parameters('vaults_NovaSparkRDPKV$name_name')]",
+			"apiVersion": "2016-10-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"sku": {
+					"family": "A",
+					"name": "Standard"
+				},
+				"tenantId": "[variables('tenantId')]",
+				"accessPolicies": [
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Decrypt",
+								"Encrypt",
+								"UnwrapKey",
+								"WrapKey",
+								"Verify",
+								"Sign",
+								"Purge"
+							],
+							"secrets": [
+								"Get",
+								"List",
+								"Set",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"Purge"
+							],
+							"certificates": [
+								"Get",
+								"List",
+								"Update",
+								"Create",
+								"Import",
+								"Delete",
+								"Recover",
+								"Backup",
+								"Restore",
+								"ManageContacts",
+								"ManageIssuers",
+								"GetIssuers",
+								"ListIssuers",
+								"SetIssuers",
+								"DeleteIssuers",
+								"Purge"
+							]
+						}
+					},
+					{
+						"tenantId": "[variables('tenantId')]",
+						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
+						"permissions": {
+							"keys": [
+								"Get",
+								"List"
+							],
+							"secrets": [
+								"Get",
+								"List"
+							],
+							"certificates": []
+						}
+					}
+				],
+				"enabledForDeployment": false,
+				"enabledForDiskEncryption": false,
+				"enabledForTemplateDeployment": false
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Storage/storageAccounts/novaconfigs$name'.",
+			"type": "Microsoft.Storage/storageAccounts",
+			"sku": {
+				"name": "Standard_LRS",
+				"tier": "Standard"
+			},
+			"kind": "BlobStorage",
+			"name": "[parameters('storageAccounts_novaconfigs$name_name')]",
+			"apiVersion": "2018-07-01",
+			"location": "[parameters('default_resource_location')]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"networkAcls": {
+					"bypass": "AzureServices",
+					"virtualNetworkRules": [],
+					"ipRules": [],
+					"defaultAction": "Allow"
+				},
+				"supportsHttpsTrafficOnly": true,
+				"encryption": {
+					"services": {
+						"file": {
+							"enabled": true
+						},
+						"blob": {
+							"enabled": true
+						}
+					},
+					"keySource": "Microsoft.Storage"
+				},
+				"accessTier": "Hot"
+			},
+			"dependsOn": [],
+			"resources": [
+				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_novaflow'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				},
+				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_centralprocessing'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				},
+				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_rules'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				},
+				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_referencedata'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				},
+				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_specialprocessing'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				},
+				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_diagnostics'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				},
+				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_samples'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				}
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/serverfarms/nova-app-service-plan$name'.",
+			"type": "Microsoft.Web/serverfarms",
+			"sku": {
+				"name": "S1",
+				"tier": "Standard",
+				"size": "S1",
+				"family": "S",
+				"capacity": 1
+			},
+			"kind": "app",
+			"name": "[parameters('serverfarms_nova_app_service_plan_name')]",
+			"apiVersion": "2016-09-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"name": "[parameters('serverfarms_nova_app_service_plan_name')]",
+				"workerTierName": null,
+				"adminSiteName": null,
+				"hostingEnvironmentProfile": null,
+				"perSiteScaling": false,
+				"reserved": false,
+				"targetWorkerCount": 0,
+				"targetWorkerSizeId": 0
+			},
+			"dependsOn": []
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name'.",
+			"type": "Microsoft.Web/sites",
+			"kind": "app",
+			"name": "[parameters('sites_nova$name_name')]",
+			"apiVersion": "2016-08-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"enabled": true,
+				"hostNameSslStates": [
+					{
+						"name": "[concat(parameters('sites_nova$name_name'),'.azurewebsites.net')]",
+						"sslState": "Disabled",
+						"virtualIP": null,
+						"thumbprint": null,
+						"toUpdate": null,
+						"hostType": "Standard"
+					},
+					{
+						"name": "[concat(parameters('sites_nova$name_name'),'.scm.azurewebsites.net')]",
+						"sslState": "Disabled",
+						"virtualIP": null,
+						"thumbprint": null,
+						"toUpdate": null,
+						"hostType": "Repository"
+					}
+				],
+				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_nova_app_service_plan_name'))]",
+				"reserved": false,
+				"siteConfig": null,
+				"scmSiteAlsoStopped": false,
+				"hostingEnvironmentProfile": null,
+				"clientAffinityEnabled": true,
+				"clientCertEnabled": false,
+				"hostNamesDisabled": false,
+				"containerSize": 0,
+				"dailyMemoryTimeQuota": 0,
+				"cloningInfo": null,
+				"httpsOnly": true
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_nova_app_service_plan_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/AuthorizationRules/RootManageSharedAccessKey'.",
+			"type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('AuthorizationRules_RootManageSharedAccessKey_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"rights": [
+					"Listen",
+					"Manage",
+					"Send"
+				]
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub'.",
+			"type": "Microsoft.EventHub/namespaces/eventhubs",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhub_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"messageRetentionInDays": 1,
+				"partitionCount": 2,
+				"status": "Active"
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub/authorizationRules/manage'.",
+			"type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhub_name'), '/', parameters('authorizationRules_manage_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"rights": [
+					"Manage",
+					"Listen",
+					"Send"
+				]
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]",
+				"[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhub$name_name'), parameters('eventhubs_novametricseventhub_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub/consumergroups/$Default'.",
+			"type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhub_name'), '/', parameters('consumergroups_$Default_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]",
+				"[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhub$name_name'), parameters('eventhubs_novametricseventhub_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name/config/web'.",
+			"type": "Microsoft.Web/sites/config",
+			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('config_web_name'))]",
+			"apiVersion": "2016-08-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"numberOfWorkers": 1,
+				"defaultDocuments": [
+					"Default.htm",
+					"Default.html",
+					"Default.asp",
+					"index.htm",
+					"index.html",
+					"iisstart.htm",
+					"default.aspx",
+					"index.php",
+					"hostingstart.html"
+				],
+				"netFrameworkVersion": "v4.0",
+				"phpVersion": "5.6",
+				"pythonVersion": "",
+				"nodeVersion": "",
+				"linuxFxVersion": "",
+				"windowsFxVersion": null,
+				"requestTracingEnabled": false,
+				"remoteDebuggingEnabled": false,
+				"remoteDebuggingVersion": null,
+				"httpLoggingEnabled": false,
+				"logsDirectorySizeLimit": 35,
+				"detailedErrorLoggingEnabled": false,
+				"publishingUsername": "$nova$name",
+				"publishingPassword": null,
+				"appSettings": null,
+				"azureStorageAccounts": {},
+				"metadata": null,
+				"connectionStrings": null,
+				"machineKey": null,
+				"handlerMappings": null,
+				"documentRoot": null,
+				"scmType": "None",
+				"use32BitWorkerProcess": true,
+				"webSocketsEnabled": false,
+				"alwaysOn": false,
+				"javaVersion": null,
+				"javaContainer": null,
+				"javaContainerVersion": null,
+				"appCommandLine": "",
+				"managedPipelineMode": "Integrated",
+				"virtualApplications": [
+					{
+						"virtualPath": "/",
+						"physicalPath": "site\\wwwroot",
+						"preloadEnabled": false,
+						"virtualDirectories": null
+					}
+				],
+				"winAuthAdminState": 0,
+				"winAuthTenantState": 0,
+				"customAppPoolIdentityAdminState": false,
+				"customAppPoolIdentityTenantState": false,
+				"runtimeADUser": null,
+				"runtimeADUserPassword": null,
+				"loadBalancing": "LeastRequests",
+				"routingRules": [],
+				"experiments": {
+					"rampUpRules": []
+				},
+				"limits": null,
+				"autoHealEnabled": false,
+				"autoHealRules": null,
+				"tracingOptions": null,
+				"vnetName": "",
+				"siteAuthEnabled": false,
+				"siteAuthSettings": {
+					"enabled": null,
+					"unauthenticatedClientAction": null,
+					"tokenStoreEnabled": null,
+					"allowedExternalRedirectUrls": null,
+					"defaultProvider": null,
+					"clientId": null,
+					"clientSecret": null,
+					"issuer": null,
+					"allowedAudiences": null,
+					"additionalLoginParams": null,
+					"isAadAutoProvisioned": false,
+					"googleClientId": null,
+					"googleClientSecret": null,
+					"googleOAuthScopes": null,
+					"facebookAppId": null,
+					"facebookAppSecret": null,
+					"facebookOAuthScopes": null,
+					"twitterConsumerKey": null,
+					"twitterConsumerSecret": null,
+					"microsoftAccountClientId": null,
+					"microsoftAccountClientSecret": null,
+					"microsoftAccountOAuthScopes": null
+				},
+				"cors": null,
+				"push": null,
+				"apiDefinition": null,
+				"autoSwapSlotName": null,
+				"localMySqlEnabled": false,
+				"managedServiceIdentityId": 162,
+				"xManagedServiceIdentityId": null,
+				"ipSecurityRestrictions": null,
+				"http20Enabled": false,
+				"minTlsVersion": "1.2",
+				"ftpsState": "AllAllowed",
+				"reservedInstanceCount": 0
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/sites', parameters('sites_nova$name_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name/hostNameBindings/nova$name.azurewebsites.net'.",
+			"type": "Microsoft.Web/sites/hostNameBindings",
+			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('hostNameBindings_nova$name.azurewebsites.net_name'))]",
+			"apiVersion": "2016-08-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"siteName": "nova$name",
+				"domainId": null,
+				"hostNameType": "Verified"
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/sites', parameters('sites_nova$name_name'))]"
+			]
+		},
+		{
+			"apiVersion": "2015-03-01-preview",
+			"name": "[parameters('sparkClusterName')]",
+			"type": "Microsoft.HDInsight/clusters",
+			"location": "[parameters('default_resource_location')]",
+			"dependsOn": [
+				"Microsoft.Storage/storageAccounts/nova$namespark"
+			],
+			"properties": {
+				"clusterVersion": "[parameters('sparkClusterVersion')]",
+				"osType": "Linux",
+				"tier": "standard",
+				"clusterDefinition": {
+					"kind": "[parameters('sparkClusterKind')]",
+					"componentVersion": {
+						"Spark": "2.3"
+					},
+					"configurations": {
+						"gateway": {
+							"restAuthCredential.isEnabled": true,
+							"restAuthCredential.username": "[parameters('sparkClusterLoginUserName')]",
+							"restAuthCredential.password": "[parameters('sparkClusterLoginPassword')]"
+						}
+					}
+				},
+				"storageProfile": {
+					"storageaccounts": [
+						{
+							"name": "nova$namespark.blob.core.windows.net",
+							"isDefault": true,
+							"container": "nova$name-default",
+							"key": "[listKeys('Microsoft.Storage/storageAccounts/nova$namespark', '2015-05-01-preview').key1]"
+						}
+					]
+				},
+				"computeProfile": {
+					"roles": [
+						{
+							"autoscale": null,
+							"name": "headnode",
+							"minInstanceCount": 1,
+							"targetInstanceCount": 2,
+							"hardwareProfile": {
+								"vmSize": "Standard_D12_V2"
+							},
+							"osProfile": {
+								"linuxOperatingSystemProfile": {
+									"username": "[parameters('sparkSshUserName')]",
+									"password": "[parameters('sparkSshPassword')]"
+								}
+							},
+							"virtualNetworkProfile": null,
+							"scriptActions": []
+						},
+						{
+							"autoscale": null,
+							"name": "workernode",
+							"targetInstanceCount": 3,
+							"hardwareProfile": {
+								"vmSize": "Standard_D14_V2"
+							},
+							"osProfile": {
+								"linuxOperatingSystemProfile": {
+									"username": "[parameters('sparkSshUserName')]",
+									"password": "[parameters('sparkSshPassword')]"
+								}
+							},
+							"virtualNetworkProfile": null,
+							"scriptActions": []
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "Microsoft.Storage/storageAccounts",
+			"name": "nova$namespark",
+			"apiVersion": "2015-05-01-preview",
+			"location": "[parameters('default_resource_location')]",
+			"properties": {
+				"accountType": "Standard_LRS"
+			}
+		}
+	]
 }
