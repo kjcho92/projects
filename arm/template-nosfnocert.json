@@ -6,10 +6,6 @@
 			"defaultValue": "westus2",
 			"type": "string"
 		},
-		"databaseAccounts_nova$name_locations": {
-			"defaultValue": "westus2",
-			"type": "string"
-		},
 		"sites_nova$name_name": {
 			"defaultValue": "nova$name",
 			"type": "String"
@@ -42,10 +38,6 @@
 			"defaultValue": "web",
 			"type": "String"
 		},
-		"storageAccounts_novaspark$name_name": {
-			"defaultValue": "novaspark$name",
-			"type": "String"
-		},
 		"virtualMachineScaleSets_D3$name_name": {
 			"defaultValue": "D3$name",
 			"type": "String"
@@ -62,10 +54,6 @@
 			"defaultValue": "nova$name",
 			"type": "String"
 		},
-		"storageAccounts_nova-spark$name_name": {
-			"defaultValue": "nova-spark$name",
-			"type": "String"
-		},
 		"storageAccounts_novaconfigs$name_name": {
 			"defaultValue": "novaconfigs$name",
 			"type": "String"
@@ -74,52 +62,8 @@
 			"defaultValue": "novametricseventhub$name",
 			"type": "String"
 		},
-		"alertrules_Failure_Anomalies___novasf$name_name": {
-			"defaultValue": "Failure Anomalies - novasf$name",
-			"type": "String"
-		},
-		"alertrules_Failure_Anomalies___novaweb$name_name": {
-			"defaultValue": "Failure Anomalies - novaweb$name",
-			"type": "String"
-		},
-		"deployments_5d43d93468b246d78825536511637a44_name": {
-			"defaultValue": "5d43d93468b246d78825536511637a44",
-			"type": "String"
-		},
-		"deployments_62459847d17c4a60a300847be6f00ddf_name": {
-			"defaultValue": "62459847d17c4a60a300847be6f00ddf",
-			"type": "String"
-		},
-		"deployments_9e5b69107f22467795a1a3ecd414a95f_name": {
-			"defaultValue": "9e5b69107f22467795a1a3ecd414a95f",
-			"type": "String"
-		},
-		"deployments_f74d82dfe68d45c08ac4b92601acdaf6_name": {
-			"defaultValue": "f74d82dfe68d45c08ac4b92601acdaf6",
-			"type": "String"
-		},
 		"hostNameBindings_nova$name.azurewebsites.net_name": {
 			"defaultValue": "nova$name.azurewebsites.net",
-			"type": "String"
-		},
-		"inboundNatRules_LoadBalancerBEAddressNatPool.0_name": {
-			"defaultValue": "LoadBalancerBEAddressNatPool.0",
-			"type": "String"
-		},
-		"inboundNatRules_LoadBalancerBEAddressNatPool.1_name": {
-			"defaultValue": "LoadBalancerBEAddressNatPool.1",
-			"type": "String"
-		},
-		"inboundNatRules_LoadBalancerBEAddressNatPool.2_name": {
-			"defaultValue": "LoadBalancerBEAddressNatPool.2",
-			"type": "String"
-		},
-		"inboundNatRules_LoadBalancerBEAddressNatPool.3_name": {
-			"defaultValue": "LoadBalancerBEAddressNatPool.3",
-			"type": "String"
-		},
-		"inboundNatRules_LoadBalancerBEAddressNatPool.4_name": {
-			"defaultValue": "LoadBalancerBEAddressNatPool.4",
 			"type": "String"
 		},
 		"eventhubs_novametricseventhub_name": {
@@ -147,7 +91,8 @@
 		"storageAccounts_novaops_containerName_specialprocessing": "specialprocessing",
 		"storageAccounts_novaops_containerName_checkpoints": "checkpoints",
 		"storageAccounts_novaops_containerName_diagnostics": "diagnostics",
-		"storageAccounts_novaops_containerName_samples": "samples"
+		"storageAccounts_novaops_containerName_samples": "samples",
+		"tenantId": "$tenantId"
 	},
 	"resources": [
 		{
@@ -155,7 +100,7 @@
 			"type": "Microsoft.Cache/Redis",
 			"name": "[parameters('Redis_nova$name_name')]",
 			"apiVersion": "2017-10-01",
-			"location": "West US 2",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -180,7 +125,7 @@
 			"kind": "MongoDB",
 			"name": "[parameters('databaseAccounts_nova$name_name')]",
 			"apiVersion": "2015-04-08",
-			"location": "West US 2",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {
 				"defaultExperience": "MongoDB"
 			},
@@ -198,7 +143,12 @@
 					"maxStalenessPrefix": 100
 				},
 				"capabilities": [],
-				"locations": "[parameters('databaseAccounts_nova$name_locations')]"
+				"locations": [
+				  {
+					"locationName": "[parameters('default_resource_location')]",
+					"failoverPriority": 0
+				  }
+				]
 			},
 			"dependsOn": []
 		},
@@ -212,7 +162,7 @@
 			},
 			"name": "[parameters('namespaces_novametricseventhub$name_name')]",
 			"apiVersion": "2017-04-01",
-			"location": "West US 2",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -222,84 +172,12 @@
 			"dependsOn": []
 		},
 		{
-			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/microsoft.insights/alertrules/Failure Anomalies - novasf$name'.",
-			"type": "microsoft.insights/alertrules",
-			"name": "[parameters('alertrules_Failure_Anomalies___novasf$name_name')]",
-			"apiVersion": "2014-04-01",
-			"location": "West US 2",
-			"tags": {
-				"hidden-link:/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/microsoft.insights/components/nova$name": "Resource"
-			},
-			"scale": null,
-			"properties": {
-				"name": "[parameters('alertrules_Failure_Anomalies___novasf$name_name')]",
-				"description": "",
-				"isEnabled": true,
-				"condition": {
-					"odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
-					"dataSource": {
-						"odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-						"resourceUri": "[resourceId('microsoft.insights/components', parameters('components_nova$name_name'))]",
-						"metricNamespace": null,
-						"metricName": "advanced::A3108E3D-5E26-44CF-B232-783F5E20EF10::ewAiAEgAeQBwAGUAcgBpAG8AbgBBAHAAcABsAGkAYwBhAHQAaQBvAG4AUwBpAGQAIgA6AG4AdQBsAGwALAAiAEgAeQBwAGUAcgBpAG8AbgBTAHUAYgBqAGUAYwB0AFMAaQBkACIAOgBuAHUAbABsACwAIgBIAHkAcABlAHIAaQBvAG4ATwBiAHMAZQByAHYAZQByAFMAaQBkACIAOgBuAHUAbABsACwAIgBDAHUAcwB0AG8AbQBlAHIAQQBjAGMAbwB1AG4AdABJAGQAIgA6ACIAMAAwADAAMAAwADAAMAAwAC0AMAAwADAAMAAtADAAMAAwADAALQAwADAAMAAwAC0AMAAwADAAMAAwADAAMAAwADAAMAAwADAAIgAsACIAQQBwAHAAbABpAGMAYQB0AGkAbwBuAE4AYQBtAGUAIgA6AG4AdQBsAGwALAAiAEEAcABwAGwAaQBjAGEAdABpAG8AbgBJAGQAIgA6AG4AdQBsAGwALAAiAFAAcgBvAGYAaQBsAGUASQBkACIAOgAwACwAIgBXAGkAbgBkAG8AdwBTAGkAegBlAEkAbgBNAGkAbgB1AHQAZQBzACIAOgA2ADAALAAiAE0AZQB0AHIAaQBjAE4AYQBtAGUAIgA6ACIAIgAsACIAVABoAHIAZQBzAGgAbwBsAGQAIgA6ADIALgAwACwAIgBBAGwAZQByAHQAVABlAG0AcABsAGEAdABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAE4AYQBtAGUAIgA6ACIAIgAsACIAUgB1AGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AIgA6ACIAIgAsACIAUgBlAHMAbwB1AHIAYwBlAEkAZAAiADoAbgB1AGwAbAAsACIAUwB1AGIAcwBjAHIAaQBwAHQAaQBvAG4ASQBkACIAOgBuAHUAbABsACwAIgBBAGcAZwByAGUAZwBhAHQAZQBGAHUAbgBjAHQAaQBvAG4AIgA6ACIAIgAsACIAQwBvAG0AcABhAHIAaQBzAG8AbgBPAHAAZQByAGEAdABvAHIAIgA6ACIAewBcACIAQgBhAHMAZQBsAGkAbgBlAFQAaQBtAGUAcwBwAGEAbgBcACIAOgBcACIAMAAwADoANAAwADoAMAAwAFwAIgAsAFwAIgBJAG4AcwBpAGcAaAB0AHMAUwBlAHIAdgBpAGMAZQBMAGEAZwBcACIAOgBcACIAMAAwADoAMAAwADoAMAAwAFwAIgAsAFwAIgBCAHUAZgBmAGUAcgBUAGkAbQBlAFwAIgA6AFwAIgAwADAAOgAwADEAOgAwADAAXAAiACwAXAAiAEIAbABvAGIAUwB0AG8AcgBhAGcAZQBMAG8AZwBnAGkAbgBnAEUAbgBhAGIAbABlAGQAXAAiADoAZgBhAGwAcwBlACwAXAAiAFUAcwBlAHIAUwB1AHAAcAByAGUAcwBzAGkAbwBuAHMAXAAiADoAbgB1AGwAbAAsAFwAIgBQAHIAbwBmAGkAbABlAEkAZABcACIAOgAwACwAXAAiAEUAbQBhAGkAbABUAHkAcABlAFwAIgA6ADAALABcACIAUgBkAGQARgBhAGkAbAB1AHIAZQBzAFMAcABpAGsAZQBUAGgAcgBlAHMAaABvAGwAZABcACIAOgAzAC4AMAAsAFwAIgBSAGEAdwBQAHIAbwBhAGMAdABpAHYAZQBSAHUAbABlAEMAbwBuAGYAaQBnAFwAIgA6AG4AdQBsAGwAfQAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8AQwB1AHMAdABvAG0AIgA6AGYAYQBsAHMAZQAsACIAQwB1AHMAdABvAG0ARQBtAGEAaQBsAHMARQBuAGMAbwBkAGUAZAAiADoAIgAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8ATwB3AG4AZQByAHMAIgA6AGYAYQBsAHMAZQB9AA=="
-					},
-					"operator": "GreaterThan",
-					"threshold": 2,
-					"windowSize": "PT1H"
-				},
-				"action": {
-					"odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
-					"sendToServiceOwners": true,
-					"customEmails": []
-				}
-			},
-			"dependsOn": [
-				"[resourceId('microsoft.insights/components', parameters('components_nova$name_name'))]"
-			]
-		},
-		{
-			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/microsoft.insights/alertrules/Failure Anomalies - novaweb$name'.",
-			"type": "microsoft.insights/alertrules",
-			"name": "[parameters('alertrules_Failure_Anomalies___novaweb$name_name')]",
-			"apiVersion": "2014-04-01",
-			"location": "West US 2",
-			"tags": {
-				"hidden-link:/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/microsoft.insights/components/novaweb$name": "Resource"
-			},
-			"scale": null,
-			"properties": {
-				"name": "[parameters('alertrules_Failure_Anomalies___novaweb$name_name')]",
-				"description": "",
-				"isEnabled": true,
-				"condition": {
-					"odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
-					"dataSource": {
-						"odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-						"resourceUri": "[resourceId('microsoft.insights/components', parameters('components_novaweb$name_name'))]",
-						"metricNamespace": null,
-						"metricName": "advanced::A3108E3D-5E26-44CF-B232-783F5E20EF10::ewAiAEgAeQBwAGUAcgBpAG8AbgBBAHAAcABsAGkAYwBhAHQAaQBvAG4AUwBpAGQAIgA6AG4AdQBsAGwALAAiAEgAeQBwAGUAcgBpAG8AbgBTAHUAYgBqAGUAYwB0AFMAaQBkACIAOgBuAHUAbABsACwAIgBIAHkAcABlAHIAaQBvAG4ATwBiAHMAZQByAHYAZQByAFMAaQBkACIAOgBuAHUAbABsACwAIgBDAHUAcwB0AG8AbQBlAHIAQQBjAGMAbwB1AG4AdABJAGQAIgA6ACIAMAAwADAAMAAwADAAMAAwAC0AMAAwADAAMAAtADAAMAAwADAALQAwADAAMAAwAC0AMAAwADAAMAAwADAAMAAwADAAMAAwADAAIgAsACIAQQBwAHAAbABpAGMAYQB0AGkAbwBuAE4AYQBtAGUAIgA6AG4AdQBsAGwALAAiAEEAcABwAGwAaQBjAGEAdABpAG8AbgBJAGQAIgA6AG4AdQBsAGwALAAiAFAAcgBvAGYAaQBsAGUASQBkACIAOgAwACwAIgBXAGkAbgBkAG8AdwBTAGkAegBlAEkAbgBNAGkAbgB1AHQAZQBzACIAOgA2ADAALAAiAE0AZQB0AHIAaQBjAE4AYQBtAGUAIgA6ACIAIgAsACIAVABoAHIAZQBzAGgAbwBsAGQAIgA6ADIALgAwACwAIgBBAGwAZQByAHQAVABlAG0AcABsAGEAdABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAEkAZAAiADoAIgAiACwAIgBSAHUAbABlAE4AYQBtAGUAIgA6ACIAIgAsACIAUgB1AGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AIgA6ACIAIgAsACIAUgBlAHMAbwB1AHIAYwBlAEkAZAAiADoAbgB1AGwAbAAsACIAUwB1AGIAcwBjAHIAaQBwAHQAaQBvAG4ASQBkACIAOgBuAHUAbABsACwAIgBBAGcAZwByAGUAZwBhAHQAZQBGAHUAbgBjAHQAaQBvAG4AIgA6ACIAIgAsACIAQwBvAG0AcABhAHIAaQBzAG8AbgBPAHAAZQByAGEAdABvAHIAIgA6ACIAewBcACIAQgBhAHMAZQBsAGkAbgBlAFQAaQBtAGUAcwBwAGEAbgBcACIAOgBcACIAMAAwADoANAAwADoAMAAwAFwAIgAsAFwAIgBJAG4AcwBpAGcAaAB0AHMAUwBlAHIAdgBpAGMAZQBMAGEAZwBcACIAOgBcACIAMAAwADoAMAAwADoAMAAwAFwAIgAsAFwAIgBCAHUAZgBmAGUAcgBUAGkAbQBlAFwAIgA6AFwAIgAwADAAOgAwADEAOgAwADAAXAAiACwAXAAiAEIAbABvAGIAUwB0AG8AcgBhAGcAZQBMAG8AZwBnAGkAbgBnAEUAbgBhAGIAbABlAGQAXAAiADoAZgBhAGwAcwBlACwAXAAiAFUAcwBlAHIAUwB1AHAAcAByAGUAcwBzAGkAbwBuAHMAXAAiADoAbgB1AGwAbAAsAFwAIgBQAHIAbwBmAGkAbABlAEkAZABcACIAOgAwACwAXAAiAEUAbQBhAGkAbABUAHkAcABlAFwAIgA6ADAALABcACIAUgBkAGQARgBhAGkAbAB1AHIAZQBzAFMAcABpAGsAZQBUAGgAcgBlAHMAaABvAGwAZABcACIAOgAzAC4AMAAsAFwAIgBSAGEAdwBQAHIAbwBhAGMAdABpAHYAZQBSAHUAbABlAEMAbwBuAGYAaQBnAFwAIgA6AG4AdQBsAGwAfQAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8AQwB1AHMAdABvAG0AIgA6AGYAYQBsAHMAZQAsACIAQwB1AHMAdABvAG0ARQBtAGEAaQBsAHMARQBuAGMAbwBkAGUAZAAiADoAIgAiACwAIgBFAG4AYQBiAGwAZQBTAGUAbgBkAEUAbQBhAGkAbABUAG8ATwB3AG4AZQByAHMAIgA6AGYAYQBsAHMAZQB9AA=="
-					},
-					"operator": "GreaterThan",
-					"threshold": 2,
-					"windowSize": "PT1H"
-				},
-				"action": {
-					"odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
-					"sendToServiceOwners": true,
-					"customEmails": []
-				}
-			},
-			"dependsOn": [
-				"[resourceId('microsoft.insights/components', parameters('components_novaweb$name_name'))]"
-			]
-		},
-		{
 			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/microsoft.insights/components/novaweb$name'.",
 			"type": "microsoft.insights/components",
 			"kind": "web",
 			"name": "[parameters('components_novaweb$name_name')]",
 			"apiVersion": "2015-05-01",
-			"location": "westus2",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {
 				"applicationType": "web",
 				"hidden-link:/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name": "Resource"
@@ -320,7 +198,7 @@
 			"kind": "other",
 			"name": "[parameters('components_nova$name_name')]",
 			"apiVersion": "2015-05-01",
-			"location": "westus2",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -337,7 +215,7 @@
 			"type": "Microsoft.KeyVault/vaults",
 			"name": "[parameters('vaults_NovaFabricRDPKV$name_name')]",
 			"apiVersion": "2016-10-01",
-			"location": "centralus",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -345,10 +223,10 @@
 					"family": "A",
 					"name": "Standard"
 				},
-				"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+				"tenantId": "[variables('tenantId')]",
 				"accessPolicies": [
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
 						"permissions": {
 							"keys": [
@@ -400,7 +278,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
 						"permissions": {
 							"keys": [
@@ -463,7 +341,7 @@
 			"type": "Microsoft.KeyVault/vaults",
 			"name": "[parameters('vaults_NovaServicesKV$name_name')]",
 			"apiVersion": "2016-10-01",
-			"location": "centralus",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -471,10 +349,10 @@
 					"family": "A",
 					"name": "Standard"
 				},
-				"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+				"tenantId": "[variables('tenantId')]",
 				"accessPolicies": [
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
 						"permissions": {
 							"keys": [
@@ -526,74 +404,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-						"objectId": "674adea2-3e5b-4432-8195-4b805b5f045d",
-						"permissions": {
-							"keys": [
-								"Get",
-								"Create"
-							],
-							"secrets": [
-								"Get",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
 						"permissions": {
 							"keys": [
@@ -609,7 +420,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "84b32d75-9a6f-4a08-aaeb-c67a40c633fe",
 						"permissions": {
 							"keys": [
@@ -624,7 +435,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
 						"permissions": {
 							"keys": [
@@ -676,7 +487,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "3828bd7e-1043-44b9-a81c-c312a87dc216",
 						"permissions": {
 							"keys": [
@@ -693,7 +504,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
 						"permissions": {
 							"keys": [
@@ -705,59 +516,6 @@
 								"Get",
 								"List",
 								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-						"objectId": "83d13d99-D3$nameb5-4028-aa18-eb4c63801e70",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update"
-							],
-							"secrets": [
-								"Get",
-								"List"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-						"objectId": "1ba361b9-1744-458a-a32c-067c787d9fbf",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-						"objectId": "8fed58db-36a9-4d02-987d-419477D3$nameed6a",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Delete",
-								"Import"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete"
 							],
 							"certificates": []
 						}
@@ -774,7 +532,7 @@
 			"type": "Microsoft.KeyVault/vaults",
 			"name": "[parameters('vaults_NovaSparkKV$name_name')]",
 			"apiVersion": "2016-10-01",
-			"location": "centralus",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -782,10 +540,10 @@
 					"family": "A",
 					"name": "Standard"
 				},
-				"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+				"tenantId": "[variables('tenantId')]",
 				"accessPolicies": [
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
 						"permissions": {
 							"keys": [
@@ -837,7 +595,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
 						"permissions": {
 							"keys": [
@@ -889,7 +647,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "d0871592-98ef-419c-8c97-6c91c9dd7875",
 						"permissions": {
 							"keys": [],
@@ -900,7 +658,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
 						"permissions": {
 							"keys": [
@@ -916,7 +674,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "2e4b2bb7-bc88-44f5-9066-79bab8eb13a9",
 						"permissions": {
 							"keys": [
@@ -934,7 +692,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
 						"permissions": {
 							"keys": [
@@ -952,7 +710,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
 						"permissions": {
 							"keys": [
@@ -983,7 +741,7 @@
 			"type": "Microsoft.KeyVault/vaults",
 			"name": "[parameters('vaults_NovaSparkRDPKV$name_name')]",
 			"apiVersion": "2016-10-01",
-			"location": "centralus",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -991,10 +749,10 @@
 					"family": "A",
 					"name": "Standard"
 				},
-				"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+				"tenantId": "[variables('tenantId')]",
 				"accessPolicies": [
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
 						"permissions": {
 							"keys": [
@@ -1046,7 +804,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
 						"permissions": {
 							"keys": [
@@ -1098,7 +856,7 @@
 						}
 					},
 					{
-						"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+						"tenantId": "[variables('tenantId')]",
 						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
 						"permissions": {
 							"keys": [
@@ -1129,7 +887,7 @@
 			"kind": "BlobStorage",
 			"name": "[parameters('storageAccounts_novaconfigs$name_name')]",
 			"apiVersion": "2018-07-01",
-			"location": "westus2",
+			"location": "[parameters('default_resource_location')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -1214,41 +972,6 @@
 			]
 		},
 		{
-			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Storage/storageAccounts/nova$namespark'.",
-			"type": "Microsoft.Storage/storageAccounts",
-			"sku": {
-				"name": "Standard_LRS",
-				"tier": "Standard"
-			},
-			"kind": "Storage",
-			"name": "[parameters('storageAccounts_novaspark$name_name')]",
-			"apiVersion": "2018-07-01",
-			"location": "westus2",
-			"tags": {},
-			"scale": null,
-			"properties": {
-				"networkAcls": {
-					"bypass": "AzureServices",
-					"virtualNetworkRules": [],
-					"ipRules": [],
-					"defaultAction": "Allow"
-				},
-				"supportsHttpsTrafficOnly": false,
-				"encryption": {
-					"services": {
-						"file": {
-							"enabled": true
-						},
-						"blob": {
-							"enabled": true
-						}
-					},
-					"keySource": "Microsoft.Storage"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/serverfarms/nova-app-service-plan$name'.",
 			"type": "Microsoft.Web/serverfarms",
 			"sku": {
@@ -1261,7 +984,7 @@
 			"kind": "app",
 			"name": "[parameters('serverfarms_nova_app_service_plan_name')]",
 			"apiVersion": "2016-09-01",
-			"location": "Central US",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {
 				"name": "[parameters('serverfarms_nova_app_service_plan_name')]",
@@ -1281,7 +1004,7 @@
 			"kind": "app",
 			"name": "[parameters('sites_nova$name_name')]",
 			"apiVersion": "2016-08-01",
-			"location": "Central US",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {
 				"enabled": true,
@@ -1325,7 +1048,7 @@
 			"type": "Microsoft.EventHub/namespaces/AuthorizationRules",
 			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('AuthorizationRules_RootManageSharedAccessKey_name'))]",
 			"apiVersion": "2017-04-01",
-			"location": "West US 2",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {
 				"rights": [
@@ -1343,7 +1066,7 @@
 			"type": "Microsoft.EventHub/namespaces/eventhubs",
 			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhub_name'))]",
 			"apiVersion": "2017-04-01",
-			"location": "West US 2",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {
 				"messageRetentionInDays": 1,
@@ -1359,7 +1082,7 @@
 			"type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
 			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhub_name'), '/', parameters('authorizationRules_manage_name'))]",
 			"apiVersion": "2017-04-01",
-			"location": "West US 2",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {
 				"rights": [
@@ -1378,7 +1101,7 @@
 			"type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
 			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhub_name'), '/', parameters('consumergroups_$Default_name'))]",
 			"apiVersion": "2017-04-01",
-			"location": "West US 2",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {},
 			"dependsOn": [
@@ -1391,7 +1114,7 @@
 			"type": "Microsoft.Web/sites/config",
 			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('config_web_name'))]",
 			"apiVersion": "2016-08-01",
-			"location": "Central US",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {
 				"numberOfWorkers": 1,
@@ -1503,99 +1226,11 @@
 			]
 		},
 		{
-			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name/deployments/5d43d93468b246d78825536511637a44'.",
-			"type": "Microsoft.Web/sites/deployments",
-			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('deployments_5d43d93468b246d78825536511637a44_name'))]",
-			"apiVersion": "2016-08-01",
-			"location": "Central US",
-			"scale": null,
-			"properties": {
-				"id": "[parameters('deployments_5d43d93468b246d78825536511637a44_name')]",
-				"status": 4,
-				"author_email": "N/A",
-				"author": "N/A",
-				"deployer": "Push-Deployer",
-				"message": "Created via a push deployment",
-				"start_time": "2018-11-02T22:24:45.5945399Z",
-				"end_time": "2018-11-02T22:26:46.9302782Z",
-				"active": true
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/sites', parameters('sites_nova$name_name'))]"
-			]
-		},
-		{
-			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name/deployments/62459847d17c4a60a300847be6f00ddf'.",
-			"type": "Microsoft.Web/sites/deployments",
-			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('deployments_62459847d17c4a60a300847be6f00ddf_name'))]",
-			"apiVersion": "2016-08-01",
-			"location": "Central US",
-			"scale": null,
-			"properties": {
-				"id": "[parameters('deployments_62459847d17c4a60a300847be6f00ddf_name')]",
-				"status": 4,
-				"author_email": "N/A",
-				"author": "N/A",
-				"deployer": "Push-Deployer",
-				"message": "Created via a push deployment",
-				"start_time": "2018-10-31T00:40:24.5881456Z",
-				"end_time": "2018-10-31T00:41:57.7898207Z",
-				"active": false
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/sites', parameters('sites_nova$name_name'))]"
-			]
-		},
-		{
-			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name/deployments/9e5b69107f22467795a1a3ecd414a95f'.",
-			"type": "Microsoft.Web/sites/deployments",
-			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('deployments_9e5b69107f22467795a1a3ecd414a95f_name'))]",
-			"apiVersion": "2016-08-01",
-			"location": "Central US",
-			"scale": null,
-			"properties": {
-				"id": "[parameters('deployments_9e5b69107f22467795a1a3ecd414a95f_name')]",
-				"status": 4,
-				"author_email": "N/A",
-				"author": "N/A",
-				"deployer": "Push-Deployer",
-				"message": "Created via a push deployment",
-				"start_time": "2018-10-31T00:19:40.5211911Z",
-				"end_time": "2018-10-31T00:21:10.3394044Z",
-				"active": false
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/sites', parameters('sites_nova$name_name'))]"
-			]
-		},
-		{
-			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name/deployments/f74d82dfe68d45c08ac4b92601acdaf6'.",
-			"type": "Microsoft.Web/sites/deployments",
-			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('deployments_f74d82dfe68d45c08ac4b92601acdaf6_name'))]",
-			"apiVersion": "2016-08-01",
-			"location": "Central US",
-			"scale": null,
-			"properties": {
-				"id": "[parameters('deployments_f74d82dfe68d45c08ac4b92601acdaf6_name')]",
-				"status": 4,
-				"author_email": "N/A",
-				"author": "N/A",
-				"deployer": "Push-Deployer",
-				"message": "Created via a push deployment",
-				"start_time": "2018-10-30T23:42:06.2625889Z",
-				"end_time": "2018-10-30T23:45:04.9134118Z",
-				"active": false
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/sites', parameters('sites_nova$name_name'))]"
-			]
-		},
-		{
 			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name/hostNameBindings/nova$name.azurewebsites.net'.",
 			"type": "Microsoft.Web/sites/hostNameBindings",
 			"name": "[concat(parameters('sites_nova$name_name'), '/', parameters('hostNameBindings_nova$name.azurewebsites.net_name'))]",
 			"apiVersion": "2016-08-01",
-			"location": "Central US",
+			"location": "[parameters('default_resource_location')]",
 			"scale": null,
 			"properties": {
 				"siteName": "nova$name",
