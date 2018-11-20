@@ -25,31 +25,26 @@
 #>
 
 param(
-# [Parameter(Mandatory=$True)]
+ [Parameter(Mandatory=$True)]
  [string]
- # $subscriptionId = "b4beedd6-9009-4be6-88f6-be36ce88cba9", # NovaStaging
- $subscriptionId = "60eceb68-d850-45a2-ad82-86494890fa69", # NovaProd
+ $subscriptionId,
  
-# [Parameter(Mandatory=$True)]
-# [string]
-# $tenantId,
-
- #[Parameter(Mandatory=$True)]
+ [Parameter(Mandatory=$True)]
  [string]
- $novaSparkPassword = "cAsmoose>104$",
+ $novaSparkPassword,
 
-# [Parameter(Mandatory=$True)]
+ [Parameter(Mandatory=$True)]
  [string]
- # $resourceGroupName = "armtest",
- $resourceGroupName = "NovaProd",
+ # $resourceGroupName = "NovaTest",
+ $resourceGroupName,
  
  [string]
  $resourceGroupLocation,
 
-# [Parameter(Mandatory=$True)]
+ [Parameter(Mandatory=$True)]
  [string]
- # $productName  = "armtest",
- $productName  = "ProdTest",
+ $productName,
+# $productName  = "myprod",
 
 # [string]
 # $templateFilePath = "template.json", # all
@@ -118,19 +113,18 @@ Function TranslateTokens([System.String]$Source = '')
 
 Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
 {
-    $kvName = "novasfkv$name";
+    $kvName = "novasfKV$name";
     $subject = "CN=$kvName"+ ".westus2.cloudapp.azure.com";
 
     $cert = New-SelfSignedCertificate -Subject $subject -CertStoreLocation cert:\LocalMachine\My
  
     # Export the cert to a PFX with password
-    $password = ConvertTo-SecureString "abc" -AsPlainText -Force
+    $password = ConvertTo-SecureString "password" -AsPlainText -Force
     $certFileName = "$certName.pfx"
 
     Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFileName -Password $password
  
     # Upload to Key Vault
-
     Import-AzureKeyVaultCertificate -VaultName $kvName -Name $certName -FilePath $certFileName -Password $password
 
 }
@@ -215,7 +209,6 @@ Function SetupCosmosDB()
 
         Remove-MdbcData -Query $qry -Collection $collection1
 
-    #    $json = Get-Content -Raw -Path "$templatePath\$colName.json" | ConvertFrom-Json 
         $rawData = Get-Content -Raw -Path "$templatePath\$colName.json"
         $rawData = TranslateTokens -Source $rawData
         $json = ConvertFrom-Json -InputObject $rawData
@@ -253,8 +246,6 @@ Function SetupBlob()
 
         foreach ($x in $filesToUpload) {
             $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
-    #        $targetPath = ($x.fullname.Substring($sourceFileRootDirectory.Length + 1)).Replace("\", "/")
-    #        $targetPath = $sourceFileRootDirectory.Replace("\", "/")
 
             Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
             Set-AzureStorageBlobContent -File $x.fullname -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
@@ -268,8 +259,6 @@ Function SetupBlob()
 
         foreach ($x in $filesToUpload) {        
             $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
-    #        $targetPath = ($x.fullname.Substring($sourceFileRootDirectory.Length + 1)).Replace("\", "/")
-    #        $targetPath = $sourceFileRootDirectory.Replace("\", "/")
 
             Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
             Set-AzureStorageBlobContent -File $x.fullname -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
@@ -283,8 +272,6 @@ Function SetupBlob()
 
         foreach ($x in $filesToUpload) {
             $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
-    #        $targetPath = ($x.fullname.Substring($sourceFileRootDirectory.Length + 1)).Replace("\", "/")
-    #        $targetPath = $sourceFileRootDirectory.Replace("\", "/")
 
             $rawData = Get-Content -Raw -Path $x.fullname
             TranslateTokens -Source $rawData | Set-Content t.json
@@ -321,29 +308,10 @@ Function SetupSecrets()
 #******************************************************************************
 $ErrorActionPreference = "Stop"
 
-$dbConRaw = Invoke-AzureRmResourceAction -Action listConnectionStrings `
-    -ResourceType "Microsoft.DocumentDb/databaseAccounts" `
-    -ApiVersion "2015-04-08" `
-    -ResourceGroupName $resourceGroupName `
-    -Name $DBName `
-    -force
-
-$dbCon = $dbConRaw.connectionStrings[0].connectionString
-
-$novaopsconnectionString = ''
-if ($storageAccount.Context.ConnectionString -match '(AccountName=.*)')
-{
-    $connectionString = $Matches[0]
-    $novaopsconnectionString = "DefaultEndpointsProtocol=https;$connectionString;EndpointSuffix=core.windows.net"
-}
-    
-
 # sign in
 Write-Host "Logging in...";
-#$acc = Login-AzureRmAccount;
-#$acc = Connect-AzureRmAccount;
-#$tenantId = $acc.Context.Tenant.Id
-$tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
+$acc = Login-AzureRmAccount;
+$tenantId = $acc.Context.Tenant.Id
 
 # select subscription
 Write-Host "Selecting subscription '$subscriptionId'";
@@ -354,7 +322,7 @@ $resourceProviders = @("microsoft.cache","microsoft.compute","microsoft.document
 if($resourceProviders.length) {
     Write-Host "Registering resource providers"
     foreach($resourceProvider in $resourceProviders) {
-        # RegisterRP($resourceProvider);
+        RegisterRP($resourceProvider);
     }
 }
 
@@ -381,21 +349,42 @@ $templateFilePath = "template.json"
 Init -templatePath $templateFilePath
 
 if(Test-Path "temp_$templateFilePath") {
-#    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
+    # New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
+    # -Debug 
 }
-# $novaprodsfCert = GenerateCertsAndImportKeyVault -certName "novaprodsf"
-# $novaprodsfreverseproxyCert = GenerateCertsAndImportKeyVault -certName "novaprodsfreverseproxy"
+
+# Certs
+$novaprodsfCert = GenerateCertsAndImportKeyVault -certName "novaprodsf"
+$novaprodsfreverseproxyCert = GenerateCertsAndImportKeyVault -certName "novaprodsfreverseproxy"
 
 
 # Start SF deployment
 Write-Host "Starting SF deployment...";
 $templateFilePathForSF = "sf-template.json"
-#$templateFilePathForSF = "sfonly-template.json"
 Init -templatePath $templateFilePathForSF
 if(Test-Path "temp_$templateFilePathForSF")
 {
-    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
+    # New-AzureRmResourceGroupDeployment  -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
 }
+
+# Processing
+$dbConRaw = Invoke-AzureRmResourceAction -Action listConnectionStrings `
+    -ResourceType "Microsoft.DocumentDb/databaseAccounts" `
+    -ApiVersion "2015-04-08" `
+    -ResourceGroupName $resourceGroupName `
+    -Name $DBName `
+    -force
+
+$dbCon = $dbConRaw.connectionStrings[0].connectionString
+
+$novaopsconnectionString = ''
+$storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $novaconfigsBlobAccountName;
+if ($storageAccount.Context.ConnectionString -match '(AccountName=.*)')
+{
+    $connectionString = $Matches[0]
+    $novaopsconnectionString = "DefaultEndpointsProtocol=https;$connectionString;EndpointSuffix=core.windows.net"
+}    
+
 
 # Spark
 AddScriptActions
