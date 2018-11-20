@@ -1,0 +1,1380 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaults_nova_prodsf_name": {
+            "defaultValue": "nova-prodsf",
+            "type": "String"
+        },
+        "clusters_nova_prod_name": {
+            "defaultValue": "nova-prod",
+            "type": "String"
+        },
+        "virtualMachineScaleSets_D3_name": {
+            "defaultValue": "D3",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_name": {
+            "defaultValue": "LB-nova-prod-D3",
+            "type": "String"
+        },
+        "virtualNetworks_VNet_nova_prod_name": {
+            "defaultValue": "VNet-nova-prod",
+            "type": "String"
+        },
+        "storageAccounts_sfdgnovaprod3162_name": {
+            "defaultValue": "sfdgnovaprod3162",
+            "type": "String"
+        },
+        "publicIPAddresses_LBIP_nova_prod_0_name": {
+            "defaultValue": "LBIP-nova-prod-0",
+            "type": "String"
+        },
+        "storageAccounts_sflogsnovaprod8614_name": {
+            "defaultValue": "sflogsnovaprod8614",
+            "type": "String"
+        },
+        "secrets_novaprodsf_name": {
+            "defaultValue": "novaprodsf",
+            "type": "String"
+        },
+        "virtualMachines_0_name": {
+            "defaultValue": "0",
+            "type": "String"
+        },
+        "virtualMachines_1_name": {
+            "defaultValue": "1",
+            "type": "String"
+        },
+        "virtualMachines_2_name": {
+            "defaultValue": "2",
+            "type": "String"
+        },
+        "virtualMachines_3_name": {
+            "defaultValue": "3",
+            "type": "String"
+        },
+        "virtualMachines_4_name": {
+            "defaultValue": "4",
+            "type": "String"
+        },
+        "subnets_Subnet_0_name": {
+            "defaultValue": "Subnet-0",
+            "type": "String"
+        },
+        "secrets_novaprodsfreverseproxy_name": {
+            "defaultValue": "novaprodsfreverseproxy",
+            "type": "String"
+        },
+        "inboundNatRules_LoadBalancerBEAddressNatPool.0_name": {
+            "defaultValue": "LoadBalancerBEAddressNatPool.0",
+            "type": "String"
+        },
+        "inboundNatRules_LoadBalancerBEAddressNatPool.1_name": {
+            "defaultValue": "LoadBalancerBEAddressNatPool.1",
+            "type": "String"
+        },
+        "inboundNatRules_LoadBalancerBEAddressNatPool.2_name": {
+            "defaultValue": "LoadBalancerBEAddressNatPool.2",
+            "type": "String"
+        },
+        "inboundNatRules_LoadBalancerBEAddressNatPool.3_name": {
+            "defaultValue": "LoadBalancerBEAddressNatPool.3",
+            "type": "String"
+        },
+        "inboundNatRules_LoadBalancerBEAddressNatPool.4_name": {
+            "defaultValue": "LoadBalancerBEAddressNatPool.4",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_1": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/backendAddressPools/LoadBalancerBEAddressPool",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_2": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/probes/FabricGatewayProbe",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_3": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_4": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/backendAddressPools/LoadBalancerBEAddressPool",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_5": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/probes/FabricHttpGatewayProbe",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_6": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_7": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_8": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_9": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_10": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "loadBalancers_LB_nova_prod_D3_id_11": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/frontendIPConfigurations/LoadBalancerIPConfig",
+            "type": "String"
+        },
+        "virtualMachines_0_id": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Compute/disks/D3_D3_0_OsDisk_1_84257b760c084868bdf1d198391f472f",
+            "type": "String"
+        },
+        "virtualMachines_1_id": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Compute/disks/D3_D3_1_OsDisk_1_64ec137617a64c45b705a5bb7e809fb1",
+            "type": "String"
+        },
+        "virtualMachines_2_id": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Compute/disks/D3_D3_2_OsDisk_1_4c00d59c9df44c74b87ef92850fd1e72",
+            "type": "String"
+        },
+        "virtualMachines_3_id": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Compute/disks/D3_D3_3_OsDisk_1_e1625432eedc4a1fa7edba9205312dea",
+            "type": "String"
+        },
+        "virtualMachines_4_id": {
+            "defaultValue": "/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Compute/disks/D3_D3_4_OsDisk_1_bdd3ac4a4b85489e98009e5f764d3fa3",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Compute/virtualMachineScaleSets/D3'.",
+            "type": "Microsoft.Compute/virtualMachineScaleSets",
+            "sku": {
+                "name": "Standard_D3_v2",
+                "tier": "Standard",
+                "capacity": 5
+            },
+            "name": "[parameters('virtualMachineScaleSets_D3_name')]",
+            "apiVersion": "2018-06-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "singlePlacementGroup": true,
+                "upgradePolicy": {
+                    "mode": "Automatic",
+                    "automaticOSUpgrade": false
+                },
+                "virtualMachineProfile": {
+                    "osProfile": {
+                        "computerNamePrefix": "[parameters('virtualMachineScaleSets_D3_name')]",
+                        "adminUsername": "novapd",
+                        "windowsConfiguration": {
+                            "provisionVMAgent": true,
+                            "enableAutomaticUpdates": true
+                        },
+                        "secrets": [
+                            {
+                                "sourceVault": {
+                                    "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+                                },
+                                "vaultCertificates": [
+                                    {
+                                        "certificateUrl": "https://nova-prodsf.vault.azure.net/secrets/novaprodsf/e2b887f28d934f7897bbe7b9864d7949",
+                                        "certificateStore": "My"
+                                    },
+                                    {
+                                        "certificateUrl": "https://nova-prodsf.vault.azure.net/secrets/novaprodsfreverseproxy/377cc79a11f94283adbccb47dcbf154b",
+                                        "certificateStore": "My"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "storageProfile": {
+                        "osDisk": {
+                            "createOption": "FromImage",
+                            "caching": "ReadOnly",
+                            "managedDisk": {
+                                "storageAccountType": "Standard_LRS"
+                            }
+                        },
+                        "imageReference": {
+                            "publisher": "MicrosoftWindowsServer",
+                            "offer": "WindowsServer",
+                            "sku": "2016-Datacenter-with-Containers",
+                            "version": "latest"
+                        }
+                    },
+                    "networkProfile": {
+                        "networkInterfaceConfigurations": [
+                            {
+                                "name": "NIC-nova-prod-0",
+                                "properties": {
+                                    "primary": true,
+                                    "enableAcceleratedNetworking": false,
+                                    "dnsSettings": {
+                                        "dnsServers": []
+                                    },
+                                    "ipConfigurations": [
+                                        {
+                                            "name": "NIC-nova-prod-0",
+                                            "properties": {
+                                                "subnet": {
+                                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_VNet_nova_prod_name'), parameters('subnets_Subnet_0_name'))]"
+                                                },
+                                                "privateIPAddressVersion": "IPv4",
+                                                "loadBalancerBackendAddressPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name')), '/backendAddressPools/LoadBalancerBEAddressPool')]"
+                                                    }
+                                                ],
+                                                "loadBalancerInboundNatPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name')), '/inboundNatPools/LoadBalancerBEAddressNatPool')]"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "extensionProfile": {
+                        "extensions": [
+                            {
+                                "properties": {
+                                    "autoUpgradeMinorVersion": true,
+                                    "settings": {
+                                        "clusterEndpoint": "https://westus2.servicefabric.azure.com/runtime/clusters/68ea0c96-f3fc-4f6f-bd2a-f7b667c9722e",
+                                        "nodeTypeRef": "[parameters('virtualMachineScaleSets_D3_name')]",
+                                        "dataPath": "D:\\\\SvcFab",
+                                        "durabilityLevel": "Bronze",
+                                        "enableParallelJobs": true,
+                                        "nicPrefixOverride": "10.0.0.0/24",
+                                        "reverseProxyCertificate": {
+                                            "thumbprint": "6C18AC51AC7791ECEF989016B7BDAC95BE03EBE6",
+                                            "x509StoreName": "My"
+                                        },
+                                        "certificate": {
+                                            "thumbprint": "1E51D850B9081C8B6B1BB683B82A08A925224A26",
+                                            "x509StoreName": "My"
+                                        }
+                                    },
+                                    "publisher": "Microsoft.Azure.ServiceFabric",
+                                    "type": "ServiceFabricNode",
+                                    "typeHandlerVersion": "1.0"
+                                },
+                                "name": "[concat(parameters('virtualMachineScaleSets_D3_name'),'_ServiceFabricNode')]"
+                            },
+                            {
+                                "properties": {
+                                    "autoUpgradeMinorVersion": true,
+                                    "settings": {
+                                        "WadCfg": {
+                                            "DiagnosticMonitorConfiguration": {
+                                                "overallQuotaInMB": "50000",
+                                                "EtwProviders": {
+                                                    "EtwEventSourceProviderConfiguration": [
+                                                        {
+                                                            "provider": "Microsoft-ServiceFabric-Actors",
+                                                            "scheduledTransferKeywordFilter": "1",
+                                                            "scheduledTransferPeriod": "PT5M",
+                                                            "DefaultEvents": {
+                                                                "eventDestination": "ServiceFabricReliableActorEventTable"
+                                                            }
+                                                        },
+                                                        {
+                                                            "provider": "Microsoft-ServiceFabric-Services",
+                                                            "scheduledTransferPeriod": "PT5M",
+                                                            "DefaultEvents": {
+                                                                "eventDestination": "ServiceFabricReliableServiceEventTable"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "EtwManifestProviderConfiguration": [
+                                                        {
+                                                            "provider": "cbd93bc2-71e5-4566-b3a7-595d8eeca6e8",
+                                                            "scheduledTransferLogLevelFilter": "Information",
+                                                            "scheduledTransferKeywordFilter": "4611686018427387904",
+                                                            "scheduledTransferPeriod": "PT5M",
+                                                            "DefaultEvents": {
+                                                                "eventDestination": "ServiceFabricSystemEventTable"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "StorageAccount": "[concat('sfdgnovaprod3162')]"
+                                    },
+                                    "publisher": "Microsoft.Azure.Diagnostics",
+                                    "type": "IaaSDiagnostics",
+                                    "typeHandlerVersion": "1.5"
+                                },
+                                "name": "VMDiagnosticsVmExt_vmNodeType0Name"
+                            }
+                        ]
+                    }
+                },
+                "overprovision": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_VNet_nova_prod_name'), parameters('subnets_Subnet_0_name'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.KeyVault/vaults/nova-prodsf'.",
+            "type": "Microsoft.KeyVault/vaults",
+            "name": "[parameters('vaults_nova_prodsf_name')]",
+            "apiVersion": "2016-10-01",
+            "location": "westus2",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                "accessPolicies": [
+                    {
+                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": true,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": true
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3'.",
+            "type": "Microsoft.Network/loadBalancers",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('loadBalancers_LB_nova_prod_D3_name')]",
+            "apiVersion": "2018-08-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "e2762ef1-6904-4085-90ea-851aa8b3efe3",
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LoadBalancerIPConfig",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_LBIP_nova_prod_0_name'))]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "LoadBalancerBEAddressPool",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded"
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "LBRule",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id')]"
+                            },
+                            "frontendPort": 19000,
+                            "backendPort": 19000,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 5,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false,
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_1')]"
+                            },
+                            "probe": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_2')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "LBHttpRule",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_3')]"
+                            },
+                            "frontendPort": 19080,
+                            "backendPort": 19080,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 5,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false,
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_4')]"
+                            },
+                            "probe": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_5')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "FabricGatewayProbe",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "Tcp",
+                            "port": 19000,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    },
+                    {
+                        "name": "FabricHttpGatewayProbe",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "Tcp",
+                            "port": 19080,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [
+                    {
+                        "name": "LoadBalancerBEAddressNatPool.0",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_6')]"
+                            },
+                            "frontendPort": 3389,
+                            "backendPort": 3389,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    },
+                    {
+                        "name": "LoadBalancerBEAddressNatPool.1",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_7')]"
+                            },
+                            "frontendPort": 3390,
+                            "backendPort": 3389,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    },
+                    {
+                        "name": "LoadBalancerBEAddressNatPool.2",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_8')]"
+                            },
+                            "frontendPort": 3391,
+                            "backendPort": 3389,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    },
+                    {
+                        "name": "LoadBalancerBEAddressNatPool.3",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_9')]"
+                            },
+                            "frontendPort": 3392,
+                            "backendPort": 3389,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    },
+                    {
+                        "name": "LoadBalancerBEAddressNatPool.4",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_10')]"
+                            },
+                            "frontendPort": 3393,
+                            "backendPort": 3389,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    }
+                ],
+                "outboundRules": [],
+                "inboundNatPools": [
+                    {
+                        "name": "LoadBalancerBEAddressNatPool",
+                        "etag": "W/\"f005db5b-cacb-4ba7-a82c-c1836604652d\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendPortRangeStart": 3389,
+                            "frontendPortRangeEnd": 4500,
+                            "backendPort": 3389,
+                            "protocol": "Tcp",
+                            "idleTimeoutInMinutes": 4,
+                            "enableFloatingIP": false,
+                            "enableTcpReset": false,
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_LB_nova_prod_D3_id_11')]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_LBIP_nova_prod_0_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/publicIPAddresses/LBIP-nova-prod-0'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_LBIP_nova_prod_0_name')]",
+            "apiVersion": "2018-08-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "71eba942-81e4-4205-915b-fba8a5cc6821",
+                "ipAddress": "52.183.13.106",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "nova-prod",
+                    "fqdn": "nova-prod.westus2.cloudapp.azure.com"
+                },
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/virtualNetworks/VNet-nova-prod'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_VNet_nova_prod_name')]",
+            "apiVersion": "2018-08-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "9dac669e-a20d-45db-ade9-670cf2f618be",
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "Subnet-0",
+                        "etag": "W/\"460a971f-ef2e-475d-8095-6e7f75e71f98\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.0.0.0/24",
+                            "delegations": []
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false,
+                "enableVmProtection": false
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourcegroups/Nova/providers/Microsoft.ServiceFabric/clusters/nova-prod'.",
+            "type": "Microsoft.ServiceFabric/clusters",
+            "name": "[parameters('clusters_nova_prod_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "clusterCodeVersion": "6.3.187.9494",
+                "managementEndpoint": "[concat('https://', parameters('clusters_nova_prod_name'),'.westus2.cloudapp.azure.com:19080')]",
+                "certificate": {
+                    "thumbprint": "1E51D850B9081C8B6B1BB683B82A08A925224A26",
+                    "x509StoreName": "My"
+                },
+                "clientCertificateThumbprints": [],
+                "clientCertificateCommonNames": [],
+                "fabricSettings": [
+                    {
+                        "name": "Security",
+                        "parameters": [
+                            {
+                                "name": "ClusterProtectionLevel",
+                                "value": "EncryptAndSign"
+                            }
+                        ]
+                    }
+                ],
+                "diagnosticsStorageAccountConfig": {
+                    "storageAccountName": "sflogsnovaprod8614",
+                    "protectedAccountKeyName": "StorageAccountKey1",
+                    "blobEndpoint": "[concat('https', '://', parameters('storageAccounts_sflogsnovaprod8614_name'), '.blob.core.windows.net', '/')]",
+                    "queueEndpoint": "[concat('https', '://', parameters('storageAccounts_sflogsnovaprod8614_name'), '.queue.core.windows.net', '/')]",
+                    "tableEndpoint": "[concat('https', '://', parameters('storageAccounts_sflogsnovaprod8614_name'), '.table.core.windows.net', '/')]"
+                },
+                "vmImage": "Windows",
+                "reliabilityLevel": "Silver",
+                "nodeTypes": [
+                    {
+                        "name": "D3",
+                        "vmInstanceCount": 5,
+                        "clientConnectionEndpointPort": 19000,
+                        "httpGatewayEndpointPort": 19080,
+                        "applicationPorts": {
+                            "startPort": 20000,
+                            "endPort": 30000
+                        },
+                        "ephemeralPorts": {
+                            "startPort": 49152,
+                            "endPort": 65534
+                        },
+                        "isPrimary": true,
+                        "reverseProxyEndpointPort": 19081,
+                        "durabilityLevel": "Bronze"
+                    }
+                ],
+                "reverseProxyCertificate": {
+                    "thumbprint": "6C18AC51AC7791ECEF989016B7BDAC95BE03EBE6",
+                    "x509StoreName": "My"
+                },
+                "upgradeMode": "Automatic",
+                "addonFeatures": [
+                    "DnsService"
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sflogsnovaprod8614_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Storage/storageAccounts/sflogsnovaprod8614'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_sflogsnovaprod8614_name')]",
+            "apiVersion": "2018-07-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Storage/storageAccounts/sfdgnovaprod3162'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_sfdgnovaprod3162_name')]",
+            "apiVersion": "2018-07-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/NOVA/providers/Microsoft.Compute/virtualMachineScaleSets/D3/virtualMachines/0'.",
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "sku": {
+                "name": "Standard_D3_v2",
+                "tier": "Standard"
+            },
+            "name": "[concat(parameters('virtualMachineScaleSets_D3_name'), '/', parameters('virtualMachines_0_name'))]",
+            "apiVersion": "2018-06-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "[concat('2', parameters('virtualMachines_0_name'),'16-Datacenter-with-Containers')]",
+                        "version": "[concat('2', parameters('virtualMachines_0_name'),'16.127.2', parameters('virtualMachines_0_name'),'181', parameters('virtualMachines_0_name'),'1', parameters('virtualMachines_0_name'))]"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat('D3_D3_', parameters('virtualMachines_0_name'),'_OsDisk_1_84257b76', parameters('virtualMachines_0_name'),'c', parameters('virtualMachines_0_name'),'84868bdf1d198391f472f')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadOnly",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "[parameters('virtualMachines_0_id')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat('D3', parameters('virtualMachines_0_name'))]",
+                    "adminUsername": "novapd",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [
+                        {
+                            "sourceVault": {
+                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+                            },
+                            "vaultCertificates": [
+                                {
+                                    "certificateUrl": "https://nova-prodsf.vault.azure.net/secrets/novaprodsf/e2b887f28d934f7897bbe7b9864d7949",
+                                    "certificateStore": "My"
+                                },
+                                {
+                                    "certificateUrl": "https://nova-prodsf.vault.azure.net/secrets/novaprodsfreverseproxy/377cc79a11f94283adbccb47dcbf154b",
+                                    "certificateStore": "My"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name')), concat('/virtualMachines/', parameters('virtualMachines_0_name'),'/networkInterfaces/NIC-nova-prod-', parameters('virtualMachines_0_name')))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/NOVA/providers/Microsoft.Compute/virtualMachineScaleSets/D3/virtualMachines/1'.",
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "sku": {
+                "name": "Standard_D3_v2",
+                "tier": "Standard"
+            },
+            "name": "[concat(parameters('virtualMachineScaleSets_D3_name'), '/', parameters('virtualMachines_1_name'))]",
+            "apiVersion": "2018-06-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "[concat('20', parameters('virtualMachines_1_name'),'6-Datacenter-with-Containers')]",
+                        "version": "[concat('20', parameters('virtualMachines_1_name'),'6.', parameters('virtualMachines_1_name'),'27.20', parameters('virtualMachines_1_name'),'8', parameters('virtualMachines_1_name'),'0', parameters('virtualMachines_1_name'),'0')]"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat('D3_D3_', parameters('virtualMachines_1_name'),'_OsDisk_', parameters('virtualMachines_1_name'),'_64ec', parameters('virtualMachines_1_name'),'376', parameters('virtualMachines_1_name'),'7a64c45b705a5bb7e809fb', parameters('virtualMachines_1_name'))]",
+                        "createOption": "FromImage",
+                        "caching": "ReadOnly",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "[parameters('virtualMachines_1_id')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat('D300000', parameters('virtualMachines_1_name'))]",
+                    "adminUsername": "novapd",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [
+                        {
+                            "sourceVault": {
+                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+                            },
+                            "vaultCertificates": [
+                                {
+                                    "certificateUrl": "https://nova-prodsf.vault.azure.net/secrets/novaprodsf/e2b887f28d934f7897bbe7b9864d7949",
+                                    "certificateStore": "My"
+                                },
+                                {
+                                    "certificateUrl": "[concat('https://nova-prodsf.vault.azure.net/secrets/novaprodsfreverseproxy/377cc79a', parameters('virtualMachines_1_name'),'f94283adbccb47dcbf', parameters('virtualMachines_1_name'),'54b')]",
+                                    "certificateStore": "My"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name')), concat('/virtualMachines/', parameters('virtualMachines_1_name'),'/networkInterfaces/NIC-nova-prod-0'))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/NOVA/providers/Microsoft.Compute/virtualMachineScaleSets/D3/virtualMachines/2'.",
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "sku": {
+                "name": "Standard_D3_v2",
+                "tier": "Standard"
+            },
+            "name": "[concat(parameters('virtualMachineScaleSets_D3_name'), '/', parameters('virtualMachines_2_name'))]",
+            "apiVersion": "2018-06-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "[concat(parameters('virtualMachines_2_name'),'016-Datacenter-with-Containers')]",
+                        "version": "[concat(parameters('virtualMachines_2_name'),'016.1', parameters('virtualMachines_2_name'),'7.', parameters('virtualMachines_2_name'),'0181010')]"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat('D3_D3_', parameters('virtualMachines_2_name'),'_OsDisk_1_4c00d59c9df44c74b87ef9', parameters('virtualMachines_2_name'),'850fd1e7', parameters('virtualMachines_2_name'))]",
+                        "createOption": "FromImage",
+                        "caching": "ReadOnly",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "[parameters('virtualMachines_2_id')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat('D300000', parameters('virtualMachines_2_name'))]",
+                    "adminUsername": "novapd",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [
+                        {
+                            "sourceVault": {
+                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+                            },
+                            "vaultCertificates": [
+                                {
+                                    "certificateUrl": "[concat('https://nova-prodsf.vault.azure.net/secrets/novaprodsf/e', parameters('virtualMachines_2_name'),'b887f', parameters('virtualMachines_2_name'),'8d934f7897bbe7b9864d7949')]",
+                                    "certificateStore": "My"
+                                },
+                                {
+                                    "certificateUrl": "[concat('https://nova-prodsf.vault.azure.net/secrets/novaprodsfreverseproxy/377cc79a11f94', parameters('virtualMachines_2_name'),'83adbccb47dcbf154b')]",
+                                    "certificateStore": "My"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name')), concat('/virtualMachines/', parameters('virtualMachines_2_name'),'/networkInterfaces/NIC-nova-prod-0'))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/NOVA/providers/Microsoft.Compute/virtualMachineScaleSets/D3/virtualMachines/3'.",
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "sku": {
+                "name": "Standard_D3_v2",
+                "tier": "Standard"
+            },
+            "name": "[concat(parameters('virtualMachineScaleSets_D3_name'), '/', parameters('virtualMachines_3_name'))]",
+            "apiVersion": "2018-06-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter-with-Containers",
+                        "version": "2016.127.20181010"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat('D', parameters('virtualMachines_3_name'),'_D', parameters('virtualMachines_3_name'),'_', parameters('virtualMachines_3_name'),'_OsDisk_1_e16254', parameters('virtualMachines_3_name'),'2eedc4a1fa7edba9205', parameters('virtualMachines_3_name'),'12dea')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadOnly",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "[parameters('virtualMachines_3_id')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat('D', parameters('virtualMachines_3_name'),'00000', parameters('virtualMachines_3_name'))]",
+                    "adminUsername": "novapd",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [
+                        {
+                            "sourceVault": {
+                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+                            },
+                            "vaultCertificates": [
+                                {
+                                    "certificateUrl": "[concat('https://nova-prodsf.vault.azure.net/secrets/novaprodsf/e2b887f28d9', parameters('virtualMachines_3_name'),'4f7897bbe7b9864d7949')]",
+                                    "certificateStore": "My"
+                                },
+                                {
+                                    "certificateUrl": "[concat('https://nova-prodsf.vault.azure.net/secrets/novaprodsfreverseproxy/', parameters('virtualMachines_3_name'),'77cc79a11f9428', parameters('virtualMachines_3_name'),'adbccb47dcbf154b')]",
+                                    "certificateStore": "My"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name')), concat('/virtualMachines/', parameters('virtualMachines_3_name'),'/networkInterfaces/NIC-nova-prod-0'))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/NOVA/providers/Microsoft.Compute/virtualMachineScaleSets/D3/virtualMachines/4'.",
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "sku": {
+                "name": "Standard_D3_v2",
+                "tier": "Standard"
+            },
+            "name": "[concat(parameters('virtualMachineScaleSets_D3_name'), '/', parameters('virtualMachines_4_name'))]",
+            "apiVersion": "2018-06-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "nova-prod"
+            },
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter-with-Containers",
+                        "version": "2016.127.20181010"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat('D3_D3_', parameters('virtualMachines_4_name'),'_OsDisk_1_bdd3ac', parameters('virtualMachines_4_name'),'a', parameters('virtualMachines_4_name'),'b85', parameters('virtualMachines_4_name'),'89e98009e5f76', parameters('virtualMachines_4_name'),'d3fa3')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadOnly",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "[parameters('virtualMachines_4_id')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat('D300000', parameters('virtualMachines_4_name'))]",
+                    "adminUsername": "novapd",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [
+                        {
+                            "sourceVault": {
+                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+                            },
+                            "vaultCertificates": [
+                                {
+                                    "certificateUrl": "[concat('https://nova-prodsf.vault.azure.net/secrets/novaprodsf/e2b887f28d93', parameters('virtualMachines_4_name'),'f7897bbe7b986', parameters('virtualMachines_4_name'),'d79', parameters('virtualMachines_4_name'),'9')]",
+                                    "certificateStore": "My"
+                                },
+                                {
+                                    "certificateUrl": "[concat('https://nova-prodsf.vault.azure.net/secrets/novaprodsfreverseproxy/377cc79a11f9', parameters('virtualMachines_4_name'),'283adbccb', parameters('virtualMachines_4_name'),'7dcbf15', parameters('virtualMachines_4_name'),'b')]",
+                                    "certificateStore": "My"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name')), concat('/virtualMachines/', parameters('virtualMachines_4_name'),'/networkInterfaces/NIC-nova-prod-0'))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_D3_name'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.KeyVault/vaults/nova-prodsf/secrets/novaprodsf'.",
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(parameters('vaults_nova_prodsf_name'), '/', parameters('secrets_novaprodsf_name'))]",
+            "apiVersion": "2016-10-01",
+            "location": "westus2",
+            "scale": null,
+            "properties": {
+                "contentType": "application/x-pkcs12",
+                "attributes": {
+                    "enabled": true,
+                    "nbf": 1542411746,
+                    "exp": 1573948346
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.KeyVault/vaults/nova-prodsf/secrets/novaprodsfreverseproxy'.",
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(parameters('vaults_nova_prodsf_name'), '/', parameters('secrets_novaprodsfreverseproxy_name'))]",
+            "apiVersion": "2016-10-01",
+            "location": "westus2",
+            "scale": null,
+            "properties": {
+                "contentType": "application/x-pkcs12",
+                "attributes": {
+                    "enabled": true,
+                    "nbf": 1542416949,
+                    "exp": 1573953549
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_nova_prodsf_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/inboundNatRules/LoadBalancerBEAddressNatPool.0'.",
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "name": "[concat(parameters('loadBalancers_LB_nova_prod_D3_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.0_name'))]",
+            "apiVersion": "2018-08-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
+                },
+                "frontendPort": 3389,
+                "backendPort": 3389,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/inboundNatRules/LoadBalancerBEAddressNatPool.1'.",
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "name": "[concat(parameters('loadBalancers_LB_nova_prod_D3_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.1_name'))]",
+            "apiVersion": "2018-08-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
+                },
+                "frontendPort": 3390,
+                "backendPort": 3389,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/inboundNatRules/LoadBalancerBEAddressNatPool.2'.",
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "name": "[concat(parameters('loadBalancers_LB_nova_prod_D3_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.2_name'))]",
+            "apiVersion": "2018-08-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
+                },
+                "frontendPort": 3391,
+                "backendPort": 3389,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/inboundNatRules/LoadBalancerBEAddressNatPool.3'.",
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "name": "[concat(parameters('loadBalancers_LB_nova_prod_D3_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.3_name'))]",
+            "apiVersion": "2018-08-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
+                },
+                "frontendPort": 3392,
+                "backendPort": 3389,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/loadBalancers/LB-nova-prod-D3/inboundNatRules/LoadBalancerBEAddressNatPool.4'.",
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "name": "[concat(parameters('loadBalancers_LB_nova_prod_D3_name'), '/', parameters('inboundNatRules_LoadBalancerBEAddressNatPool.4_name'))]",
+            "apiVersion": "2018-08-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name')), '/frontendIPConfigurations/LoadBalancerIPConfig')]"
+                },
+                "frontendPort": 3393,
+                "backendPort": 3389,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_LB_nova_prod_D3_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/60eceb68-d850-45a2-ad82-86494890fa69/resourceGroups/Nova/providers/Microsoft.Network/virtualNetworks/VNet-nova-prod/subnets/Subnet-0'.",
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "name": "[concat(parameters('virtualNetworks_VNet_nova_prod_name'), '/', parameters('subnets_Subnet_0_name'))]",
+            "apiVersion": "2018-08-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.0.0.0/24",
+                "delegations": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_VNet_nova_prod_name'))]"
+            ]
+        }
+    ]
+}
