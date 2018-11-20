@@ -2,15 +2,16 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "clusterLocation": {
+        "default_resource_location": {
             "type": "string",
+			"defaultValue": "westus2",
             "metadata": {
                 "description": "Location of the Cluster"
             }
         },
-        "clusterName": {
+        "sfClusterName": {
             "type": "string",
-            "defaultValue": "Cluster",
+            "defaultValue": "novasf$name",
             "metadata": {
                 "description": "Name of your cluster - Between 3 and 23 characters. Letters and numbers only"
             }
@@ -52,7 +53,8 @@
             "defaultValue": "10.0.0.0/24"
         },
         "computeLocation": {
-            "type": "string"
+            "type": "string",
+			"defaultValue": "westus2"
         },
         "publicIPAddressName": {
             "type": "string",
@@ -78,6 +80,7 @@
         },
         "adminPassword": {
             "type": "securestring",
+			"defaultValue": "$novaSparkPassword",
             "metadata": {
                 "description": "Remote desktop user password. Must be a strong password"
             }
@@ -91,7 +94,8 @@
             "defaultValue": "10.0.0.0/16"
         },
         "dnsName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "nova-$name"
         },
         "nicName": {
             "type": "string",
@@ -149,18 +153,29 @@
         },
         "certificateThumbprint": {
             "type": "string",
+            "defaultValue": "$novaprodsfCertThumbprint",
             "metadata": {
                 "description": "Certificate Thumbprint"
             }
         },
         "sourceVaultValue": {
             "type": "string",
+            "defaultValue": "novasfKV$name",
             "metadata": {
                 "description": "Resource Id of the key vault, is should be in the format of /subscriptions/<Sub ID>/resourceGroups/<Resource group name>/providers/Microsoft.KeyVault/vaults/<vault name>"
             }
         },
+		"secrets_novaprodsf_name": {
+            "defaultValue": "nova$namesf",
+            "type": "String"
+        },
+        "secrets_novaprodsfreverseproxy_name": {
+            "defaultValue": "nova$namesfreverseproxy",
+            "type": "String"
+        },
         "certificateUrlValue": {
             "type": "string",
+			"defaultValue": "$novaprodsfCertSecretId",
             "metadata": {
                 "description": "Refers to the location URL in your key vault where the certificate was uploaded, it is should be in the format of https://<name of the vault>.vault.azure.net:443/secrets/<exact location>"
             }
@@ -177,12 +192,14 @@
         },
         "reverseProxyCertificateThumbprint": {
             "type": "string",
+			"defaultValue": "$novaprodsfreverseproxyCertThumbprint",
             "metadata": {
                 "description": "Reverse proxy Certificate Thumbprint"
             }
         },
         "reverseProxyCertificateUrlValue": {
             "type": "string",
+			"defaultValue": "$novaprodsfreverseproxyCertSecretId",
             "metadata": {
                 "description": "Refers to the location URL in your key vault where the certificate was uploaded, it is should be in the format of https://<name of the vault>.vault.azure.net:443/secrets/<exact location>"
             }
@@ -249,6 +266,14 @@
         "vmNodeType0Size": {
             "type": "string",
             "defaultValue": "Standard_D3_v2"
+        },
+		"virtualMachines_0_name": {
+            "defaultValue": "0",
+            "type": "String"
+        },
+        "virtualMachines_0_id": {
+            "defaultValue": "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Compute/disks/D3_D3_0_OsDisk_1_84257b760c084868bdf1d198391f472f",
+            "type": "String"
         }
     },
     "variables": {
@@ -259,13 +284,14 @@
         "publicIPApiVersion": "2015-06-15",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
         "subnet0Ref": "[concat(variables('vnetID'),'/subnets/',parameters('subnet0Name'))]",
-        "lbID0": "[resourceId('Microsoft.Network/loadBalancers', concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name')))]",
+        "lbID0": "[resourceId('Microsoft.Network/loadBalancers', concat('LB','-', parameters('sfClusterName'),'-',parameters('vmNodeType0Name')))]",
         "lbIPConfig0": "[concat(variables('lbID0'),'/frontendIPConfigurations/LoadBalancerIPConfig')]",
         "lbPoolID0": "[concat(variables('lbID0'),'/backendAddressPools/LoadBalancerBEAddressPool')]",
         "lbProbeID0": "[concat(variables('lbID0'),'/probes/FabricGatewayProbe')]",
         "lbHttpProbeID0": "[concat(variables('lbID0'),'/probes/FabricHttpGatewayProbe')]",
         "lbNatPoolID0": "[concat(variables('lbID0'),'/inboundNatPools/LoadBalancerBEAddressNatPool')]",
-        "vmStorageAccountName0": "[toLower(concat(uniqueString(resourceGroup().id), '1', '0' ))]"
+        "vmStorageAccountName0": "[toLower(concat(uniqueString(resourceGroup().id), '1', '0' ))]",
+		"tenantId": "$tenantId"
     },
     "resources": [
         {
@@ -281,7 +307,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[parameters('sfClusterName')]"
             }
         },
         {
@@ -297,7 +323,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[parameters('sfClusterName')]"
             }
         },
         {
@@ -323,7 +349,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[parameters('sfClusterName')]"
             }
         },
         {
@@ -339,13 +365,13 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[parameters('sfClusterName')]"
             }
         },
         {
             "apiVersion": "[variables('lbApiVersion')]",
             "type": "Microsoft.Network/loadBalancers",
-            "name": "[concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name'))]",
+            "name": "[concat('LB','-', parameters('sfClusterName'),'-',parameters('vmNodeType0Name'))]",
             "location": "[parameters('computeLocation')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/publicIPAddresses/',concat(parameters('lbIPName'),'-','0'))]"
@@ -444,7 +470,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[parameters('sfClusterName')]"
             }
         },
         {
@@ -454,7 +480,7 @@
             "location": "[parameters('computeLocation')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
-                "[concat('Microsoft.Network/loadBalancers/', concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name')))]",
+                "[concat('Microsoft.Network/loadBalancers/', concat('LB','-', parameters('sfClusterName'),'-',parameters('vmNodeType0Name')))]",
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName'))]",
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('applicationDiagnosticsStorageAccountName'))]"
             ],
@@ -477,7 +503,7 @@
                                     },
                                     "publisher": "Microsoft.Azure.ServiceFabric",
                                     "settings": {
-                                        "clusterEndpoint": "[reference(parameters('clusterName')).clusterEndpoint]",
+                                        "clusterEndpoint": "[reference(parameters('sfClusterName')).clusterEndpoint]",
                                         "nodeTypeRef": "[parameters('vmNodeType0Name')]",
                                         "dataPath": "D:\\\\SvcFab",
                                         "durabilityLevel": "Bronze",
@@ -586,7 +612,7 @@
                         "secrets": [
                             {
                                 "sourceVault": {
-                                    "id": "[parameters('sourceVaultValue')]"
+                                    "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('sourceVaultValue'))]"
                                 },
                                 "vaultCertificates": [
                                     {
@@ -625,14 +651,14 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[parameters('sfClusterName')]"
             }
         },
         {
             "apiVersion": "2017-07-01-preview",
             "type": "Microsoft.ServiceFabric/clusters",
-            "name": "[parameters('clusterName')]",
-            "location": "[parameters('clusterLocation')]",
+            "name": "[parameters('sfClusterName')]",
+            "location": "[parameters('default_resource_location')]",
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName'))]"
             ],
@@ -696,13 +722,151 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[parameters('sfClusterName')]"
             }
+        },
+		{
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "sku": {
+                "name": "Standard_D3_v2",
+                "tier": "Standard"
+            },
+            "name": "[concat(parameters('vmNodeType0Name'), '/', parameters('virtualMachines_0_name'))]",
+            "apiVersion": "2018-06-01",
+            "location": "westus2",
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "[parameters('sfClusterName')]"
+            },
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "[concat('2', parameters('virtualMachines_0_name'),'16-Datacenter-with-Containers')]",
+                        "version": "[concat('2', parameters('virtualMachines_0_name'),'16.127.2', parameters('virtualMachines_0_name'),'181', parameters('virtualMachines_0_name'),'1', parameters('virtualMachines_0_name'))]"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat('D3_D3_', parameters('virtualMachines_0_name'),'_OsDisk_1_84257b76', parameters('virtualMachines_0_name'),'c', parameters('virtualMachines_0_name'),'84868bdf1d198391f472f')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadOnly",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "[parameters('virtualMachines_0_id')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat('D3', parameters('virtualMachines_0_name'))]",
+                    "adminUsername": "novapd",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [
+                        {
+                            "sourceVault": {
+                                "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('sourceVaultValue'))]"
+                            },
+                            "vaultCertificates": [
+                                {
+                                    "certificateUrl": "[parameters('certificateUrlValue')]",
+                                    "certificateStore": "My"
+                                },
+                                {
+                                    "certificateUrl": "[parameters('reverseProxyCertificateUrlValue')]",
+                                    "certificateStore": "My"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('vmNodeType0Name')), concat('/virtualMachines/', parameters('virtualMachines_0_name'),'/networkInterfaces/NIC-nova-$name-', parameters('virtualMachines_0_name')))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('vmNodeType0Name'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('sourceVaultValue'))]"
+            ]
+        },
+		{
+            "type": "Microsoft.KeyVault/vaults",
+            "name": "[parameters('sourceVaultValue')]",
+            "apiVersion": "2016-10-01",
+			"location": "[parameters('default_resource_location')]",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+				"tenantId": "[variables('tenantId')]",
+                "accessPolicies": [
+                    {
+						"tenantId": "[variables('tenantId')]",
+                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": true,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": true
+            },
+            "dependsOn": []
         }
     ],
     "outputs": {
         "clusterProperties": {
-            "value": "[reference(parameters('clusterName'))]",
+            "value": "[reference(parameters('sfClusterName'))]",
             "type": "object"
         }
     }
