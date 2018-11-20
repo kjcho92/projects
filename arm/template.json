@@ -26,6 +26,10 @@
 			"defaultValue": "NovaFabricRDPKV$name",
 			"type": "String"
 		},
+        "sourceVaultValue": {
+            "defaultValue": "novasfKV$name",
+            "type": "string"
+        },
 		"Redis_nova$name_name": {
 			"defaultValue": "nova$name",
 			"type": "String"
@@ -36,10 +40,6 @@
 		},
 		"config_web_name": {
 			"defaultValue": "web",
-			"type": "String"
-		},
-		"virtualMachineScaleSets_D3$name_name": {
-			"defaultValue": "D3$name",
 			"type": "String"
 		},
 		"components_novaweb$name_name": {
@@ -137,6 +137,10 @@
 			"metadata": {
 				"description": "The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
 			}
+		},
+		"sparkManagedIdentity": {
+			"type": "string",
+			"defaultValue": "SparkManagedIdentity"
 		}
 	},
 	"variables": {
@@ -934,6 +938,70 @@
 			"dependsOn": []
 		},
 		{
+            "type": "Microsoft.KeyVault/vaults",
+            "name": "[parameters('sourceVaultValue')]",
+            "apiVersion": "2016-10-01",
+			"location": "[parameters('default_resource_location')]",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+				"tenantId": "[variables('tenantId')]",
+                "accessPolicies": [
+                    {
+						"tenantId": "[variables('tenantId')]",
+                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": true,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": true
+            },
+            "dependsOn": []
+        },
+		{
 			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Storage/storageAccounts/novaconfigs$name'.",
 			"type": "Microsoft.Storage/storageAccounts",
 			"sku": {
@@ -1369,7 +1437,13 @@
 						}
 					]
 				}
-			}
+			},
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/$subscriptionId/resourcegroups/$resourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SparkManagedIdentity": {}
+                }
+            }
 		},
 		{
 			"type": "Microsoft.Storage/storageAccounts",
@@ -1379,6 +1453,13 @@
 			"properties": {
 				"accountType": "Standard_LRS"
 			}
-		}
+		},
+		{
+            "apiVersion": "2015-08-31-preview",
+            "name": "[parameters('sparkManagedIdentity')]",
+			"location": "[parameters('default_resource_location')]",
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "properties": {}
+        }
 	]
 }

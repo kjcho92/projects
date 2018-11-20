@@ -51,10 +51,11 @@ param(
  # $productName  = "armtest",
  $productName  = "ProdTest",
 
- [string]
+# [string]
+# $templateFilePath = "template.json", # all
 # $templateFilePath = "template-nosfnocert.json"  # All resouces
 # $templateFilePath = "sparkOnlytemplate.json", # Spark
- $templateFilePath = "template.json", # Spark
+# $templateFilePath = "sfOnlytemplate.json", # sf
 
  $parametersFilePath = "noParam",
 
@@ -79,11 +80,12 @@ Function RegisterRP {
     Register-AzureRmResourceProvider -ProviderNamespace $ResourceProviderNamespace;
 }
 
-Function Init {
-    $rawData = Get-Content -Raw -Path $templateFilePath
+Function Init([System.String]$templatePath = '') 
+{
+    $rawData = Get-Content -Raw -Path $templatePath
     $rawData = TranslateTokens -Source $rawData
 
-    Set-Content -Path temp.json -Value $rawData
+    Set-Content -Path "temp_$templatePath" -Value $rawData
 }
 
 
@@ -91,7 +93,9 @@ Function TranslateTokens([System.String]$Source = '')
 {
    $newStr = $Source.Replace('$name', $name )
    $newStr = $newStr.Replace('$subscriptionId', $subscriptionId )
+   
    $newStr = $newStr.Replace('$resourceGroup', $resourceGroupName )
+   $newStr = $newStr.Replace('$resourceLocation', "westus2" )
    $newStr = $newStr.Replace('$novaSparkPassword', $novaSparkPassword )   
    $newStr = $newStr.Replace('$tenantId', $tenantId )
    $newStr = $newStr.Replace('$novaSparkBlobAccountName', $novaSparkBlobAccountName )
@@ -103,8 +107,33 @@ Function TranslateTokens([System.String]$Source = '')
    $newStr = $newStr.Replace('$novaopsconnectionString', $novaopsconnectionString )
    $newStr = $newStr.Replace('$novaSparkPassword', $novaSparkPassword ) #deploy.json
 
+   # SF Template
+   $newStr = $newStr.Replace('$novaprodsfCertThumbprint', $novaprodsfCert.Thumbprint )
+   $newStr = $newStr.Replace('$novaprodsfCertSecretId', $novaprodsfCert.SecretId )
+   $newStr = $newStr.Replace('$novaprodsfreverseproxyCertThumbprint', $novaprodsfreverseproxyCert.Thumbprint )
+   $newStr = $newStr.Replace('$novaprodsfreverseproxyCertSecretId', $novaprodsfreverseproxyCert.SecretId )
+
    $newStr
 } 
+
+Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
+{
+    $kvName = "novasfkv$name";
+    $subject = "CN=$kvName"+ ".westus2.cloudapp.azure.com";
+
+    $cert = New-SelfSignedCertificate -Subject $subject -CertStoreLocation cert:\LocalMachine\My
+ 
+    # Export the cert to a PFX with password
+    $password = ConvertTo-SecureString "abc" -AsPlainText -Force
+    $certFileName = "$certName.pfx"
+
+    Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFileName -Password $password
+ 
+    # Upload to Key Vault
+
+    Import-AzureKeyVaultCertificate -VaultName $kvName -Name $certName -FilePath $certFileName -Password $password
+
+}
 
 Function AddScriptActions()
 {
@@ -292,8 +321,6 @@ Function SetupSecrets()
 #******************************************************************************
 $ErrorActionPreference = "Stop"
 
-# Initialize
-Init
 $dbConRaw = Invoke-AzureRmResourceAction -Action listConnectionStrings `
     -ResourceType "Microsoft.DocumentDb/databaseAccounts" `
     -ApiVersion "2015-04-08" `
@@ -348,10 +375,26 @@ else{
 
 # Start the deployment
 Write-Host "Starting deployment...";
-if(Test-Path $parametersFilePath) {
-#    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile temp.json;
-} else {
-#    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile temp.json -TemplateParameterFile $parametersFilePath;
+
+$templateFilePath = "template.json"
+# Initialize
+Init -templatePath $templateFilePath
+
+if(Test-Path "temp_$templateFilePath") {
+#    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
+}
+# $novaprodsfCert = GenerateCertsAndImportKeyVault -certName "novaprodsf"
+# $novaprodsfreverseproxyCert = GenerateCertsAndImportKeyVault -certName "novaprodsfreverseproxy"
+
+
+# Start SF deployment
+Write-Host "Starting SF deployment...";
+$templateFilePathForSF = "sf-template.json"
+#$templateFilePathForSF = "sfonly-template.json"
+Init -templatePath $templateFilePathForSF
+if(Test-Path "temp_$templateFilePathForSF")
+{
+    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
 }
 
 # Spark
