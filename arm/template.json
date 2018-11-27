@@ -6,6 +6,14 @@
 			"defaultValue": "$resourceLocation",
 			"type": "string"
 		},
+		"resource_location_microsoft_insights": {
+			"defaultValue": "$resourceLocationForMicrosoftInsights",
+			"type": "string"
+		},		
+		"resource_location_microsoft_servicefabric": {
+			"defaultValue": "$resourceLocationForServiceFabric",
+			"type": "string"
+		},		
 		"sites_nova$name_name": {
 			"defaultValue": "nova$name",
 			"type": "String"
@@ -152,7 +160,8 @@
 		"storageAccounts_novaops_containerName_checkpoints": "checkpoints",
 		"storageAccounts_novaops_containerName_diagnostics": "diagnostics",
 		"storageAccounts_novaops_containerName_samples": "samples",
-		"tenantId": "$tenantId"
+		"tenantId": "$tenantId",
+		"userId": "$userId"
 	},
 	"resources": [
 		{
@@ -237,7 +246,7 @@
 			"kind": "web",
 			"name": "[parameters('components_novaweb$name_name')]",
 			"apiVersion": "2015-05-01",
-			"location": "[parameters('default_resource_location')]",
+			"location": "[parameters('resource_location_microsoft_insights')]",
 			"tags": {
 				"applicationType": "web",
 				"hidden-link:/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Web/sites/nova$name": "Resource"
@@ -258,7 +267,7 @@
 			"kind": "other",
 			"name": "[parameters('components_nova$name_name')]",
 			"apiVersion": "2015-05-01",
-			"location": "[parameters('default_resource_location')]",
+			"location": "[parameters('resource_location_microsoft_insights')]",
 			"tags": {},
 			"scale": null,
 			"properties": {
@@ -287,108 +296,47 @@
 				"accessPolicies": [
 					{
 						"tenantId": "[variables('tenantId')]",
-						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					}
+                        "objectId": "[variables('userId')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
 				],
 				"enabledForDeployment": false,
 				"enabledForDiskEncryption": false,
@@ -941,7 +889,7 @@
             "type": "Microsoft.KeyVault/vaults",
             "name": "[parameters('sourceVaultValue')]",
             "apiVersion": "2016-10-01",
-			"location": "[parameters('default_resource_location')]",
+			"location": "[parameters('resource_location_microsoft_servicefabric')]",
             "tags": {},
             "scale": null,
             "properties": {
@@ -953,7 +901,7 @@
                 "accessPolicies": [
                     {
 						"tenantId": "[variables('tenantId')]",
-                        "objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
+                        "objectId": "[variables('userId')]",
                         "permissions": {
                             "keys": [
                                 "Get",
