@@ -38,6 +38,16 @@ param(
  # $resourceGroupName = "NovaTest",
  $resourceGroupName,
  
+ [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
+ [ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
+ [string]
+ $resourceLocationForMicrosoftInsights,
+ 
+ [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
+ [ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
+ [string]
+ $resourceLocationForServiceFabric,
+ 
  [string]
  $resourceGroupLocation,
 
@@ -45,12 +55,6 @@ param(
  [string]
  $productName,
 # $productName  = "myprod",
-
-# [string]
-# $templateFilePath = "template.json", # all
-# $templateFilePath = "template-nosfnocert.json"  # All resouces
-# $templateFilePath = "sparkOnlytemplate.json", # Spark
-# $templateFilePath = "sfOnlytemplate.json", # sf
 
  $parametersFilePath = "noParam",
 
@@ -90,9 +94,11 @@ Function TranslateTokens([System.String]$Source = '')
    $newStr = $newStr.Replace('$subscriptionId', $subscriptionId )
    
    $newStr = $newStr.Replace('$resourceGroup', $resourceGroupName )
-   $newStr = $newStr.Replace('$resourceLocation', "westus2" )
-   $newStr = $newStr.Replace('$novaSparkPassword', $novaSparkPassword )   
+   $newStr = $newStr.Replace('$resourceLocationForMicrosoftInsights', $resourceLocationForMicrosoftInsights )
+
+   $newStr = $newStr.Replace('$novaSparkPassword', $novaSparkPassword )
    $newStr = $newStr.Replace('$tenantId', $tenantId )
+   $newStr = $newStr.Replace('$userId', $userId )
    $newStr = $newStr.Replace('$novaSparkBlobAccountName', $novaSparkBlobAccountName )
 
    # Blob
@@ -107,6 +113,9 @@ Function TranslateTokens([System.String]$Source = '')
    $newStr = $newStr.Replace('$novaprodsfCertSecretId', $novaprodsfCert.SecretId )
    $newStr = $newStr.Replace('$novaprodsfreverseproxyCertThumbprint', $novaprodsfreverseproxyCert.Thumbprint )
    $newStr = $newStr.Replace('$novaprodsfreverseproxyCertSecretId', $novaprodsfreverseproxyCert.SecretId )
+   $newStr = $newStr.Replace('$resourceLocationForServiceFabric', $resourceLocationForServiceFabric )
+   
+   $newStr = $newStr.Replace('$resourceLocation', $resourceGroupLocation )
 
    $newStr
 } 
@@ -114,7 +123,9 @@ Function TranslateTokens([System.String]$Source = '')
 Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
 {
     $kvName = "novasfKV$name";
-    $subject = "CN=$kvName"+ ".westus2.cloudapp.azure.com";
+    # $subject = "CN=$kvName"+ ".westus2.cloudapp.azure.com";
+    $subject = "CN=$kvName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
+    
 
     $cert = New-SelfSignedCertificate -Subject $subject -CertStoreLocation cert:\LocalMachine\My
  
@@ -306,12 +317,15 @@ Function SetupSecrets()
 # Script body
 # Execution begins here
 #******************************************************************************
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 # sign in
 Write-Host "Logging in...";
-$acc = Login-AzureRmAccount;
-$tenantId = $acc.Context.Tenant.Id
+#$acc = Login-AzureRmAccount;
+$acc = Connect-AzureAD;
+$tenantId = $acc.Tenant.Id.Guid
+$userId = (Get-AzureADUser -ObjectId $acc.Account.Id).ObjectId
+
 
 # select subscription
 Write-Host "Selecting subscription '$subscriptionId'";
@@ -339,6 +353,7 @@ if(!$resourceGroup)
 }
 else{
     Write-Host "Using existing resource group '$resourceGroupName'";
+    $resourceGroupLocation = $resourceGroup.Location
 }
 
 # Start the deployment
@@ -349,6 +364,7 @@ $templateFilePath = "template.json"
 Init -templatePath $templateFilePath
 
 if(Test-Path "temp_$templateFilePath") {
+    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
     # New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
     # -Debug 
 }
@@ -364,7 +380,7 @@ $templateFilePathForSF = "sf-template.json"
 Init -templatePath $templateFilePathForSF
 if(Test-Path "temp_$templateFilePathForSF")
 {
-    # New-AzureRmResourceGroupDeployment  -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
+    New-AzureRmResourceGroupDeployment  -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
 }
 
 # Processing
