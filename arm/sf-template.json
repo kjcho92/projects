@@ -4,7 +4,7 @@
     "parameters": {
         "clusterLocation": {
             "type": "string",
-            "defaultValue": "$resourceLocation"
+            "defaultValue": "$resourceLocationForServiceFabric"
         },
         "clusterName": {
             "type": "string",
@@ -48,7 +48,7 @@
         },
         "computeLocation": {
             "type": "string",
-            "defaultValue": "$resourceLocation"
+            "defaultValue": "$resourceLocationForServiceFabric"
         },
         "publicIPAddressName": {
             "type": "string",
