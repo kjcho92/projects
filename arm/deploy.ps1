@@ -27,15 +27,14 @@
 param(
  [Parameter(Mandatory=$True)]
  [string]
- $subscriptionId,
+ $subscriptionId = "60eceb68-d850-45a2-ad82-86494890fa69",
  
  [Parameter(Mandatory=$True)]
  [string]
- $novaSparkPassword,
+ $novaSparkPassword = "novaSparkPassword123$",
 
  [Parameter(Mandatory=$True)]
  [string]
- # $resourceGroupName = "NovaTest",
  $resourceGroupName,
  
  [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
@@ -44,7 +43,6 @@ param(
  $resourceLocationForMicrosoftInsights,
  
  [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
- [ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
  [string]
  $resourceLocationForServiceFabric,
  
@@ -58,11 +56,16 @@ param(
 
  $parametersFilePath = "noParam",
 
+ # Resources Names
  $name = $productName.ToLower(),
  $novaSparkBlobAccountName = "nova$name" + "spark",
  $novaconfigsBlobAccountName = "novaconfigs$name", 
 
  $NovaServicesKVName = "NovaServicesKV$name",
+ $NovaSparkKVName = "NovaSparkKV$name",
+ $NovaSparkRDPKVName = "NovaSparkRDPKV$name",
+ $NovaFabricRDPKVName = "NovaFabricRDPKV$name",
+
  $DBName = "nova$name"
 )
 
@@ -106,7 +109,10 @@ Function TranslateTokens([System.String]$Source = '')
 
    # CosmosDB
    $newStr = $newStr.Replace('$novaopsconnectionString', $novaopsconnectionString )
-   $newStr = $newStr.Replace('$novaSparkPassword', $novaSparkPassword ) #deploy.json
+   $newStr = $newStr.Replace('$novaSparkPassword', $novaSparkPassword )
+   $newStr = $newStr.Replace('$configgenClientId', $azureADApplicationConfiggen.ApplicationId )
+   $newStr = $newStr.Replace('$configgenTenantId', $tenantId )
+   $newStr = $newStr.Replace('$appinsightkey', (Get-AzureRmApplicationInsights -ResourceGroupName $ResourceGroupName -Name nova$name).InstrumentationKey )
 
    # SF Template
    $newStr = $newStr.Replace('$novaprodsfCertThumbprint', $novaprodsfCert.Thumbprint )
@@ -120,10 +126,60 @@ Function TranslateTokens([System.String]$Source = '')
    $newStr
 } 
 
+Function SetAzureADAppSecret([System.String]$AppName = '')
+{
+    $app = Get-AzureRmADApplication -DisplayNameStartWith $AppName
+    if ($app)
+    {
+        $startDate = Get-Date
+        $endDate = $startDate.AddYears(2)
+
+        $keyValue = New-AzureADApplicationPasswordCredential -ObjectId $app.ObjectId -StartDate $startDate -EndDate $endDate
+    }
+
+    # $keyValue = Get-AzureADApplicationPasswordCredential -ObjectId $azureADApplication.ObjectId
+
+    # if ($keyValue)
+    # {
+    #     $startDate = Get-Date
+    #     $endDate = $startDate.AddYears(2)
+    #     $keyValue = New-AzureADApplicationPasswordCredential -ObjectId $azureADApplication.ObjectId -StartDate $startDate -EndDate $endDate
+    # }
+
+    $keyValue
+}
+
+Function GenerateAzureADApplication([System.String]$novaAppName = '', [System.String]$websiteName = '')
+{
+    # New-AzureADApplication -DisplayName "nova$name"  -IdentifierUris "https://nova$name.azurewebsites.net" -ReplyUrls "https://nova$name.azurewebsites.net/authReturn"
+    $app = Get-AzureRmADApplication -DisplayNameStartWith $novaAppName
+    if (!$app)
+    {
+        if ($websiteName){
+            $app = New-AzureRmADApplication  -DisplayName $novaAppName -IdentifierUris "https://$tenantName/$novaAppName" -ReplyUrls "https://$websiteName.azurewebsites.net/authReturn"
+        }
+        else {
+            $app = New-AzureRmADApplication  -DisplayName $novaAppName -IdentifierUris "https://$tenantName/$novaAppName" 
+            
+            $cer = $novaprodsfCert.Certificate
+            $certValue = [System.Convert]::ToBase64String($cer.GetRawCertData())
+    
+            New-AzureRmADAppCredential -ApplicationId $app.ApplicationId -CertValue $certValue -StartDate $cer.NotBefore -EndDate $cer.NotAfter
+        }
+    }
+
+    $servicePrincipal = Get-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId
+    if (!$servicePrincipal)
+    {
+         $servicePrincipal = New-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId
+    }
+
+    $app
+}
+
 Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
 {
     $kvName = "novasfKV$name";
-    # $subject = "CN=$kvName"+ ".westus2.cloudapp.azure.com";
     $subject = "CN=$kvName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
     
 
@@ -133,6 +189,7 @@ Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
     $password = ConvertTo-SecureString "password" -AsPlainText -Force
     $certFileName = "$certName.pfx"
 
+    #TODO uncomment below
     Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFileName -Password $password
  
     # Upload to Key Vault
@@ -157,6 +214,7 @@ Function AddScriptActions()
         try
         {
             New-AzureStorageContainer -Name $containerName -Context $ctx
+            #New-AzureStorageContainer -Name "deployment" -Context $ctx
         }
         catch {}
 
@@ -185,7 +243,7 @@ Function AddScriptActions()
 
 Function SetupCosmosDB()
 {
-    $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $novaconfigsBlobAccountName
+    # $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $novaconfigsBlobAccountName
 
   
     Connect-Mdbc -ConnectionString $dbCon -DatabaseName "production"
@@ -242,16 +300,23 @@ Function SetupCosmosDB()
     Remove-Module Mdbc  
 }
 
-Function SetupBlob()
+
+Function SetupBlobHelper([System.String]$containerName = '', [System.String]$saname = '')
 {
-    $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $novaconfigsBlobAccountName;
+    $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $saname;
     $ctx = $storageAccount.Context;
-    
+
     if ($ctx)
     {
-        $containerName = "referencedata";
         $sourceFileRootDirectory = ".\Blob\$containerName"
         $scriptRoot = $PSScriptRoot + "\Blob\$containerName";
+        
+        try
+        {
+            New-AzureStorageContainer -Name $containerName -Context $ctx
+            #New-AzureStorageContainer -Name "deployment" -Context $ctx
+        }
+        catch {}
 
         $filesToUpload = Get-ChildItem $sourceFileRootDirectory -Recurse -File
 
@@ -261,56 +326,234 @@ Function SetupBlob()
             Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
             Set-AzureStorageBlobContent -File $x.fullname -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
         }
+    }   
+}
 
-        $containerName = "rules";
-        $sourceFileRootDirectory = ".\Blob\$containerName"
-        $scriptRoot = $PSScriptRoot + "\Blob\$containerName";
+Function SetupBlob()
+{
+    
+        SetupBlobHelper -containerName  "deployment" -saname $novaconfigsBlobAccountName
+        SetupBlobHelper -containerName  "rules" -saname $novaconfigsBlobAccountName
+        SetupBlobHelper -containerName  "centralprocessing"  -saname $novaconfigsBlobAccountName
+        SetupBlobHelper -containerName  "deployment" -saname $novaSparkBlobAccountName
 
-        $filesToUpload = Get-ChildItem $sourceFileRootDirectory -Recurse -File
+        # $containerName = "deployment";
+        # $sourceFileRootDirectory = ".\Blob\$containerName"
+        # $scriptRoot = $PSScriptRoot + "\Blob\$containerName";
 
-        foreach ($x in $filesToUpload) {        
-            $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
+        # $filesToUpload = Get-ChildItem $sourceFileRootDirectory -Recurse -File
 
-            Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
-            Set-AzureStorageBlobContent -File $x.fullname -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
-        }
+        # foreach ($x in $filesToUpload) {
+        #     $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
 
-        $containerName = "centralprocessing";
-        $sourceFileRootDirectory = ".\Blob\$containerName"
-        $scriptRoot = $PSScriptRoot + "\Blob\$containerName";
+        #     Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
+        #     Set-AzureStorageBlobContent -File $x.fullname -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
+        # }
 
-        $filesToUpload = Get-ChildItem $sourceFileRootDirectory -Recurse -File
+        # $containerName = "rules";
+        # $sourceFileRootDirectory = ".\Blob\$containerName"
+        # $scriptRoot = $PSScriptRoot + "\Blob\$containerName";
 
-        foreach ($x in $filesToUpload) {
-            $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
+        # $filesToUpload = Get-ChildItem $sourceFileRootDirectory -Recurse -File
 
-            $rawData = Get-Content -Raw -Path $x.fullname
-            TranslateTokens -Source $rawData | Set-Content t.json
+        # foreach ($x in $filesToUpload) {        
+        #     $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
 
-            Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
-            Set-AzureStorageBlobContent -File t.json -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
-        }
-    }
+        #     Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
+        #     Set-AzureStorageBlobContent -File $x.fullname -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
+        # }
+
+        # $containerName = "centralprocessing";
+        # $sourceFileRootDirectory = ".\Blob\$containerName"
+        # $scriptRoot = $PSScriptRoot + "\Blob\$containerName";
+
+        # $filesToUpload = Get-ChildItem $sourceFileRootDirectory -Recurse -File
+
+        # foreach ($x in $filesToUpload) {
+        #     $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
+
+        #     $rawData = Get-Content -Raw -Path $x.fullname
+        #     TranslateTokens -Source $rawData | Set-Content t.json
+
+        #     Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
+        #     Set-AzureStorageBlobContent -File t.json -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
+        # }
+    # }
+
+    # $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $novaSparkBlobAccountName;
+    # $ctx = $storageAccount.Context;
+
+    # if ($ctx) {
+        
+        # $containerName = "deployment";
+        # $sourceFileRootDirectory = ".\Blob\$containerName"
+        # $scriptRoot = $PSScriptRoot + "\Blob\$containerName";
+
+        # $filesToUpload = Get-ChildItem $sourceFileRootDirectory -Recurse -File
+
+        # foreach ($x in $filesToUpload) {
+        #     $targetPath = ($x.fullname.Substring($scriptRoot.Length + 1)).Replace("\", "/")
+
+        #     Write-Verbose "Uploading $("\" + $x.fullname.Substring($sourceFileRootDirectory.Length + 1)) to $($container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $targetPath)"
+        #     Set-AzureStorageBlobContent -File $x.fullname -Container $containerName -Blob $targetPath -Context $ctx -Force:$Force | Out-Null
+        # }
+    # }
+}
+
+Function SetupSecretHelper([System.String]$VaultName = '', [System.String]$SecretName = '', [System.String]$Value = '')
+{    
+    $secret = ConvertTo-SecureString -String $Value -AsPlainText -Force
+    Set-AzureKeyVaultSecret -VaultName $VaultName -Name $SecretName -SecretValue $secret
+}
+
+Function InvokeAzureRmResourceAction([System.String]$Actions = '', [System.String]$ResourceType = '', [System.String]$ApiVersion = '', [System.String]$ResourceName = '')
+{    
+    $ret = Invoke-AzureRmResourceAction -Action $Actions `
+    -ResourceType $ResourceType `
+    -ApiVersion $ApiVersion `
+    -ResourceGroupName $resourceGroupName `
+    -Name $ResourceName `
+    -force
+
+    $ret
 }
 
 Function SetupSecrets()
 {
-    $Secret = ConvertTo-SecureString -String $dbCon -AsPlainText -Force
+    #NovaServicesKVName
 
-    $t = "novaconfigs$name" + "ConnectionString";
-    Set-AzureKeyVaultSecret -VaultName "$NovaServicesKVName" -Name $t -SecretValue $Secret
-        
-    $t = "nova$name" + "Password";    
-    $Secret = ConvertTo-SecureString -String $novaSparkPassword -AsPlainText -Force
-    Set-AzureKeyVaultSecret -VaultName "$NovaServicesKVName" -Name $t -SecretValue $Secret
+    $vaultName = "$NovaServicesKVName"
+    $prefix = "novaconfiggen-";
 
-    $Secret = ConvertTo-SecureString -String $dbCon -AsPlainText -Force 
-    Set-AzureKeyVaultSecret -VaultName "$NovaServicesKVName" -Name "novaconfiggen-novaflowconfigs" -SecretValue $Secret
+    $secretName = "novaconfigs$name" + "ConnectionString" # Needed?
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaopsconnectionString
 
-    $t = "novaconfigs$name" + "-blobconnectionstring";    
-    $Secret = ConvertTo-SecureString -String $novaopsconnectionString -AsPlainText -Force
-    Set-AzureKeyVaultSecret -VaultName "$NovaServicesKVName" -Name $t -SecretValue $Secret
+    $secretName = $prefix + "novaflowconfigs";
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $dbCon
 
+    $secretName = $prefix + "novaflowconfigsdatabasename"
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "production"
+
+    $secretName = $prefix + "nova$name" + "password"
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaSparkPassword
+
+    $secretName = $prefix + "novaconfigs$name" + "-blobconnectionstring"
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaopsconnectionString
+
+    $secretName = $prefix + "aiInstrumentationKey"    
+    $aiKey = (Get-AzureRmApplicationInsights -ResourceGroupName $ResourceGroupName -Name nova$name).InstrumentationKey
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $aiKey
+
+    $secretName = $prefix + "clientsecret"    
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $azureADAppSecretConfiggen.Value
+
+    $secretName = $prefix + "azureservicesauthconnectionstring"    
+    $tValue = "<EnvironmentVariable Name=""AzureServicesAuthConnectionString"" Value=""RunAs=App;AppId=" + $azureADApplicationConfiggen.ApplicationId + ";TenantId=" + $tenantId + ";CertificateThumbprint=" + $novaprodsfCert.Thumbprint + ";CertificateStoreLocation=LocalMachine""/>"
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $tValue
+
+    $prefix = "novaweb-dev-";
+    $secretName = $prefix + "aiKey"    
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $aiKey
+    
+
+    $secretName = $prefix + "clientId"    
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $azureADApplication.ApplicationId
+
+    $secretName = $prefix + "clientSecret"    
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $azureADAppSecret.Value
+
+    $secretName = $prefix + "datahubClusterUrl"    
+    $sfName = "novasf-$name"
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "https://$sfName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com"
+
+    $secretName = $prefix + "datahubResourceId"
+    $novaAppName = "novaapp$name"
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "https://$tenantName/$novaAppName"
+
+    $secretName = $prefix + "mongoDbUrl"    
+    $tValue = $dbCon.Replace("/?ssl=true", "/production?ssl=true")
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $tValue
+
+    $secretName = $prefix + "redisDataConnectionString" 
+    $redisKey = (Get-AzureRmRedisCacheKey -Name nova$name -ResourceGroupName $ResourceGroupName).PrimaryKey
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "nova$name.redis.cache.windows.net:6380,password=$redisKey,ssl=True,abortConnect=False"
+    
+    $secretName = $prefix + "sessionSecret"       
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "test"
+
+    $secretName = $prefix + "subscriptionId"       
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $subscriptionId
+
+    $secretName = $prefix + "tenantName"    
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $tenantName
+
+    #NovaServicesKVName
+
+    $vaultName = "$NovaSparkKVName"
+    $prefix = "";
+    
+    $secretName = $prefix + "nova-sa-" + $novaconfigsBlobAccountName    
+    $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $novaconfigsBlobAccountName;
+    $tValue = ""
+    if ($storageAccount.Context.ConnectionString -match 'AccountKey=(.*)')
+    {
+        $tValue = $Matches[1].Replace("AccountKey=", "")
+    }
+
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $tValue
+    
+    $secretName = $prefix + "metric-eventhubconnectionstring"    
+    $tValue = (Get-AzureRmEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName novametricseventhub$name -EventHubName novametricseventhub -AuthorizationRuleName manage).PrimaryConnectionString
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $tValue
+    
+    $secretName = $prefix + "metric-eventhubdefaultconnectionstring"    
+    $tValue = (Get-AzureRmEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName novametricseventhub$name -EventHubName novametricseventhubdefault -AuthorizationRuleName manage).PrimaryConnectionString
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $tValue
+       
+    # NovaSparkRDPKVName
+    $vaultName = "NovaSparkRDPKV$name"
+    $prefix = "";
+    
+    $secretName = $prefix + "sshuser" 
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaSparkPassword
+
+    
+    # NovaFabricRDPKVName
+    $vaultName = "$NovaFabricRDPKVName"
+    $prefix = "";
+    
+    $secretName = $prefix + "novasfadminpassword" 
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaSparkPassword
+    
+    $secretName = $prefix + "novasfadminuser" 
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "novapd"
+    
+
+}
+
+
+Function SetupKVAccess()
+{
+    $novaAppName = "novaapp$name"
+    $app = Get-AzureRmADApplication -DisplayNameStartWith $novaAppName
+    $servicePrincipal = Get-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId
+
+    $novaAppName = "configgen$name"
+    $app = Get-AzureRmADApplication -DisplayNameStartWith $novaAppName
+    $servicePrincipalConfiggen = Get-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId
+
+    $SparkManagedIdentity = Get-AzureRmADServicePrincipal  -DisplayName SparkManagedIdentity$name
+    $vmss = Get-AzureRmADServicePrincipal  -DisplayName D3$name 
+
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaServicesKVName" -ObjectId $servicePrincipal.Id -PermissionsToSecrets Get,List,Set
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaServicesKVName" -ObjectId $servicePrincipalConfiggen.Id -PermissionsToSecrets Get,List,Set
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaServicesKVName" -ObjectId $SparkManagedIdentity.Id -PermissionsToSecrets Get,List,Set
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaServicesKVName" -ObjectId $vmss.Id -PermissionsToSecrets Get,List,Set
+
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaSparkKVName" -ObjectId $servicePrincipal.Id -PermissionsToSecrets Get,List,Set
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaSparkKVName" -ObjectId $servicePrincipalConfiggen.Id -PermissionsToSecrets Get,List,Set
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaSparkKVName" -ObjectId $SparkManagedIdentity.Id -PermissionsToSecrets Get,List,Set
+    Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaSparkKVName" -ObjectId $vmss.Id -PermissionsToSecrets Get,List,Set
 }
 
 #******************************************************************************
@@ -322,11 +565,14 @@ $ErrorActionPreference = "Continue"
 # sign in
 Write-Host "Logging in...";
 #$acc = Login-AzureRmAccount;
-$acc = Connect-AzureAD;
-$tenantId = $acc.Tenant.Id.Guid
-$userId = (Get-AzureADUser -ObjectId $acc.Account.Id).ObjectId
+# $acc = Connect-AzureAD;
+# $tenantId = $acc.Tenant.Id.Guid
+# $tenantName = $acc.Tenant.Domain
+# $userId = (Get-AzureADUser -ObjectId $acc.Account.Id).ObjectId
 
-
+$tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47"
+$tenantName = "microsoft.onmicrosoft.com"
+$userId = "3e5b292a-d0c3-4169-8538-62bb27000d58"
 # select subscription
 Write-Host "Selecting subscription '$subscriptionId'";
 Select-AzureRmSubscription -SubscriptionID $subscriptionId;
@@ -336,7 +582,8 @@ $resourceProviders = @("microsoft.cache","microsoft.compute","microsoft.document
 if($resourceProviders.length) {
     Write-Host "Registering resource providers"
     foreach($resourceProvider in $resourceProviders) {
-        RegisterRP($resourceProvider);
+# TODO uncomment below
+#        RegisterRP($resourceProvider);
     }
 }
 
@@ -356,6 +603,8 @@ else{
     $resourceGroupLocation = $resourceGroup.Location
 }
 
+#$azureADApplication = GenerateAzureADApplication;
+
 # Start the deployment
 Write-Host "Starting deployment...";
 
@@ -364,15 +613,19 @@ $templateFilePath = "template.json"
 Init -templatePath $templateFilePath
 
 if(Test-Path "temp_$templateFilePath") {
-    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
+   New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
     # New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
     # -Debug 
 }
 
 # Certs
-$novaprodsfCert = GenerateCertsAndImportKeyVault -certName "novaprodsf"
-$novaprodsfreverseproxyCert = GenerateCertsAndImportKeyVault -certName "novaprodsfreverseproxy"
+$novaprodsfCert = GenerateCertsAndImportKeyVault -certName "novasf$name"
+$novaprodsfreverseproxyCert = GenerateCertsAndImportKeyVault -certName "novasfreverseproxy$name"
 
+$azureADApplication = GenerateAzureADApplication -novaAppName "novaapp$name" -websiteName "nova$name";
+$azureADApplicationConfiggen = GenerateAzureADApplication -novaAppName "configgen$name";
+$azureADAppSecret = SetAzureADAppSecret -AppName "novaapp$name";
+$azureADAppSecretConfiggen = SetAzureADAppSecret -AppName "configgen$name";
 
 # Start SF deployment
 Write-Host "Starting SF deployment...";
@@ -380,7 +633,7 @@ $templateFilePathForSF = "sf-template.json"
 Init -templatePath $templateFilePathForSF
 if(Test-Path "temp_$templateFilePathForSF")
 {
-    New-AzureRmResourceGroupDeployment  -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
+   New-AzureRmResourceGroupDeployment -Debug  -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
 }
 
 # Processing
@@ -402,6 +655,10 @@ if ($storageAccount.Context.ConnectionString -match '(AccountName=.*)')
 }    
 
 
+# Secrets
+SetupSecrets
+
+
 # Spark
 AddScriptActions
 
@@ -411,5 +668,5 @@ SetupBlob
 # cosmosDB
 SetupCosmosDB
 
-# Secrets
-SetupSecrets
+# Access Policies
+SetupKVAccess
