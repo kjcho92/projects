@@ -25,34 +25,34 @@
 #>
 
 param(
- [Parameter(Mandatory=$True)]
- [string]
+# [Parameter(Mandatory=$True)]
+# [string]
  $subscriptionId = "60eceb68-d850-45a2-ad82-86494890fa69",
  
- [Parameter(Mandatory=$True)]
- [string]
- $novaSparkPassword = "novaSparkPassword123$",
+# [Parameter(Mandatory=$True)]
+# [string]
+ $novaSparkPassword = "cAsmoose>104$",
 
- [Parameter(Mandatory=$True)]
- [string]
- $resourceGroupName,
+# [Parameter(Mandatory=$True)]
+# [string]
+ $resourceGroupName = "NovaProd",
  
- [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
- [ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
- [string]
- $resourceLocationForMicrosoftInsights,
+# [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
+# [ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
+# [string]
+ $resourceLocationForMicrosoftInsights = "westus2",
  
- [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
- [string]
- $resourceLocationForServiceFabric,
+# [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
+# [string]
+ $resourceLocationForServiceFabric = "westus2",
  
  [string]
  $resourceGroupLocation,
 
- [Parameter(Mandatory=$True)]
- [string]
- $productName,
-# $productName  = "myprod",
+# [Parameter(Mandatory=$True)]
+# [string]
+# $productName,
+ $productName  = "prod",
 
  $parametersFilePath = "noParam",
 
@@ -65,6 +65,9 @@ param(
  $NovaSparkKVName = "NovaSparkKV$name",
  $NovaSparkRDPKVName = "NovaSparkRDPKV$name",
  $NovaFabricRDPKVName = "NovaFabricRDPKV$name",
+
+#  $CertsPath = "",
+ $CertsPath = ".\Certs",
 
  $DBName = "nova$name"
 )
@@ -112,12 +115,16 @@ Function TranslateTokens([System.String]$Source = '')
    $newStr = $newStr.Replace('$novaSparkPassword', $novaSparkPassword )
    $newStr = $newStr.Replace('$configgenClientId', $azureADApplicationConfiggen.ApplicationId )
    $newStr = $newStr.Replace('$configgenTenantId', $tenantId )
-   $newStr = $newStr.Replace('$appinsightkey', (Get-AzureRmApplicationInsights -ResourceGroupName $ResourceGroupName -Name nova$name).InstrumentationKey )
+   try
+   {
+    $newStr = $newStr.Replace('$appinsightkey', (Get-AzureRmApplicationInsights -ResourceGroupName $ResourceGroupName -Name nova$name).InstrumentationKey )
+   }
+   catch {}
 
    # SF Template
-   $newStr = $newStr.Replace('$novaprodsfCertThumbprint', $novaprodsfCert.Thumbprint )
+   $newStr = $newStr.Replace('$novaprodsfCertThumbprint', $novaprodsfCert.Certificate.Thumbprint )
    $newStr = $newStr.Replace('$novaprodsfCertSecretId', $novaprodsfCert.SecretId )
-   $newStr = $newStr.Replace('$novaprodsfreverseproxyCertThumbprint', $novaprodsfreverseproxyCert.Thumbprint )
+   $newStr = $newStr.Replace('$novaprodsfreverseproxyCertThumbprint', $novaprodsfreverseproxyCert.Certificate.Thumbprint )
    $newStr = $newStr.Replace('$novaprodsfreverseproxyCertSecretId', $novaprodsfreverseproxyCert.SecretId )
    $newStr = $newStr.Replace('$resourceLocationForServiceFabric', $resourceLocationForServiceFabric )
    
@@ -182,19 +189,25 @@ Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
     $kvName = "novasfKV$name";
     $subject = "CN=$kvName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
     
-
-    $cert = New-SelfSignedCertificate -Subject $subject -CertStoreLocation cert:\LocalMachine\My
- 
+    $cert
+    if (!$CertsPath)
+    {
+        $cert = New-SelfSignedCertificate -Subject $subject -CertStoreLocation cert:\LocalMachine\My
+    }
+    else {
+        $path = $CertsPath + "\$certName.cer"
+        $cert = Import-Certificate -CertStoreLocation cert:\LocalMachine\My -FilePath $path
+    }
+     
     # Export the cert to a PFX with password
     $password = ConvertTo-SecureString "password" -AsPlainText -Force
     $certFileName = "$certName.pfx"
 
-    #TODO uncomment below
     Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFileName -Password $password
- 
+
     # Upload to Key Vault
     Import-AzureKeyVaultCertificate -VaultName $kvName -Name $certName -FilePath $certFileName -Password $password
-
+    $cert
 }
 
 Function AddScriptActions()
@@ -448,7 +461,7 @@ Function SetupSecrets()
     SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $azureADAppSecretConfiggen.Value
 
     $secretName = $prefix + "azureservicesauthconnectionstring"    
-    $tValue = "<EnvironmentVariable Name=""AzureServicesAuthConnectionString"" Value=""RunAs=App;AppId=" + $azureADApplicationConfiggen.ApplicationId + ";TenantId=" + $tenantId + ";CertificateThumbprint=" + $novaprodsfCert.Thumbprint + ";CertificateStoreLocation=LocalMachine""/>"
+    $tValue = "<EnvironmentVariable Name=""AzureServicesAuthConnectionString"" Value=""RunAs=App;AppId=" + $azureADApplicationConfiggen.ApplicationId + ";TenantId=" + $tenantId + ";CertificateThumbprint=" + $novaprodsfCert.Certificate.Thumbprint + ";CertificateStoreLocation=LocalMachine""/>"
     SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $tValue
 
     $prefix = "novaweb-dev-";
@@ -516,8 +529,7 @@ Function SetupSecrets()
     
     $secretName = $prefix + "sshuser" 
     SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaSparkPassword
-
-    
+        
     # NovaFabricRDPKVName
     $vaultName = "$NovaFabricRDPKVName"
     $prefix = "";
@@ -526,9 +538,7 @@ Function SetupSecrets()
     SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaSparkPassword
     
     $secretName = $prefix + "novasfadminuser" 
-    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "novapd"
-    
-
+    SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "novapd"    
 }
 
 
@@ -555,6 +565,121 @@ Function SetupKVAccess()
     Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaSparkKVName" -ObjectId $SparkManagedIdentity.Id -PermissionsToSecrets Get,List,Set
     Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaSparkKVName" -ObjectId $vmss.Id -PermissionsToSecrets Get,List,Set
 }
+
+
+# Function DeploySSLCert1()
+# {
+#  	$vaultname = "novasfKV$name"
+# 	$certname ="novasfssl$name"
+# 	$certpw = "password"
+# 	$groupname = "$resourceGroupName"
+	
+# 	$clustername = "novasf-$name" 
+# 	$ExistingPfxFilePath = $CertsPath + "\$certname"
+# 	 
+# 	$appcertpwd = ConvertTo-SecureString -String $certpw -AsPlainText -Force
+# 	 
+# 	Write-Host "Reading pfx file from $ExistingPfxFilePath"
+# 	$cert = new-object System.Security.Cryptography.X509Certificates.X509Certificate2 $ExistingPfxFilePath, $certpw
+# 	 
+# 	$bytes = [System.IO.File]::ReadAllBytes($ExistingPfxFilePath)
+# 	$base64 = [System.Convert]::ToBase64String($bytes)
+# 	 
+# 	$jsonBlob = @{
+# 	   data = $base64
+# 	   dataType = 'pfx'
+# 	   password = $certpw
+# 	   } | ConvertTo-Json
+# 	 
+# 	$contentbytes = [System.Text.Encoding]::UTF8.GetBytes($jsonBlob)
+# 	$content = [System.Convert]::ToBase64String($contentbytes)
+# 	 
+# 	$secretValue = ConvertTo-SecureString -String $content -AsPlainText -Force
+# 	 
+# 	# Upload the certificate to the key vault as a secret
+# 	Write-Host "Writing secret to $certname in vault $vaultname"
+# 	$secret = Set-AzureKeyVaultSecret -VaultName $vaultname -Name $certname -SecretValue $secretValue
+# 	 
+# 	# Add a certificate to all the VMs in the cluster.
+# 	Add-AzureRmServiceFabricApplicationCertificate -ResourceGroupName $groupname -Name $clustername -SecretIdentifier $secret.Id -Verbose
+# }
+
+Function GenerateSSLCertAndAddToSF([System.String]$certname = '')
+{
+ 	$vaultname = "novasfKV$name"
+    $clustername = "novasf-$name" 
+    $subject = "CN=$kvName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
+    $certpw = "password"
+	# $groupname = "$resourceGroupName"
+	
+	# $ExistingPfxFilePath = $CertsPath + "\$certname"
+
+#   $cert
+#    if (!$CertsPath) {
+#        $cert = New-SelfSignedCertificate -Subject $subject -CertStoreLocation cert:\LocalMachine\My
+# 
+#    }
+#    else {
+#        $path = $CertsPath + "\$certName.cer"
+#        $cert = Import-Certificate -CertStoreLocation cert:\LocalMachine\My -FilePath $path
+#    }
+    
+    # Export the cert to a PFX with password
+#    $password = ConvertTo-SecureString $certpw -AsPlainText -Force
+#    Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFileName -Password $password
+
+    $certFileName = "$certname.pfx"
+    $path = $PSScriptRoot + "\Certs\$certFileName"
+
+    $bytes = [System.IO.File]::ReadAllBytes($path)
+    $base64 = [System.Convert]::ToBase64String($bytes)
+
+    $jsonBlob = @{
+       data = $base64
+       dataType = 'pfx'
+       password = $certpw
+       } | ConvertTo-Json
+
+    $contentbytes = [System.Text.Encoding]::UTF8.GetBytes($jsonBlob)
+    $content = [System.Convert]::ToBase64String($contentbytes)
+
+    $secretValue = ConvertTo-SecureString -String $content -AsPlainText -Force
+
+    # Upload the certificate to the key vault as a secret
+    Write-Host "Writing secret to $certname1 in vault $vaultname"
+    $secret = Set-AzureKeyVaultSecret -VaultName $vaultname -Name $certname -SecretValue $secretValue
+
+    # Add a certificate to all the VMs in the cluster.
+    Add-AzureRmServiceFabricApplicationCertificate -ResourceGroupName $resourceGroupName -Name $clustername -SecretIdentifier $secret.Id -Verbose
+}
+
+Function OpenPort()
+{
+    $probename = "AppPortProbe6"
+	$rulename = "AppPortLBRule6"
+	$port = 443
+	
+	# Get the load balancer resource
+	$resource = Get-AzureRmResource | Where {$_.ResourceGroupName -eq $resourceGroupName -and $_.ResourceType -eq "Microsoft.Network/loadBalancers"}
+	$slb = Get-AzureRmLoadBalancer -Name $resource.Name -ResourceGroupName $resourceGroupName
+	�
+	# Add a new probe configuration to the load balancer
+	$slb | Add-AzureRmLoadBalancerProbeConfig -Name $probename -Protocol Tcp -Port $port -IntervalInSeconds 15 -ProbeCount 2
+	�
+	# Add rule configuration to the load balancer
+	$probe = Get-AzureRmLoadBalancerProbeConfig -Name $probename -LoadBalancer $slb
+	$slb | Add-AzureRmLoadBalancerRuleConfig -Name $rulename -BackendAddressPool $slb.BackendAddressPools[0] -FrontendIpConfiguration $slb.FrontendIpConfigurations[0] -Probe $probe -Protocol Tcp -FrontendPort $port -BackendPort $port
+	�
+	# Set the goal state for the load balancer
+    $slb | Set-AzureRmLoadBalancer 
+}
+
+Function SetupSF()
+{
+    $novaprodsfSSLCert = GenerateSSLCertAndAddToSF -certName "novasfssl$name"
+    OpenPort
+}
+
 
 #******************************************************************************
 # Script body
@@ -613,8 +738,8 @@ $templateFilePath = "template.json"
 Init -templatePath $templateFilePath
 
 if(Test-Path "temp_$templateFilePath") {
-   New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
-    # New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
+    # New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
+    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
     # -Debug 
 }
 
@@ -633,7 +758,7 @@ $templateFilePathForSF = "sf-template.json"
 Init -templatePath $templateFilePathForSF
 if(Test-Path "temp_$templateFilePathForSF")
 {
-   New-AzureRmResourceGroupDeployment -Debug  -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
+    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
 }
 
 # Processing
@@ -654,6 +779,8 @@ if ($storageAccount.Context.ConnectionString -match '(AccountName=.*)')
     $novaopsconnectionString = "DefaultEndpointsProtocol=https;$connectionString;EndpointSuffix=core.windows.net"
 }    
 
+
+SetupSF
 
 # Secrets
 SetupSecrets
