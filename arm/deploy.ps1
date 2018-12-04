@@ -566,44 +566,6 @@ Function SetupKVAccess()
     Set-AzureRmKeyVaultAccessPolicy -VaultName "$NovaSparkKVName" -ObjectId $vmss.Id -PermissionsToSecrets Get,List,Set
 }
 
-
-# Function DeploySSLCert1()
-# {
-#  	$vaultname = "novasfKV$name"
-# 	$certname ="novasfssl$name"
-# 	$certpw = "password"
-# 	$groupname = "$resourceGroupName"
-	
-# 	$clustername = "novasf-$name" 
-# 	$ExistingPfxFilePath = $CertsPath + "\$certname"
-# 	 
-# 	$appcertpwd = ConvertTo-SecureString -String $certpw -AsPlainText -Force
-# 	 
-# 	Write-Host "Reading pfx file from $ExistingPfxFilePath"
-# 	$cert = new-object System.Security.Cryptography.X509Certificates.X509Certificate2 $ExistingPfxFilePath, $certpw
-# 	 
-# 	$bytes = [System.IO.File]::ReadAllBytes($ExistingPfxFilePath)
-# 	$base64 = [System.Convert]::ToBase64String($bytes)
-# 	 
-# 	$jsonBlob = @{
-# 	   data = $base64
-# 	   dataType = 'pfx'
-# 	   password = $certpw
-# 	   } | ConvertTo-Json
-# 	 
-# 	$contentbytes = [System.Text.Encoding]::UTF8.GetBytes($jsonBlob)
-# 	$content = [System.Convert]::ToBase64String($contentbytes)
-# 	 
-# 	$secretValue = ConvertTo-SecureString -String $content -AsPlainText -Force
-# 	 
-# 	# Upload the certificate to the key vault as a secret
-# 	Write-Host "Writing secret to $certname in vault $vaultname"
-# 	$secret = Set-AzureKeyVaultSecret -VaultName $vaultname -Name $certname -SecretValue $secretValue
-# 	 
-# 	# Add a certificate to all the VMs in the cluster.
-# 	Add-AzureRmServiceFabricApplicationCertificate -ResourceGroupName $groupname -Name $clustername -SecretIdentifier $secret.Id -Verbose
-# }
-
 Function GenerateSSLCertAndAddToSF([System.String]$certname = '')
 {
  	$vaultname = "novasfKV$name"
@@ -662,14 +624,14 @@ Function OpenPort()
 	# Get the load balancer resource
 	$resource = Get-AzureRmResource | Where {$_.ResourceGroupName -eq $resourceGroupName -and $_.ResourceType -eq "Microsoft.Network/loadBalancers"}
 	$slb = Get-AzureRmLoadBalancer -Name $resource.Name -ResourceGroupName $resourceGroupName
-	�
+	
 	# Add a new probe configuration to the load balancer
 	$slb | Add-AzureRmLoadBalancerProbeConfig -Name $probename -Protocol Tcp -Port $port -IntervalInSeconds 15 -ProbeCount 2
-	�
+	
 	# Add rule configuration to the load balancer
 	$probe = Get-AzureRmLoadBalancerProbeConfig -Name $probename -LoadBalancer $slb
 	$slb | Add-AzureRmLoadBalancerRuleConfig -Name $rulename -BackendAddressPool $slb.BackendAddressPools[0] -FrontendIpConfiguration $slb.FrontendIpConfigurations[0] -Probe $probe -Protocol Tcp -FrontendPort $port -BackendPort $port
-	�
+	
 	# Set the goal state for the load balancer
     $slb | Set-AzureRmLoadBalancer 
 }
@@ -739,8 +701,7 @@ Init -templatePath $templateFilePath
 
 if(Test-Path "temp_$templateFilePath") {
     # New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
-    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
-    # -Debug 
+    # New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
 }
 
 # Certs
@@ -758,7 +719,7 @@ $templateFilePathForSF = "sf-template.json"
 Init -templatePath $templateFilePathForSF
 if(Test-Path "temp_$templateFilePathForSF")
 {
-    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
+#    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
 }
 
 # Processing
