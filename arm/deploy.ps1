@@ -25,51 +25,71 @@
 #>
 
 param(
-# [Parameter(Mandatory=$True)]
-# [string]
- $subscriptionId = "60eceb68-d850-45a2-ad82-86494890fa69",
+[Parameter(Mandatory=$True)]
+[string]
+ $subscriptionId,
  
-# [Parameter(Mandatory=$True)]
-# [string]
- $novaSparkPassword = "cAsmoose>104$",
-
-# [Parameter(Mandatory=$True)]
-# [string]
- $resourceGroupName = "NovaProd",
+[Parameter(Mandatory=$True)]
+[string]
+ $novaSparkPassword,
  
-# [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
-# [ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
-# [string]
- $resourceLocationForMicrosoftInsights = "westus2",
- 
-# [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
-# [string]
- $resourceLocationForServiceFabric = "westus2",
- 
+[Parameter(Mandatory=$True)]
  [string]
+ $certPassword,
+
+[Parameter(Mandatory=$True)]
+[string]
+ $resourceGroupName,
+ 
+[Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
+[ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
+[string]
+ $resourceLocationForMicrosoftInsights,
+ 
+[Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
+[string]
+ $resourceLocationForServiceFabric,
+ 
+[string]
  $resourceGroupLocation,
 
-# [Parameter(Mandatory=$True)]
-# [string]
-# $productName,
- $productName  = "prod",
+[Parameter(Mandatory=$True)]
+[string]
+$productName,
 
- $parametersFilePath = "noParam",
+# $subscriptionId = "60eceb68-d850-45a2-ad82-86494890fa69",
 
- # Resources Names
- $name = $productName.ToLower(),
- $novaSparkBlobAccountName = "nova$name" + "spark",
- $novaconfigsBlobAccountName = "novaconfigs$name", 
+# $novaSparkPassword = "cAsmoose>104$",
 
- $NovaServicesKVName = "NovaServicesKV$name",
- $NovaSparkKVName = "NovaSparkKV$name",
- $NovaSparkRDPKVName = "NovaSparkRDPKV$name",
- $NovaFabricRDPKVName = "NovaFabricRDPKV$name",
+# $certPassword = "cAsmoose>104$",
+
+# $resourceGroupName = "NovaProd",
+
+# $resourceLocationForMicrosoftInsights = "westus2",
+
+# $resourceLocationForServiceFabric = "westus2",
+
+# $resourceGroupLocation,
+
+# $productName  = "prod",
+
+
+$parametersFilePath = "noParam",
+
+# Resources Names
+$name = $productName.ToLower(),
+$novaSparkBlobAccountName = "nova$name" + "spark",
+$novaconfigsBlobAccountName = "novaconfigs$name", 
+
+$NovaServicesKVName = "NovaServicesKV$name",
+$NovaSparkKVName = "NovaSparkKV$name",
+$NovaSparkRDPKVName = "NovaSparkRDPKV$name",
+$NovaFabricRDPKVName = "NovaFabricRDPKV$name",
 
 #  $CertsPath = "",
- $CertsPath = ".\Certs",
+$CertsPath = ".\Certs",
 
- $DBName = "nova$name"
+$DBName = "nova$name"
 )
 
 <#
@@ -200,7 +220,7 @@ Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
     }
      
     # Export the cert to a PFX with password
-    $password = ConvertTo-SecureString "password" -AsPlainText -Force
+    $password = ConvertTo-SecureString $certPassword -AsPlainText -Force
     $certFileName = "$certName.pfx"
 
     Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFileName -Password $password
@@ -447,7 +467,7 @@ Function SetupSecrets()
     $secretName = $prefix + "novaflowconfigsdatabasename"
     SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value "production"
 
-    $secretName = $prefix + "nova$name" + "password"
+    $secretName = $prefix + "nova$name" + $certPassword
     SetupSecretHelper -VaultName $vaultName -SecretName $secretName -Value $novaSparkPassword
 
     $secretName = $prefix + "novaconfigs$name" + "-blobconnectionstring"
@@ -571,7 +591,7 @@ Function GenerateSSLCertAndAddToSF([System.String]$certname = '')
  	$vaultname = "novasfKV$name"
     $clustername = "novasf-$name" 
     $subject = "CN=$kvName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
-    $certpw = "password"
+    $certpw = $certPassword
 	# $groupname = "$resourceGroupName"
 	
 	# $ExistingPfxFilePath = $CertsPath + "\$certname"
