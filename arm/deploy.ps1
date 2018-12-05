@@ -61,7 +61,7 @@ $productName,
 
 # $novaSparkPassword = "cAsmoose>104$",
 
-# $certPassword = "cAsmoose>104$",
+# $certPassword = "password",
 
 # $resourceGroupName = "NovaProd",
 
