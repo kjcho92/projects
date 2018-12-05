@@ -652,7 +652,7 @@ $ErrorActionPreference = "Continue"
 # sign in
 Write-Host "Logging in...";
 #$acc = Login-AzureRmAccount;
-# $acc = Connect-AzureAD;
+ $acc = Connect-AzureAD;
 # $tenantId = $acc.Tenant.Id.Guid
 # $tenantName = $acc.Tenant.Domain
 # $userId = (Get-AzureADUser -ObjectId $acc.Account.Id).ObjectId
