@@ -25,54 +25,48 @@
 #>
 
 param(
-[Parameter(Mandatory=$True)]
-[string]
- $subscriptionId,
+$subscriptionId = "60eceb68-d850-45a2-ad82-86494890fa69",
+$certPassword = "password",
+$novaSparkPassword = "cAsmoose>104$",
+$resourceGroupName = "NovaProd",
+$resourceLocationForMicrosoftInsights = "westus2",
+$resourceLocationForServiceFabric = "westus2",
+$productName  = "prod",
+$serviceFabricCreation = "y",
+# [Parameter(Mandatory=$True)]
+# [string]
+#  $subscriptionId,
  
-[Parameter(Mandatory=$True)]
-[string]
- $novaSparkPassword,
+# [Parameter(Mandatory=$True)]
+# [string]
+#  $novaSparkPassword,
  
-[Parameter(Mandatory=$True)]
- [string]
- $certPassword,
+# [Parameter(Mandatory=$True)]
+#  [string]
+#  $certPassword,
 
-[Parameter(Mandatory=$True)]
-[string]
- $resourceGroupName,
+# [Parameter(Mandatory=$True)]
+# [string]
+#  $resourceGroupName,
  
-[Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
-[ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
-[string]
- $resourceLocationForMicrosoftInsights,
+# [Parameter(Mandatory=$True)]
+# [string]
+# $productName,
+
+# [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.Insights")]
+# [ValidateSet("EastUS", "SouthCentralUS", "NorthEurope", "WestEurope", "SoutheastAsia", "WestUS2", "CanadaCentral", "CentralIndia")]
+# [string]
+#  $resourceLocationForMicrosoftInsights,
  
-[Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
-[string]
- $resourceLocationForServiceFabric,
+# [Parameter(Mandatory=$True, HelpMessage="Location for Microsoft.ServiceFabric")]
+# [string]
+#  $resourceLocationForServiceFabric,
  
-[string]
+# [string]
+#  $serviceFabricCreation,
+
+  [string]
  $resourceGroupLocation,
-
-[Parameter(Mandatory=$True)]
-[string]
-$productName,
-
-# $subscriptionId = "60eceb68-d850-45a2-ad82-86494890fa69",
-
-# $novaSparkPassword = "cAsmoose>104$",
-
-# $certPassword = "password",
-
-# $resourceGroupName = "NovaProd",
-
-# $resourceLocationForMicrosoftInsights = "westus2",
-
-# $resourceLocationForServiceFabric = "westus2",
-
-# $resourceGroupLocation,
-
-# $productName  = "prod",
-
 
 $parametersFilePath = "noParam",
 
@@ -207,26 +201,30 @@ Function GenerateAzureADApplication([System.String]$novaAppName = '', [System.St
 Function GenerateCertsAndImportKeyVault([System.String]$certName = '')
 {
     $kvName = "novasfKV$name";
-    $subject = "CN=$kvName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
-    
+    $clustername = "novasf-$name" 
+    $subject = "CN=$clustername"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
+     
+    $password = ConvertTo-SecureString $certPassword -AsPlainText -Force
+    $certFileName = "$certName.pfx"
+
+    $certFilePath = $CertsPath + "\$certFileName"
+
     $cert
     if (!$CertsPath)
     {
         $cert = New-SelfSignedCertificate -Subject $subject -CertStoreLocation cert:\LocalMachine\My
+        
+        # Export the cert to a PFX with password
+        Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFilePath -Password $password
+
     }
     else {
-        $path = $CertsPath + "\$certName.cer"
-        $cert = Import-Certificate -CertStoreLocation cert:\LocalMachine\My -FilePath $path
-    }
-     
-    # Export the cert to a PFX with password
-    $password = ConvertTo-SecureString $certPassword -AsPlainText -Force
-    $certFileName = "$certName.pfx"
 
-    Export-PfxCertificate -Cert "cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath $certFileName -Password $password
+        $cert = Import-Certificate -CertStoreLocation cert:\LocalMachine\My -FilePath $certFilePath
+    }
 
     # Upload to Key Vault
-    Import-AzureKeyVaultCertificate -VaultName $kvName -Name $certName -FilePath $certFileName -Password $password
+    Import-AzureKeyVaultCertificate -VaultName $kvName -Name $certName -FilePath $certFilePath -Password $password
     $cert
 }
 
@@ -319,7 +317,7 @@ Function SetupCosmosDB()
         $json | foreach {
             try
             {
-                $_ | ConvertTo-Json | Set-Content t.json
+                $_ | ConvertTo-Json -Depth 5 | Set-Content t.json
                 $input = Import-MdbcData t.json
                 $response = Add-MdbcData -InputObject $input -Collection $collection1 -NewId
                 if (!$response) {
@@ -590,7 +588,7 @@ Function GenerateSSLCertAndAddToSF([System.String]$certname = '')
 {
  	$vaultname = "novasfKV$name"
     $clustername = "novasf-$name" 
-    $subject = "CN=$kvName"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
+    $subject = "CN=$clustername"+ ".$resourceLocationForServiceFabric" + ".cloudapp.azure.com";
     $certpw = $certPassword
 	# $groupname = "$resourceGroupName"
 	
@@ -720,7 +718,7 @@ $templateFilePath = "template.json"
 Init -templatePath $templateFilePath
 
 if(Test-Path "temp_$templateFilePath") {
-    # New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
+    New-AzureRmResourceGroupDeployment -Debug -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";    
     # New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePath";
 }
 
@@ -737,9 +735,9 @@ $azureADAppSecretConfiggen = SetAzureADAppSecret -AppName "configgen$name";
 Write-Host "Starting SF deployment...";
 $templateFilePathForSF = "sf-template.json"
 Init -templatePath $templateFilePathForSF
-if(Test-Path "temp_$templateFilePathForSF")
+if((Test-Path "temp_$templateFilePathForSF") -and ($serviceFabricCreation -eq 'y' ))
 {
-#    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
+    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile "temp_$templateFilePathForSF";
 }
 
 # Processing
