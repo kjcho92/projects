@@ -15,7 +15,7 @@
 			"type": "string"
 		},		
 		"sites_nova$name_name": {
-			"defaultValue": "nova$name",
+			"defaultValue": "$WebsiteName",
 			"type": "String"
 		},
 		"vaults_NovaSparkKV$name_name": {
@@ -78,12 +78,20 @@
 			"defaultValue": "novametricseventhub",
 			"type": "String"
 		},
+		"eventhubs_novametricseventhubdefault_name": {
+			"defaultValue": "novametricseventhubdefault",
+			"type": "String"
+		},
 		"AuthorizationRules_RootManageSharedAccessKey_name": {
 			"defaultValue": "RootManageSharedAccessKey",
 			"type": "String"
 		},
 		"consumergroups_$Default_name": {
 			"defaultValue": "$Default",
+			"type": "String"
+		},
+		"consumergroups_metrics-ingestor_name": {
+			"defaultValue": "metrics-ingestor",
 			"type": "String"
 		},
 		"authorizationRules_manage_name": {
@@ -148,7 +156,7 @@
 		},
 		"sparkManagedIdentity": {
 			"type": "string",
-			"defaultValue": "SparkManagedIdentity"
+			"defaultValue": "SparkManagedIdentity$name"
 		}
 	},
 	"variables": {
@@ -156,6 +164,7 @@
 		"storageAccounts_novaops_containerName_centralprocessing": "centralprocessing",
 		"storageAccounts_novaops_containerName_rules": "rules",
 		"storageAccounts_novaops_containerName_referencedata": "referencedata",
+		"storageAccounts_novaops_containerName_deployment": "deployment",
 		"storageAccounts_novaops_containerName_specialprocessing": "specialprocessing",
 		"storageAccounts_novaops_containerName_checkpoints": "checkpoints",
 		"storageAccounts_novaops_containerName_diagnostics": "diagnostics",
@@ -361,173 +370,47 @@
 				"accessPolicies": [
 					{
 						"tenantId": "[variables('tenantId')]",
-						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "84b32d75-9a6f-4a08-aaeb-c67a40c633fe",
-						"permissions": {
-							"keys": [
-								"Get",
-								"Create"
-							],
-							"secrets": [
-								"Get",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "3828bd7e-1043-44b9-a81c-c312a87dc216",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Create"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
-						"permissions": {
-							"keys": [
-								"Get",
-								"Update",
-								"Create"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set"
-							],
-							"certificates": []
-						}
-					}
+                        "objectId": "[variables('userId')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
 				],
 				"enabledForDeployment": false,
 				"enabledForDiskEncryption": false,
@@ -552,191 +435,47 @@
 				"accessPolicies": [
 					{
 						"tenantId": "[variables('tenantId')]",
-						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "d0871592-98ef-419c-8c97-6c91c9dd7875",
-						"permissions": {
-							"keys": [],
-							"secrets": [
-								"Get"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "2e4b2bb7-bc88-44f5-9066-79bab8eb13a9",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "b10871b6-09d1-472d-9922-fa60327df8ae",
-						"permissions": {
-							"keys": [
-								"Get",
-								"Update",
-								"Create",
-								"List"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set"
-							],
-							"certificates": []
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "3e5b292a-d0c3-4169-8538-62bb27000d58",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Delete"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete"
-							],
-							"certificates": []
-						}
-					}
+                        "objectId": "[variables('userId')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
 				],
 				"enabledForDeployment": false,
 				"enabledForDiskEncryption": false,
@@ -761,123 +500,47 @@
 				"accessPolicies": [
 					{
 						"tenantId": "[variables('tenantId')]",
-						"objectId": "187cb653-c0f5-4a9e-b4bb-edeb239a518d",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "f76b767c-3259-4e1c-a17d-4494f5bd4171",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Decrypt",
-								"Encrypt",
-								"UnwrapKey",
-								"WrapKey",
-								"Verify",
-								"Sign",
-								"Purge"
-							],
-							"secrets": [
-								"Get",
-								"List",
-								"Set",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"Purge"
-							],
-							"certificates": [
-								"Get",
-								"List",
-								"Update",
-								"Create",
-								"Import",
-								"Delete",
-								"Recover",
-								"Backup",
-								"Restore",
-								"ManageContacts",
-								"ManageIssuers",
-								"GetIssuers",
-								"ListIssuers",
-								"SetIssuers",
-								"DeleteIssuers",
-								"Purge"
-							]
-						}
-					},
-					{
-						"tenantId": "[variables('tenantId')]",
-						"objectId": "8a587835-8711-4aaf-97bf-e641a47a8e7c",
-						"permissions": {
-							"keys": [
-								"Get",
-								"List"
-							],
-							"secrets": [
-								"Get",
-								"List"
-							],
-							"certificates": []
-						}
-					}
+                        "objectId": "[variables('userId')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
 				],
 				"enabledForDeployment": false,
 				"enabledForDiskEncryption": false,
@@ -1018,6 +681,14 @@
 					]
 				},
 				{
+					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_deployment'))]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"[parameters('storageAccounts_novaconfigs$name_name')]"
+					]
+				},
+				{
 					"name": "[concat('default/', variables('storageAccounts_novaops_containerName_specialprocessing'))]",
 					"type": "blobServices/containers",
 					"apiVersion": "2018-03-01-preview",
@@ -1077,8 +748,28 @@
 			"name": "[parameters('sites_nova$name_name')]",
 			"apiVersion": "2016-08-01",
 			"location": "[parameters('default_resource_location')]",
+			"identity": {
+                "type": "SystemAssigned"
+            },
 			"scale": null,
-			"properties": {
+			"properties": {               
+				 "siteConfig": {
+					"appSettings": [
+						{
+							"name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+							"value": "[reference(resourceId('microsoft.insights/components/', parameters('components_novaweb$name_name')), '2015-05-01').InstrumentationKey]"
+						},
+						{
+							"name": "NODE_ENV",
+							"value": "production"
+						},
+						{
+							"name": "NOVA_KEYVAULT_NAME",
+							"value": "NovaServicesKV$name"
+						}
+					]
+				},
+
 				"enabled": true,
 				"hostNameSslStates": [
 					{
@@ -1100,7 +791,6 @@
 				],
 				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_nova_app_service_plan_name'))]",
 				"reserved": false,
-				"siteConfig": null,
 				"scmSiteAlsoStopped": false,
 				"hostingEnvironmentProfile": null,
 				"clientAffinityEnabled": true,
@@ -1179,6 +869,67 @@
 			"dependsOn": [
 				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]",
 				"[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhub$name_name'), parameters('eventhubs_novametricseventhub_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub/consumergroups/metrics-ingestor'.",
+			"type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhub_name'), '/', parameters('consumergroups_metrics-ingestor_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]",
+				"[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhub$name_name'), parameters('eventhubs_novametricseventhub_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub'.",
+			"type": "Microsoft.EventHub/namespaces/eventhubs",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhubdefault_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"messageRetentionInDays": 1,
+				"partitionCount": 2,
+				"status": "Active"
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub/authorizationRules/manage'.",
+			"type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhubdefault_name'), '/', parameters('authorizationRules_manage_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {
+				"rights": [
+					"Manage",
+					"Listen",
+					"Send"
+				]
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]",
+				"[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhub$name_name'), parameters('eventhubs_novametricseventhubdefault_name'))]"
+			]
+		},
+		{
+			"comments": "Generalized from resource: '/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.EventHub/namespaces/novametricseventhub/eventhubs/novametricseventhub/consumergroups/$Default'.",
+			"type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+			"name": "[concat(parameters('namespaces_novametricseventhub$name_name'), '/', parameters('eventhubs_novametricseventhubdefault_name'), '/', parameters('consumergroups_$Default_name'))]",
+			"apiVersion": "2017-04-01",
+			"location": "[parameters('default_resource_location')]",
+			"scale": null,
+			"properties": {},
+			"dependsOn": [
+				"[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_novametricseventhub$name_name'))]",
+				"[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_novametricseventhub$name_name'), parameters('eventhubs_novametricseventhubdefault_name'))]"
 			]
 		},
 		{
@@ -1389,7 +1140,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "/subscriptions/$subscriptionId/resourcegroups/$resourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SparkManagedIdentity": {}
+                    "/subscriptions/$subscriptionId/resourcegroups/$resourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SparkManagedIdentity$name": {}
                 }
             }
 		},
@@ -1400,7 +1151,25 @@
 			"location": "[parameters('default_resource_location')]",
 			"properties": {
 				"accountType": "Standard_LRS"
-			}
+			},
+			"resources": [
+				{
+					"name": "[concat('default/', 'scripts')]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"nova$namespark"
+					]
+				},
+				{
+					"name": "[concat('default/', 'deployment')]",
+					"type": "blobServices/containers",
+					"apiVersion": "2018-03-01-preview",
+					"dependsOn": [
+						"nova$namespark"
+					]
+				}
+			]
 		},
 		{
             "apiVersion": "2015-08-31-preview",
